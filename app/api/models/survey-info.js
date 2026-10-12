@@ -60,7 +60,7 @@ export default class SurveyInfo {
      * @type {bool}
      * @readonly
      */
-    get autoNext(){
+    get autoNext() {
         return this._autoNext;
     }
 
@@ -69,7 +69,7 @@ export default class SurveyInfo {
      * @type {?number}
      * @readonly
      */
-    get autoNextInterval(){
+    get autoNextInterval() {
         return this._autoNextInterval;
     }
 
@@ -105,7 +105,7 @@ export default class SurveyInfo {
      * @returns {object} Dictionary of messages.
      */
     get messages() {
-        return {...this._messages};
+        return { ...this._messages };
     }
 
     /**

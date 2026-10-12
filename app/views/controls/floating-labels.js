@@ -1,7 +1,7 @@
 import $ from 'jquery';
 
 export default class FloatingLabels {
-    constructor(panel, lastItem, mobileThreshold){
+    constructor(panel, lastItem, mobileThreshold) {
         this._mobileThreshold = mobileThreshold;
         this._panel = panel;
         this._lastItem = lastItem;
@@ -10,8 +10,8 @@ export default class FloatingLabels {
         this._init();
     }
 
-    _init(){
-        if(this._panel.length === 0) {
+    _init() {
+        if (this._panel.length === 0) {
             return;
         }
 
@@ -24,9 +24,8 @@ export default class FloatingLabels {
             .css('visibility', 'hidden')
             .insertAfter(this._panel);
 
-
         $(window).on('resize', this._onResize);
-        if(window.ResizeObserver !== undefined) {
+        if (window.ResizeObserver !== undefined) {
             new window.ResizeObserver(() => {
                 this._adjustWidthAndPosition();
             }).observe(this._panel[0]);
@@ -39,15 +38,14 @@ export default class FloatingLabels {
     _adjustWidthAndPosition() {
         this._clone.css({
             width: this._panel.outerWidth() + 'px',
-            left: this._panel.offset().left
+            left: this._panel.offset().left,
         });
     }
 
     _onOffPanel() {
-        if(window.innerWidth <= this._mobileThreshold) {
+        if (window.innerWidth <= this._mobileThreshold) {
             this._float();
-        }
-        else {
+        } else {
             this._hide();
         }
     }
@@ -68,17 +66,17 @@ export default class FloatingLabels {
     _handleScroll() {
         const scrollValue = $(window).scrollTop();
 
-        if(scrollValue < this._panelOffset) { // above the topmost panel
+        if (scrollValue < this._panelOffset) {
+            // above the topmost panel
             this._clone.css('visibility', 'hidden');
-        }else if( scrollValue > this._maxOffset + this._clone.outerHeight(true)) { // below last item
+        } else if (scrollValue > this._maxOffset + this._clone.outerHeight(true)) {
+            // below last item
             this._clone.css('visibility', 'hidden');
         } else {
-            const fixedTop = scrollValue > this._maxOffset
-                ? this._maxOffset - scrollValue
-                : 0;
+            const fixedTop = scrollValue > this._maxOffset ? this._maxOffset - scrollValue : 0;
             this._clone.css({
                 top: fixedTop + 'px',
-                visibility: 'visible'
+                visibility: 'visible',
             });
         }
     }

@@ -1,5 +1,5 @@
-import Grid3DMobileInnerQuestionView from "./grid-3d-mobile-inner-question-view";
-import ValidationTypes from "../../../../api/models/validation/validation-types";
+import Grid3DMobileInnerQuestionView from './grid-3d-mobile-inner-question-view';
+import ValidationTypes from '../../../../api/models/validation/validation-types';
 
 export default class Grid3DMobileInnerNumericListQuestionView extends Grid3DMobileInnerQuestionView {
     constructor(parentQuestion, question, settings = null) {
@@ -22,9 +22,8 @@ export default class Grid3DMobileInnerNumericListQuestionView extends Grid3DMobi
         });
     }
 
-    _updateAnswerNodes({values = []}) {
-        if(values.length === 0)
-            return;
+    _updateAnswerNodes({ values = [] }) {
+        if (values.length === 0) return;
 
         this._question.answers.forEach(answer => {
             const answerInput = this._getAnswerInputNode(answer.code);
@@ -59,10 +58,10 @@ export default class Grid3DMobileInnerNumericListQuestionView extends Grid3DMobi
         }
     }
 
-    _onModelValueChange({changes}) {
+    _onModelValueChange({ changes }) {
         this._updateAnswerNodes(changes);
 
-        if(this._question.autoSum){
+        if (this._question.autoSum) {
             this._container.find(`#mobile_${this._question.id}_autosum`).text(this._question.totalSum);
         }
     }

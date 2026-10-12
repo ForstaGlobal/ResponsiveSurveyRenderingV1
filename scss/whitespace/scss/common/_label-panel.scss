@@ -1,0 +1,53 @@
+@use "../variables";
+
+// LABEL PANEL
+.cf-label-panel {
+  display: flex;
+  border-bottom: 1px solid variables.$primary-shade-3;
+  padding: 8px 0;
+  font-size: variables.$font-size - 2px;
+  line-height: variables.$font-size - 2px;
+  justify-content: space-between;
+  &__label {
+    width: 1px;
+    max-width: 40%;
+    flex: 1 1 auto;
+
+    &--min {
+      order: 1;
+    }
+
+    &--max {
+      order: 3;
+      text-align: right;
+    }
+  }
+
+  &::after { //fix for correct alignment in ie11
+    content: '';
+    order: 2;
+    width: 1px;
+    max-width: 20%;
+    flex: 1 1 auto;
+  }
+
+  &--floating {
+    position: fixed;
+    background: variables.$question-bg-color;
+    border-bottom: 1px solid variables.$primary-shade-3;
+    z-index: 10;
+  }
+}
+
+.cf-label-panel--rtl {
+  .cf-label-panel__label {
+    &--min {
+      margin-right: 0;
+      margin-left: auto;
+    }
+
+    &--max {
+      text-align: left;
+    }
+  }
+}

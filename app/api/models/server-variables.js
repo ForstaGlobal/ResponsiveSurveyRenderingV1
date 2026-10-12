@@ -18,7 +18,7 @@ export default class ServerVariables {
      * @event changeEvent
      * @type {Event}
      */
-    get changeEvent(){
+    get changeEvent() {
         return this._changeEvent;
     }
 
@@ -28,14 +28,13 @@ export default class ServerVariables {
      * @param {string} [value]] - value of variable.
      */
     add(name, value) {
-        if(name in this._fields){
+        if (name in this._fields) {
             return;
         }
 
         this._fields[name] = value;
-        this._changeEvent.trigger({type: 'add', name, value});
+        this._changeEvent.trigger({ type: 'add', name, value });
     }
-
 
     /**
      * Edit variable.
@@ -43,21 +42,20 @@ export default class ServerVariables {
      * @param {string} [newValue]] - new value of variable.
      */
     edit(name, newValue) {
-        if(name in this._fields){
+        if (name in this._fields) {
             this._fields[name] = newValue;
-            this._changeEvent.trigger({type: 'edit', name, value: newValue});
+            this._changeEvent.trigger({ type: 'edit', name, value: newValue });
         }
     }
-
 
     /**
      * Remove variable.
      * @param {string} [name] - name of variable.
      */
     remove(name) {
-        if(name in this._fields){
+        if (name in this._fields) {
             delete this._fields[name];
-            this._changeEvent.trigger({type: 'delete', name});
+            this._changeEvent.trigger({ type: 'delete', name });
         }
     }
 }

@@ -1,4 +1,4 @@
-import Grid3DDesktopInnerQuestionView from "./grid-3d-desktop-inner-question-view";
+import Grid3DDesktopInnerQuestionView from './grid-3d-desktop-inner-question-view';
 
 export default class Grid3DDesktopInnerGridQuestionView extends Grid3DDesktopInnerQuestionView {
     constructor(parentQuestion, question, settings = null) {
@@ -7,8 +7,8 @@ export default class Grid3DDesktopInnerGridQuestionView extends Grid3DDesktopInn
         this._attachHandlersToDOM();
     }
 
-    get _selectedScaleCssClass(){
-        return  this._question.answerButtons ? 'cf-answer-button--selected' : 'cf-grid-single-answer--selected';
+    get _selectedScaleCssClass() {
+        return this._question.answerButtons ? 'cf-answer-button--selected' : 'cf-grid-single-answer--selected';
     }
 
     _attachHandlersToDOM() {
@@ -21,9 +21,8 @@ export default class Grid3DDesktopInnerGridQuestionView extends Grid3DDesktopInn
         });
     }
 
-    _updateAnswerScaleNodes({values = []}) {
-        if (values.length === 0)
-            return;
+    _updateAnswerScaleNodes({ values = [] }) {
+        if (values.length === 0) return;
 
         this._question.answers.forEach(answer => {
             this._question.scales.forEach(scale => {
@@ -36,7 +35,7 @@ export default class Grid3DDesktopInnerGridQuestionView extends Grid3DDesktopInn
         });
     }
 
-    _onModelValueChange({changes}) {
+    _onModelValueChange({ changes }) {
         this._updateAnswerScaleNodes(changes);
     }
 

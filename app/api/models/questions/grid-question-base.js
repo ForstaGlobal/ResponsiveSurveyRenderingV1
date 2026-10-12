@@ -1,5 +1,5 @@
 import QuestionWithAnswers from './../base/question-with-answers.js';
-import Scale from './../base/scale.js'
+import Scale from './../base/scale.js';
 import HeadGroup from './../base/head-group.js';
 import ValidationTypes from '../validation/validation-types.js';
 import RuleValidationResult from '../validation/rule-validation-result.js';
@@ -17,10 +17,10 @@ export default class GridQuestionBase extends QuestionWithAnswers {
 
         this._scales = [];
         this._scaleGroups = [];
-        
+
         this._values = { ...model.values };
         this._otherValues = { ...model.otherValues };
-        
+
         this._parseScaleGroups(model);
         this._parseScales(model);
     }
@@ -46,14 +46,14 @@ export default class GridQuestionBase extends QuestionWithAnswers {
     /**
      * @inheritDoc
      */
-    get formValues(){
+    get formValues() {
         let form = {};
 
         Object.entries(this.values).forEach(([answerCode, scaleCode]) => {
             let answer = this.getAnswer(answerCode);
-            if(answer){
+            if (answer) {
                 form[answer.fieldName] = scaleCode;
-                if(answer.isOther){
+                if (answer.isOther) {
                     form[answer.otherFieldName] = this.otherValues[answerCode];
                 }
             }
@@ -68,22 +68,16 @@ export default class GridQuestionBase extends QuestionWithAnswers {
      * @param {string} scaleCode - Scale code.
      */
     setValue(answerCode, scaleCode) {
-        this._setValueInternal(
-            'values',
-            () => this._setValue(answerCode, scaleCode)
-        );
+        this._setValueInternal('values', () => this._setValue(answerCode, scaleCode));
     }
-    
-	/**
+
+    /**
      * Set other answer value.
      * @param {string} answerCode - Answer code.
      * @param {string} otherValue - Other value.
      */
     setOtherValue(answerCode, otherValue) {
-        this._setValueInternal(
-            'otherValues',
-            () => this._setOtherValue(answerCode, otherValue),
-        );
+        this._setValueInternal('otherValues', () => this._setOtherValue(answerCode, otherValue));
     }
 
     /**
@@ -95,11 +89,11 @@ export default class GridQuestionBase extends QuestionWithAnswers {
         return this._scales;
     }
 
-     /**
-    * The array of answer groups.
-    * @type {HeadGroup[]}
-    * @readonly
-    */
+    /**
+     * The array of answer groups.
+     * @type {HeadGroup[]}
+     * @readonly
+     */
     get scaleGroups() {
         return this._scaleGroups;
     }
@@ -110,7 +104,7 @@ export default class GridQuestionBase extends QuestionWithAnswers {
      * @return {Scale}
      */
     getScale(code) {
-        if(code === null) {
+        if (code === null) {
             return null;
         }
         code = code.toString();
@@ -126,30 +120,30 @@ export default class GridQuestionBase extends QuestionWithAnswers {
         codes = codes.map(item => item.toString());
         return this._scales.filter(answer => codes.includes(answer.code));
     }
-    
+
     /**
      * Get scale group by code.
      * @param {string} code - Group code.
      * @return {HeadGroup}
      */
     getScaleGroup(code) {
-        if(code === null) {
+        if (code === null) {
             return null;
         }
         code = code.toString();
         return this._scaleGroups.find(group => group.code === code);
     }
-    
-    _parseScaleGroups({scaleGroups}) {
-        if(!scaleGroups || scaleGroups.length === 0) {
+
+    _parseScaleGroups({ scaleGroups }) {
+        if (!scaleGroups || scaleGroups.length === 0) {
             return;
         }
         // create empty groups to populate them in _parseScales method
-        this._scaleGroups = scaleGroups.map(group=> new HeadGroup(group));
+        this._scaleGroups = scaleGroups.map(group => new HeadGroup(group));
     }
 
-    _parseScales({scales}) {
-        if(!scales || scales.length === 0) {
+    _parseScales({ scales }) {
+        if (!scales || scales.length === 0) {
             return;
         }
 
@@ -157,11 +151,10 @@ export default class GridQuestionBase extends QuestionWithAnswers {
             let scale;
             if (scaleModel.groupCode) {
                 let group = this.getScaleGroup(scaleModel.groupCode);
-                scale = new Scale(scaleModel, group); 
+                scale = new Scale(scaleModel, group);
                 group.items.push(scale);
-            }
-            else {
-                scale = new Scale(scaleModel); 
+            } else {
+                scale = new Scale(scaleModel);
             }
             this._scales.push(scale);
         });
@@ -175,15 +168,13 @@ export default class GridQuestionBase extends QuestionWithAnswers {
             return false;
         }
 
-        if(Utils.isEmpty(scaleCode)) {
-            if(this._values[answerCode] === undefined)
-                return false;
+        if (Utils.isEmpty(scaleCode)) {
+            if (this._values[answerCode] === undefined) return false;
             delete this._values[answerCode];
-        }
-        else {
-            scaleCode =  scaleCode.toString();
+        } else {
+            scaleCode = scaleCode.toString();
             const scale = this.getScale(scaleCode);
-            if (!scale){
+            if (!scale) {
                 return false;
             }
             if (this._values[answerCode] === scaleCode) {
@@ -196,7 +187,7 @@ export default class GridQuestionBase extends QuestionWithAnswers {
     }
 
     _validateRule(validationType) {
-        switch(validationType) {
+        switch (validationType) {
             case ValidationTypes.Required:
                 return this._validateRequired();
             case ValidationTypes.OtherRequired:
@@ -206,32 +197,29 @@ export default class GridQuestionBase extends QuestionWithAnswers {
         }
     }
 
-    _validateRequired(){
-        if(!this.required)
-            return new RuleValidationResult(true);
+    _validateRequired() {
+        if (!this.required) return new RuleValidationResult(true);
 
         let invalidAnswers = [];
 
         this.answers.forEach(answer => {
             let isNormalAnswer = !answer.isOther;
             let isEmpty = Utils.isEmpty(this.values[answer.code]);
-            if (isNormalAnswer && isEmpty)
-                invalidAnswers.push(answer.code);
+            if (isNormalAnswer && isEmpty) invalidAnswers.push(answer.code);
         });
 
         let isValid = invalidAnswers.length === 0;
         return new RuleValidationResult(isValid, invalidAnswers);
     }
 
-    _validateOther(){
+    _validateOther() {
         let invalidAnswers = [];
 
         this.answers.forEach(answer => {
             let isOtherAnswer = answer.isOther;
             let isNotEmpty = !Utils.isEmpty(this.values[answer.code]);
             let otherIsEmpty = Utils.isEmpty(this.otherValues[answer.code]);
-            if (isOtherAnswer && isNotEmpty && otherIsEmpty)
-                invalidAnswers.push(answer.code);
+            if (isOtherAnswer && isNotEmpty && otherIsEmpty) invalidAnswers.push(answer.code);
         });
 
         let isValid = invalidAnswers.length === 0;

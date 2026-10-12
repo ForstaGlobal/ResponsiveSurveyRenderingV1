@@ -1,5 +1,5 @@
-import $ from "jquery";
-import Event from "../../event";
+import $ from 'jquery';
+import Event from '../../event';
 
 export default class Draggable {
     constructor(node, options = {}) {
@@ -35,12 +35,12 @@ export default class Draggable {
             width: coordinates.width,
             x: coordinates.x !== undefined ? coordinates.x : coordinates.left,
             y: coordinates.y !== undefined ? coordinates.y : coordinates.top,
-        }
+        };
     }
 
     _preventSelection(value) {
         const cssValue = value === true ? 'none' : '';
-        $('body').css({'pointer-events': cssValue, 'user-select': cssValue});
+        $('body').css({ 'pointer-events': cssValue, 'user-select': cssValue });
     }
 
     _setPosition(x = 0, y = 0) {
@@ -59,8 +59,8 @@ export default class Draggable {
         }
 
         this._container.css({
-            'top': y.toString() + 'px',
-            'left': x.toString() + 'px'
+            top: y.toString() + 'px',
+            left: x.toString() + 'px',
         });
     }
 
@@ -93,14 +93,18 @@ export default class Draggable {
         const shiftY = event.pageY - containerCoordinates.y;
 
         this._preventSelection(true);
-        $(window).on('mousemove', null, {
-            shiftX,
-            shiftY,
-            _setPosition: this._setPosition.bind(this)
-        }, this._handleDragMove);
+        $(window).on(
+            'mousemove',
+            null,
+            {
+                shiftX,
+                shiftY,
+                _setPosition: this._setPosition.bind(this),
+            },
+            this._handleDragMove
+        );
 
         this._dragStartEvent.trigger(event);
-
     }
 
     _handleDragMove(event) {
@@ -120,6 +124,6 @@ export default class Draggable {
         this._dragged = false;
 
         const containerCoordinates = this._getCoordinates(this._container);
-        this._dragEndEvent.trigger({x: containerCoordinates.x, y: containerCoordinates.y});
+        this._dragEndEvent.trigger({ x: containerCoordinates.x, y: containerCoordinates.y });
     }
 }

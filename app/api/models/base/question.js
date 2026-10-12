@@ -1,4 +1,4 @@
-import Event from 'event.js'
+import Event from 'event.js';
 import QuestionBase from './question-base.js';
 import QuestionValidationResult from './../validation/question-validation-result.js';
 import AnswerValidationResult from './../validation/answer-validation-result.js';
@@ -22,12 +22,12 @@ export default class Question extends QuestionBase {
         this._triggeredQuestions = model.triggeredQuestions || [];
 
         this._allowValidateOnChange = true;
-        this._validateOnChange = false;
+        this._validateOnChange = model.errorMessages && model.errorMessages.length > 0;
 
         // Events
-        this._changeEvent = new Event("question:change");
-        this._validationEvent = new Event("question:validation");
-        this._validationCompleteEvent = new Event("question:validation-complete");
+        this._changeEvent = new Event('question:change');
+        this._validationEvent = new Event('question:validation');
+        this._validationCompleteEvent = new Event('question:validation-complete');
     }
 
     /**
@@ -123,7 +123,6 @@ export default class Question extends QuestionBase {
         return validationResult;
     }
 
-
     // TODO: could be good to keep fullness of answers picture
     _validate(validationRuleFilter = null) {
         let validationRules = this._validationRules;
@@ -144,13 +143,15 @@ export default class Question extends QuestionBase {
                 questionValidationResult.errors.push(validationError);
             } else {
                 ruleValidationResult.answers.forEach(answerCode => {
-                    let answerValidationResult = questionValidationResult.answerValidationResults.find(answerResult => answerResult.answerCode === answerCode);
+                    let answerValidationResult = questionValidationResult.answerValidationResults.find(
+                        answerResult => answerResult.answerCode === answerCode
+                    );
                     if (answerValidationResult === undefined) {
                         answerValidationResult = new AnswerValidationResult(answerCode);
                         questionValidationResult.answerValidationResults.push(answerValidationResult);
                     }
 
-                    answerValidationResult.errors.push(validationError)
+                    answerValidationResult.errors.push(validationError);
                 });
             }
         });
@@ -158,8 +159,7 @@ export default class Question extends QuestionBase {
     }
 
     // eslint-disable-next-line no-unused-vars
-    _validateRule(validationType) {
-    }
+    _validateRule(validationType) {}
 
     _diffPrimitives(oldValue, newValue) {
         return oldValue !== newValue;
@@ -176,7 +176,9 @@ export default class Question extends QuestionBase {
         const newKeys = Object.keys(newValue);
         const added = newKeys.filter(newKey => !oldKeys.includes(newKey));
         const removed = oldKeys.filter(oldKey => !newKeys.includes(oldKey));
-        const modified = oldKeys.filter(oldKey => newKeys.includes(oldKey)).filter(key => oldValue[key] !== newValue[key]);
+        const modified = oldKeys
+            .filter(oldKey => newKeys.includes(oldKey))
+            .filter(key => oldValue[key] !== newValue[key]);
         return [...added, ...removed, ...modified];
     }
 
@@ -197,13 +199,13 @@ export default class Question extends QuestionBase {
         const changed = setValue();
         if (changed) {
             const diff = diffValues(oldValue, this[valuePropertyName]);
-            this._onChange({[valuePropertyName]: diff});
+            this._onChange({ [valuePropertyName]: diff });
         }
     }
 
     // Handlers
     _onChange(changes) {
-        this._changeEvent.trigger({model: this, changes});
+        this._changeEvent.trigger({ model: this, changes });
         if (this._allowValidateOnChange && this._validateOnChange) {
             this.validate();
         }

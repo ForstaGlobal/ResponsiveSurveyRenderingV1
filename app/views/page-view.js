@@ -26,7 +26,8 @@ export default class PageView {
         this._processMonitor = new ProcessMonitor();
         this._processMonitor.changeStateEvent.on(this._onProcessMonitorStateChange.bind(this));
 
-        this._testNavigatorView = this._page.testNavigator !== null ? new TestNavigatorView(this._page.testNavigator) : null;
+        this._testNavigatorView =
+            this._page.testNavigator !== null ? new TestNavigatorView(this._page.testNavigator) : null;
         this._hiddenInputs = new HiddenInputs(this._page.serverVariables);
         this._autoNextNavigator = null;
 
@@ -82,13 +83,15 @@ export default class PageView {
     }
 
     _registerCustomQuestions() {
-        this._page.questions.filter(question => question.customQuestion !== null).forEach(question => {
-            this._registerCustomQuestion(question);
-        });
+        this._page.questions
+            .filter(question => question.customQuestion !== null)
+            .forEach(question => {
+                this._registerCustomQuestion(question);
+            });
     }
 
     _registerCustomQuestion(question) {
-        if(question.type === QuestionTypes.DynamicQuestionPlaceholder) {
+        if (question.type === QuestionTypes.DynamicQuestionPlaceholder) {
             return;
         }
 
@@ -149,9 +152,11 @@ export default class PageView {
     }
 
     _detachQuestionView(questionId) {
-        this._questionViews.filter(view => view.id === questionId).forEach(view => {
-            view.detachModelHandlers();
-        });
+        this._questionViews
+            .filter(view => view.id === questionId)
+            .forEach(view => {
+                view.detachModelHandlers();
+            });
 
         this._questionViews = this._questionViews.filter(view => view.id !== questionId);
         this._hiddenViews = this._hiddenViews.filter(view => view.id !== questionId);
@@ -159,7 +164,7 @@ export default class PageView {
 
     _attachModelHandlers() {
         this._page.validationCompleteEvent.on(validationResult => this._onValidationComplete(validationResult));
-        this._page.navigateEvent.on(({next}) => this._navigate(next));
+        this._page.navigateEvent.on(({ next }) => this._navigate(next));
 
         this._page.dynamicQuestionTriggerChangedEvent.on(() => this._processMonitor.addProcess('dynamic_manager'));
         this._page.dynamicQuestionsChangeCompleteEvent.on(this._onDynamicQuestionChangeComplete.bind(this));
@@ -199,7 +204,7 @@ export default class PageView {
             return;
         }
 
-        $(`#${invalidQuestion.questionId}`)[0].scrollIntoView({behavior: 'smooth'});
+        $(`#${invalidQuestion.questionId}`)[0].scrollIntoView({ behavior: 'smooth' });
     }
 
     _navigate(next) {
@@ -216,9 +221,10 @@ export default class PageView {
     }
 
     _preventFormSubmitOnEnter() {
-        let textInputs = 'input[type=text], input[type=number], input[type=date], input[type=password], input[type=email]';
+        let textInputs =
+            'input[type=text], input[type=number], input[type=date], input[type=password], input[type=email]';
 
-        this._pageForm.on('keypress', textInputs, (e) => {
+        this._pageForm.on('keypress', textInputs, e => {
             if (e.keyCode === 13 || e.keyCode === 10) {
                 e.preventDefault();
                 $(e.target).blur();
@@ -245,13 +251,13 @@ export default class PageView {
         }
 
         // have to register custom question before view init.
-        if(model.customQuestion !== null) {
+        if (model.customQuestion !== null) {
             this._registerCustomQuestion(model);
         }
         this._attachQuestionView(model);
 
         if (startupScript) {
-            this._runDynamicQuestionStartupScript(startupScript)
+            this._runDynamicQuestionStartupScript(startupScript);
         }
     }
 
@@ -299,7 +305,7 @@ export default class PageView {
         });
     }
 
-    _onQuestionPendingChange({id, pending}) {
+    _onQuestionPendingChange({ id, pending }) {
         if (pending) {
             this._processMonitor.addProcess(`question_view_${id}`);
         } else {

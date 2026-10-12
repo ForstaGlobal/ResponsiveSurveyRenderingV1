@@ -35,17 +35,16 @@ export default class NumericQuestion extends Question {
      * @type {object}
      * @readonly
      */
-    get numeric(){
+    get numeric() {
         return { ...this._numeric };
     }
 
     /**
      * @inheritDoc
      */
-    get formValues(){
+    get formValues() {
         let form = {};
-        if(!Utils.isEmpty(this.value))
-            form[this.id] = this.value;
+        if (!Utils.isEmpty(this.value)) form[this.id] = this.value;
 
         return form;
     }
@@ -73,11 +72,7 @@ export default class NumericQuestion extends Question {
      * @param {number|string} value - Question value.
      */
     setValue(value) {
-        this._setValueInternal(
-            'value',
-            () => this._setValue(value),
-            this._diffPrimitives,
-        );
+        this._setValueInternal('value', () => this._setValue(value), this._diffPrimitives);
     }
 
     _setValue(value) {
@@ -92,7 +87,7 @@ export default class NumericQuestion extends Question {
     }
 
     _validateRule(validationType) {
-        switch(validationType) {
+        switch (validationType) {
             case ValidationTypes.Required:
                 return this._validateRequired();
             case ValidationTypes.Numeric:
@@ -106,17 +101,15 @@ export default class NumericQuestion extends Question {
         }
     }
 
-    _validateRequired(){
-        if(!this.required)
-            return new RuleValidationResult(true);
+    _validateRequired() {
+        if (!this.required) return new RuleValidationResult(true);
 
         let isValid = !Utils.isEmpty(this.value);
         return new RuleValidationResult(isValid);
     }
 
-    _validateNumeric(){
-        if (Utils.isEmpty(this.value))
-            return new RuleValidationResult(true);
+    _validateNumeric() {
+        if (Utils.isEmpty(this.value)) return new RuleValidationResult(true);
 
         let isValid = !Utils.isNotANumber(this.value);
         return new RuleValidationResult(isValid);
@@ -127,18 +120,17 @@ export default class NumericQuestion extends Question {
         if (Utils.isEmpty(this.value) || Utils.isEmpty(precision) || Utils.isNotANumber(this.value))
             return new RuleValidationResult(true);
 
-        let {totalDigits} = Utils.measureNumber(this.value);
+        let { totalDigits } = Utils.measureNumber(this.value);
         let isValid = totalDigits <= precision;
         return new RuleValidationResult(isValid);
     }
-
 
     _validateScale() {
         let { scale } = this.numeric;
         if (Utils.isEmpty(this.value) || Utils.isEmpty(scale) || Utils.isNotANumber(this.value))
             return new RuleValidationResult(true);
 
-        let {decimalDigits} = Utils.measureNumber(this.value);
+        let { decimalDigits } = Utils.measureNumber(this.value);
         let isValid = decimalDigits <= scale;
         return new RuleValidationResult(isValid);
     }
@@ -146,16 +138,12 @@ export default class NumericQuestion extends Question {
     _validateRange() {
         let { min, max } = this.numeric;
 
-        if (Utils.isEmpty(this.value) || Utils.isNotANumber(this.value))
-            return new RuleValidationResult(true);
+        if (Utils.isEmpty(this.value) || Utils.isNotANumber(this.value)) return new RuleValidationResult(true);
 
-        if (!Utils.isEmpty(min) && this.value < min)
-            return new RuleValidationResult(false);
+        if (!Utils.isEmpty(min) && this.value < min) return new RuleValidationResult(false);
 
-        if (!Utils.isEmpty(max) && this.value > max)
-            return new RuleValidationResult(false);
+        if (!Utils.isEmpty(max) && this.value > max) return new RuleValidationResult(false);
 
         return new RuleValidationResult(true);
     }
 }
-

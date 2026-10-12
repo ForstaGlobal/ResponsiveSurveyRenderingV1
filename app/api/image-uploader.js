@@ -1,7 +1,6 @@
 import Event from 'event.js';
 
 export default class ImageUploader {
-
     constructor(uploadUrl) {
         this._uploadUrl = uploadUrl;
         this._xhr = null;
@@ -68,14 +67,14 @@ export default class ImageUploader {
     }
 
     _onUploadCompleteHandler() {
-        let response = null;
+        let response;
         try {
             try {
                 response = JSON.parse(this._xhr.responseText);
             } finally {
                 this._xhr = null;
             }
-        } catch (exception) {
+        } catch {
             this._uploadErrorEvent.trigger('File uploader error: invalid JSON');
             return;
         }

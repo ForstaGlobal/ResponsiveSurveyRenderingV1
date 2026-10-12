@@ -1,0 +1,248 @@
+@use "../_mixins/grid";
+@use "../_mixins/grid-layout";
+@use "../_mixins/radio_checkbox";
+@use "../variables";
+
+@media (max-width: variables.$desktop-layout-delimiter) {
+  .cf-grid-answer {
+    margin-bottom: 32px;
+
+    &__scale {
+      justify-content: space-between;
+      @include radio_checkbox.radio_list(variables.$control-size);
+    }
+
+    &__scale-image-item{
+      display: flex;
+      margin: 0 0 16px;
+    }
+
+    &__labels {
+      display: none;
+    }
+
+    &__scale-group-labels {
+      display: none;
+    }
+
+    &__scale-group-heading,
+    &__scale-group-end {
+      width: 100%;
+      margin-bottom: 16px;
+      border-top: 1px solid variables.$primary-shade-4;
+      color: variables.$primary-shade-3;
+    }
+
+    &__scale-group-heading {
+      margin-top: 16px;
+    }
+
+    &__scale-group-title {
+      float: left;
+      overflow: hidden;
+      max-width: 80%;
+      margin-top: -12px;
+      padding-right: 8px;
+      background-color: variables.$question-bg-color;
+      font-size: variables.$font-size - 2px;
+    }
+
+    &--fake-for-panel {
+      display: none;
+    }
+  }
+}
+
+@media (min-width: variables.$desktop-layout-delimiter + 1) {
+  .cf-grid-wrapper {
+    overflow: auto;
+    padding-left: 16px + 1px;
+    margin-left: -(16px + 1px);
+    padding-right: 16px + 1px;
+    margin-right: -(16px + 1px);
+    padding-bottom: 16px;
+    display: flex;
+  }
+
+  .cf-grid {
+    flex: 1 1 auto;
+  }
+
+  .cf-grid-answer {
+    @include grid-layout.grid-layout-answer-content-indent(24px, 20px);
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    &__control {
+      flex: 0 1 auto;
+      min-width: auto;
+    }
+
+    &__scale {
+      @include grid.grid_cells();
+
+      &-item {
+        @include radio_checkbox.radio(variables.$control-size);
+        @include grid.grid_cell();
+
+        background-position: center;
+
+        &-text {
+          @include grid.grid_cell_text();
+        }
+
+        &--selected {
+          @include radio_checkbox.radio(variables.$control-size, true);
+        }
+      }
+    }
+
+    &__scale-image-item{
+      display: flex;
+      align-items: center;
+      margin: 0 8px;
+    }
+
+    &__labels {
+      @include grid.grid_cells();
+      align-items: center;
+      padding: 8px 0;
+      color: variables.$primary-shade-2;
+    }
+
+    &__label {
+      @include grid.grid_cell();
+    }
+
+    &__scale-group-heading,
+    &__scale-group-end {
+      display: none;
+    }
+
+    &--fake-for-panel {
+      margin-bottom: 8px;
+
+      .cf-grid-answer__scale {
+        visibility: hidden;
+        height: 0px;
+      }
+    }
+  }
+
+  .cf-grid-scale-group-panel {
+    &__labels {
+      display: flex;
+      align-items: flex-end;
+      margin-bottom: 4px;
+    }
+
+    &__label--empty {
+      visibility: hidden;
+    }
+
+    &__label-text-wrapper {
+      display: flex;
+    }
+
+    &__label-text {
+      width: 1px;
+      flex: 1 1 auto;
+      text-align: center;
+      color: variables.$primary-shade-3;
+    }
+
+    &__scales {
+      display: flex;
+    }
+
+    &__scale {
+      @include grid.grid_cell();
+      display: flex;
+      height: 0px;
+      visibility: hidden;
+    }
+
+    &__scale-text {
+      height: 0px;
+      overflow: hidden;
+    }
+
+    &__borders {
+      display: flex;
+    }
+
+    &__border {
+      @include grid.grid_cell();
+      height: 1px;
+      position: relative;
+
+      &:after {
+        content: '';
+        background: variables.$primary-shade-3;;
+        position: absolute;
+        right: 0;
+        left: 0;
+        top: 0;
+        bottom: 0;
+      }
+
+      &--left-edge {
+        &:first-child {
+          &:after {
+            left: 0;
+          }
+        }
+
+        &:after {
+          left: 4px;
+        }
+      }
+
+      &--right-edge {
+        &:last-child {
+          &:after {
+            right: 0;
+          }
+        }
+
+        &:after {
+          right: 4px;
+        }
+      }
+    }
+
+    &__spacer {
+      @include grid.grid_cell();
+      visibility: hidden;
+    }
+  }
+}
+
+@media (max-width: variables.$desktop-layout-delimiter) {
+  .cf-grid-answer--rtl {
+    .cf-grid-answer__scale-group-title {
+      float: right;
+      padding-right: 0;
+      padding-left: 8px;
+    }
+    .cf-grid-answer__scale {
+      @include radio_checkbox.radio_list(variables.$control-size, true);
+    }
+  }
+}
+
+@media (min-width: variables.$desktop-layout-delimiter + 1) {
+  .cf-grid-scale-group-panel--rtl {
+    .cf-grid-scale-group-panel__border--left-edge:after {
+      left: 0;
+      right: 4px;
+    }
+
+    .cf-grid-scale-group-panel__border--right-edge:after {
+      right: 0;
+      left: 4px;
+    }
+  }
+}

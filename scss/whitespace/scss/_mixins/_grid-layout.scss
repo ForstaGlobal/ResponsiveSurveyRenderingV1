@@ -1,0 +1,11 @@
+@use "../variables";
+
+@mixin grid-layout-answer-content-indent($item-size, $text-size, $other-size: (variables.$control-size)) {
+  &__text {
+    margin-top: ($item-size - $text-size) * 0.5;
+  }
+
+  &__other {
+    margin-top: ($item-size - $other-size) * 0.5;
+  }
+}

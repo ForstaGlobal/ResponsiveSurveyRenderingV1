@@ -13,7 +13,6 @@ import QuestionTypes from 'api/question-types.js';
  * @desc Question view factory
  */
 export default class Grid3DDesktopInnerQuestionViewFactory {
-
     constructor(question, settings) {
         this._question = question;
         this._settings = settings;
@@ -28,12 +27,20 @@ export default class Grid3DDesktopInnerQuestionViewFactory {
         switch (innerQuestion.type) {
             case QuestionTypes.Single:
                 if (innerQuestion.answerButtons) {
-                    return new Grid3DDesktopInnerSingleAnswerButtonsQuestionView(this._question, innerQuestion, this._settings);
+                    return new Grid3DDesktopInnerSingleAnswerButtonsQuestionView(
+                        this._question,
+                        innerQuestion,
+                        this._settings
+                    );
                 }
                 return new Grid3DDesktopInnerSingleQuestionView(this._question, innerQuestion, this._settings);
             case QuestionTypes.Multi:
                 if (innerQuestion.answerButtons) {
-                    return new Grid3DDesktopInnerMultiAnswerButtonsQuestionView(this._question, innerQuestion, this._settings);
+                    return new Grid3DDesktopInnerMultiAnswerButtonsQuestionView(
+                        this._question,
+                        innerQuestion,
+                        this._settings
+                    );
                 }
                 return new Grid3DDesktopInnerMultiQuestionView(this._question, innerQuestion, this._settings);
             case QuestionTypes.OpenTextList:
@@ -42,12 +49,20 @@ export default class Grid3DDesktopInnerQuestionViewFactory {
                 return new Grid3DDesktopInnerNumericListQuestionView(this._question, innerQuestion, this._settings);
             case QuestionTypes.Grid:
                 if (innerQuestion.dropdown) {
-                    return new Grid3DDesktopInnerDropdownGridQuestionView(this._question, innerQuestion, this._settings);
+                    return new Grid3DDesktopInnerDropdownGridQuestionView(
+                        this._question,
+                        innerQuestion,
+                        this._settings
+                    );
                 }
                 return new Grid3DDesktopInnerGridQuestionView(this._question, innerQuestion, this._settings);
             case QuestionTypes.Ranking:
                 if (innerQuestion.rankByNumber) {
-                    return new Grid3DDesktopInnerRankByNumberQuestionView(this._question, innerQuestion, this._settings);
+                    return new Grid3DDesktopInnerRankByNumberQuestionView(
+                        this._question,
+                        innerQuestion,
+                        this._settings
+                    );
                 }
                 return;
             default:

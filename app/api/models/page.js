@@ -1,8 +1,8 @@
-import QuestionFactory from 'api/question-factory.js'
+import QuestionFactory from 'api/question-factory.js';
 import PageValidationResult from 'api/models/validation/page-validation-result.js';
 import SurveyInfo from './survey-info.js';
-import Event from 'event.js'
-import TestNavigator from './test-navigator'
+import Event from 'event.js';
+import TestNavigator from './test-navigator';
 import QuestionTypes from 'api/question-types.js';
 import ServerVariables from './server-variables';
 
@@ -17,17 +17,24 @@ export default class Page {
      */
     constructor(rawQuestionModels, rawSurveyInfo) {
         this._surveyInfo = new SurveyInfo(rawSurveyInfo);
-        this._questionFactory = new QuestionFactory(rawSurveyInfo.language, rawSurveyInfo.endpoints, rawSurveyInfo.isAccessible);
+        this._questionFactory = new QuestionFactory(
+            rawSurveyInfo.language,
+            rawSurveyInfo.endpoints,
+            rawSurveyInfo.isAccessible
+        );
         this._questions = this._createQuestions(rawQuestionModels);
 
-        this._validationEvent = new Event("page:validation");
-        this._validationCompleteEvent = new Event("page:validation-complete");
+        this._validationEvent = new Event('page:validation');
+        this._validationCompleteEvent = new Event('page:validation-complete');
         this._beforeNavigateEvent = new Event('page:before-navigate');
         this._navigateEvent = new Event('page:navigate');
         this._dynamicQuestionTriggerChangedEvent = new Event('page:dynamic question trigger changed');
         this._dynamicQuestionsChangeCompleteEvent = new Event('page:dynamic question change complete');
 
-        this._testNavigator = (rawSurveyInfo.testNavigator !== null && rawSurveyInfo.testNavigator !== undefined) ? new TestNavigator(rawSurveyInfo.testNavigator) : null;
+        this._testNavigator =
+            rawSurveyInfo.testNavigator !== null && rawSurveyInfo.testNavigator !== undefined
+                ? new TestNavigator(rawSurveyInfo.testNavigator)
+                : null;
         this._serverVariables = new ServerVariables();
 
         this._attach();
@@ -47,7 +54,7 @@ export default class Page {
      * @type {ServerVariables}
      * @readonly
      * */
-    get serverVariables(){
+    get serverVariables() {
         return this._serverVariables;
     }
 
@@ -146,8 +153,9 @@ export default class Page {
         let form = [];
         this._questions.forEach(question =>
             Object.entries(question.formValues).forEach(([name, value]) => {
-                form.push({name: name, value: value})
-            }));
+                form.push({ name: name, value: value });
+            })
+        );
 
         return form;
     }
@@ -158,7 +166,7 @@ export default class Page {
      * @return {Question} - Corresponding question object.
      */
     getQuestion(id) {
-        return this.questions.find(question => question.id === id)
+        return this.questions.find(question => question.id === id);
     }
 
     /**
@@ -189,7 +197,9 @@ export default class Page {
     validate(raiseValidationCompleteEvent = true, validationRuleFilter = null) {
         let validationResult = new PageValidationResult();
         this._questions.forEach(question => {
-            validationResult.questionValidationResults.push(question.validate(raiseValidationCompleteEvent, validationRuleFilter));
+            validationResult.questionValidationResults.push(
+                question.validate(raiseValidationCompleteEvent, validationRuleFilter)
+            );
         });
 
         this._onValidation(validationResult);
@@ -205,10 +215,9 @@ export default class Page {
      * @param {boolean} [validate=true] - Needs to validate.
      */
     next(validate = true) {
-        if (!this._surveyInfo.allowNextNavigation)
-            return;
+        if (!this._surveyInfo.allowNextNavigation) return;
 
-        this._beforeNavigateEvent.trigger({next: true});
+        this._beforeNavigateEvent.trigger({ next: true });
 
         if (validate) {
             const validationResult = this.validate();
@@ -217,7 +226,7 @@ export default class Page {
             }
         }
 
-        this._navigateEvent.trigger({next: true});
+        this._navigateEvent.trigger({ next: true });
     }
 
     /**
@@ -225,35 +234,34 @@ export default class Page {
      * * @param {boolean} [validate=true] - Needs to validate.
      */
     back(validate = true) {
-        if (!this._surveyInfo.allowBackNavigation)
-            return;
+        if (!this._surveyInfo.allowBackNavigation) return;
 
-        this._beforeNavigateEvent.trigger({next: false});
+        this._beforeNavigateEvent.trigger({ next: false });
 
         if (validate) {
-            const validationRuleFilter = (rule) => rule.validateOnBackwardNavigation;
+            const validationRuleFilter = rule => rule.validateOnBackwardNavigation;
             const validationResult = this.validate(true, validationRuleFilter);
             if (validationResult.isValid === false) {
                 return;
             }
         }
 
-        this._navigateEvent.trigger({next: false});
+        this._navigateEvent.trigger({ next: false });
     }
 
     /**
      * Change language on the next page
      * * @param {int} [languageCode=''] - language code.
      */
-    changeLanguageOnTheNextPage(languageCode = ''){
+    changeLanguageOnTheNextPage(languageCode = '') {
         this._serverVariables.edit('l', languageCode);
     }
 
     /**
      * Forward to the last interview question for cati and capi.
      */
-    fastForward(){
-        if(this._surveyInfo.surveyChannel !== 'cati' && this._surveyInfo.surveyChannel !== 'capi'){
+    fastForward() {
+        if (this._surveyInfo.surveyChannel !== 'cati' && this._surveyInfo.surveyChannel !== 'capi') {
             // eslint-disable-next-line no-console
             console.warn('Confirmit: this method forbidden for current survey channel');
             return;
@@ -288,7 +296,6 @@ export default class Page {
             if (model) {
                 questions.push(model);
             }
-
         });
         return questions;
     }

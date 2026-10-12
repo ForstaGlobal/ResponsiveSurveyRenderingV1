@@ -1,5 +1,5 @@
 import QuestionWithAnswersView from './base/question-with-answers-view.js';
-import ValidationTypes from "../../api/models/validation/validation-types";
+import ValidationTypes from '../../api/models/validation/validation-types';
 
 export default class NumericListQuestionView extends QuestionWithAnswersView {
     constructor(question) {
@@ -8,12 +8,10 @@ export default class NumericListQuestionView extends QuestionWithAnswersView {
         this._nanCode = 'NOT_A_NUMBER';
 
         this._attachControlHandlers();
-
     }
 
-    _updateAnswerNodes({values = []}) {
-        if (values.length === 0)
-            return;
+    _updateAnswerNodes({ values = [] }) {
+        if (values.length === 0) return;
 
         this._question.answers.forEach(answer => {
             const answerInput = this._getAnswerInputNode(answer.code);
@@ -56,18 +54,14 @@ export default class NumericListQuestionView extends QuestionWithAnswersView {
         if (answerErrors.length > 0) {
             const errorBlockId = this._getAnswerErrorBlockId(validationResult.answerCode);
             const answerNode = this._getAnswerInputNode(validationResult.answerCode);
-            answerNode
-                .attr('aria-errormessage', errorBlockId)
-                .attr('aria-invalid', 'true');
+            answerNode.attr('aria-errormessage', errorBlockId).attr('aria-invalid', 'true');
             this._answerErrorBlockManager.showErrors(errorBlockId, answerNode, answerErrors);
         }
 
         if (otherErrors.length > 0) {
             const otherNode = this._getAnswerOtherNode(validationResult.answerCode);
             const otherErrorBlockId = this._getAnswerOtherErrorBlockId(validationResult.answerCode);
-            otherNode
-                .attr('aria-errormessage', otherErrorBlockId)
-                .attr('aria-invalid', 'true');
+            otherNode.attr('aria-errormessage', otherErrorBlockId).attr('aria-invalid', 'true');
             this._answerErrorBlockManager.showErrors(otherErrorBlockId, otherNode, otherErrors);
         }
     }
@@ -75,12 +69,10 @@ export default class NumericListQuestionView extends QuestionWithAnswersView {
     _hideErrors() {
         super._hideErrors();
 
-        this._container.find('.cf-text-box')
-            .removeAttr('aria-errormessage')
-            .removeAttr('aria-invalid');
+        this._container.find('.cf-text-box').removeAttr('aria-errormessage').removeAttr('aria-invalid');
     }
 
-    _onModelValueChange({changes}) {
+    _onModelValueChange({ changes }) {
         this._updateAnswerNodes(changes);
         this._updateAnswerOtherNodes(changes);
 

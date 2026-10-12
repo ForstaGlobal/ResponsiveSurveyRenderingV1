@@ -1,6 +1,6 @@
 import QuestionView from './question-view.js';
 import $ from 'jquery';
-import ErrorBlockManager from "../../error/error-block-manager";
+import ErrorBlockManager from '../../error/error-block-manager';
 
 export default class QuestionWithAnswersView extends QuestionView {
     /**
@@ -18,11 +18,11 @@ export default class QuestionWithAnswersView extends QuestionView {
     }
 
     _getAnswerErrorBlockId(answerCode) {
-        return `${this._question.id}_${answerCode}_error`
+        return `${this._question.id}_${answerCode}_error`;
     }
 
     _getAnswerOtherErrorBlockId(answerCode) {
-        return `${this._question.id}_${answerCode}_other_error`
+        return `${this._question.id}_${answerCode}_other_error`;
     }
 
     _getAnswerNodeId(answerCode) {
@@ -79,7 +79,9 @@ export default class QuestionWithAnswersView extends QuestionView {
      * @protected
      */
     _showAnswerErrors(validationResult) {
-        validationResult.answerValidationResults.filter(result => !result.isValid).forEach(result => this._showAnswerError(result));
+        validationResult.answerValidationResults
+            .filter(result => !result.isValid)
+            .forEach(result => this._showAnswerError(result));
     }
 
     /**
@@ -101,7 +103,7 @@ export default class QuestionWithAnswersView extends QuestionView {
         this._answerErrorBlockManager.removeAllErrors();
     }
 
-    _updateAnswerOtherNodes({otherValues = []}) {
+    _updateAnswerOtherNodes({ otherValues = [] }) {
         otherValues.forEach(answerCode => {
             const otherValue = this._question.otherValues[answerCode];
             this._setOtherNodeValue(answerCode, otherValue);

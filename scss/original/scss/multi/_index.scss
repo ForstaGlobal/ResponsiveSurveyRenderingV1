@@ -1,0 +1,49 @@
+@use "../_mixins/radio_checkbox";
+@use "../variables";
+
+.cf-multi-answer {
+  @include radio_checkbox.checkbox(variables.$control-size);
+
+  &__other-input {
+    width: 15em;
+  }
+
+  &--selected {
+    @include radio_checkbox.checkbox(variables.$control-size, true);
+  }
+
+  &--exclusive {
+    @include radio_checkbox.radio(variables.$control-size);
+
+    &.cf-multi-answer--selected {
+      @include radio_checkbox.radio(variables.$control-size, true);
+    }
+  }
+}
+
+.cf-multi-answer--rtl {
+  @include radio_checkbox.checkbox(variables.$control-size, false, true);
+  &.cf-multi-answer {
+    &--selected {
+      @include radio_checkbox.checkbox(variables.$control-size, true, true);
+    }
+
+    &--exclusive {
+      @include radio_checkbox.radio(variables.$control-size, false, true);
+
+      &.cf-multi-answer--selected {
+        @include radio_checkbox.radio(variables.$control-size, true, true);
+      }
+    }
+  }
+}
+
+.cf-multi-answer-other {
+  margin-top: 0.25em;
+  margin-left: variables.$control-size + 0.8em;
+
+  &--rtl {
+    margin-left: 0;
+    margin-right: variables.$control-size + 0.8em;
+  }
+}

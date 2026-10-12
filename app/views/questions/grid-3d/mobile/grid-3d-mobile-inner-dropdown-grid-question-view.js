@@ -1,5 +1,5 @@
-import Grid3DMobileInnerQuestionView from "./grid-3d-mobile-inner-question-view";
-import ValidationTypes from "../../../../api/models/validation/validation-types";
+import Grid3DMobileInnerQuestionView from './grid-3d-mobile-inner-question-view';
+import ValidationTypes from '../../../../api/models/validation/validation-types';
 
 export default class Grid3DMobileInnerDropdownGridQuestionView extends Grid3DMobileInnerQuestionView {
     constructor(question, innerQuestion, settings = null) {
@@ -14,7 +14,7 @@ export default class Grid3DMobileInnerDropdownGridQuestionView extends Grid3DMob
                 this._onAnswerChangedHandler(answer, event.target.value);
             });
 
-            if(answer.isOther) {
+            if (answer.isOther) {
                 this._getAnswerOtherNode(answer.code).on('input', event => {
                     this._onAnswerOtherNodeValueChange(answer, event.target.value);
                 });
@@ -22,9 +22,8 @@ export default class Grid3DMobileInnerDropdownGridQuestionView extends Grid3DMob
         });
     }
 
-    _updateAnswerNodes({values = []}){
-        if (values.length === 0)
-            return;
+    _updateAnswerNodes({ values = [] }) {
+        if (values.length === 0) return;
 
         values.forEach(answerCode => {
             const answerInput = this._getAnswerInputNode(answerCode);
@@ -57,7 +56,7 @@ export default class Grid3DMobileInnerDropdownGridQuestionView extends Grid3DMob
         }
     }
 
-    _onModelValueChange({changes}) {
+    _onModelValueChange({ changes }) {
         this._updateAnswerNodes(changes);
     }
 

@@ -1,4 +1,4 @@
-import Grid3DMobileInnerQuestionView from "./grid-3d-mobile-inner-question-view";
+import Grid3DMobileInnerQuestionView from './grid-3d-mobile-inner-question-view';
 
 export default class Grid3DMobileInnerGridQuestionView extends Grid3DMobileInnerQuestionView {
     constructor(question, innerQuestion, settings = null) {
@@ -7,8 +7,8 @@ export default class Grid3DMobileInnerGridQuestionView extends Grid3DMobileInner
         this._attachHandlersToDOM();
     }
 
-    get _selectedScaleCssClass(){
-        return  this._question.answerButtons ? 'cf-answer-button--selected' :  'cf-single-answer--selected';
+    get _selectedScaleCssClass() {
+        return this._question.answerButtons ? 'cf-answer-button--selected' : 'cf-single-answer--selected';
     }
 
     _attachHandlersToDOM() {
@@ -19,7 +19,7 @@ export default class Grid3DMobileInnerGridQuestionView extends Grid3DMobileInner
         this._question.answers.forEach(answer => {
             this._question.scales.forEach(scale => itemClickHandler(answer, scale));
 
-            if(answer.isOther) {
+            if (answer.isOther) {
                 this._getAnswerOtherNode(answer.code).on('input', event => {
                     this._onAnswerOtherNodeValueChange(answer, event.target.value);
                 });
@@ -27,9 +27,8 @@ export default class Grid3DMobileInnerGridQuestionView extends Grid3DMobileInner
         });
     }
 
-    _updateAnswerScaleNodes({values = []}) {
-        if (values.length === 0)
-            return;
+    _updateAnswerScaleNodes({ values = [] }) {
+        if (values.length === 0) return;
 
         this._question.answers.forEach(answer => {
             this._question.scales.forEach(scale => {
@@ -42,7 +41,7 @@ export default class Grid3DMobileInnerGridQuestionView extends Grid3DMobileInner
         });
     }
 
-    _onModelValueChange({changes}) {
+    _onModelValueChange({ changes }) {
         this._updateAnswerScaleNodes(changes);
     }
 

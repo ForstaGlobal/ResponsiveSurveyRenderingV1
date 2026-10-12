@@ -23,10 +23,10 @@ export default class AudioUploadQuestion extends Question {
     /**
      * @inheritDoc
      */
-    get formValues(){
+    get formValues() {
         const form = {};
 
-        if(!Utils.isEmpty(this._audioId)){
+        if (!Utils.isEmpty(this._audioId)) {
             form[this.id] = this._audioId;
         }
 
@@ -67,11 +67,7 @@ export default class AudioUploadQuestion extends Question {
      * @param {number} duration - Audio file duration in seconds.
      */
     setValue(audioId, previewUrl, duration) {
-        this._setValueInternal(
-            'value',
-            () => this._setValue(audioId, previewUrl, duration),
-            this._diffPrimitives,
-        );
+        this._setValueInternal('value', () => this._setValue(audioId, previewUrl, duration), this._diffPrimitives);
     }
 
     _setValue(audioId, previewUrl, duration) {

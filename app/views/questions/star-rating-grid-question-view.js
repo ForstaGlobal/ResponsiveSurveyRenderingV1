@@ -1,5 +1,5 @@
 import FloatingLabels from '../controls/floating-labels.js';
-import GridQuestionView from "./grid-question-view";
+import GridQuestionView from './grid-question-view';
 
 export default class StarRatingGridQuestionView extends GridQuestionView {
     /**

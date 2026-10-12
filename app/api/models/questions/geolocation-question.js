@@ -11,7 +11,7 @@ export default class GeolocationQuestion extends Question {
      * Create instance.
      * @param {object} model - The instance of the model.
      */
-    constructor(model){
+    constructor(model) {
         super(model);
 
         this._value = model.value || null;
@@ -33,19 +33,15 @@ export default class GeolocationQuestion extends Question {
      * @example model.setValue(37.3229978, -122.0321823);
      */
     setValue(lat, long) {
-        this._setValueInternal(
-            'value',
-            () => this._setValue(lat, long),
-            this._diffPrimitives,
-        );
+        this._setValueInternal('value', () => this._setValue(lat, long), this._diffPrimitives);
     }
 
     /**
      * @inheritDoc
      */
-    get formValues(){
+    get formValues() {
         let form = {};
-        if(!Utils.isEmpty(this.value)){
+        if (!Utils.isEmpty(this.value)) {
             form[this.id] = this.value;
         }
 
@@ -53,12 +49,12 @@ export default class GeolocationQuestion extends Question {
     }
 
     _setValue(lat, long) {
-        this._value = lat + " " + long;
+        this._value = lat + ' ' + long;
         return true;
     }
 
     _validateRule(validationType) {
-        switch(validationType) {
+        switch (validationType) {
             case ValidationTypes.Geolocation:
                 return this._validateCoordinates();
         }
@@ -73,5 +69,4 @@ export default class GeolocationQuestion extends Question {
         let isValid = lat >= -90 && lat <= 90 && long >= -180 && long <= 180;
         return new RuleValidationResult(isValid);
     }
-
 }

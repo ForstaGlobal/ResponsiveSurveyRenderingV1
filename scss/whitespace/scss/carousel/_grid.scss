@@ -1,0 +1,7 @@
+@use "../variables";
+
+@media (max-width: variables.$desktop-layout-delimiter) {
+  .cf-carousel-grid-answer .cf-list--inline-two-columns::after { //TODO: BEM violation; fix for correct alignment two columns in ie 11
+    padding: 8px 8px;
+  }
+}

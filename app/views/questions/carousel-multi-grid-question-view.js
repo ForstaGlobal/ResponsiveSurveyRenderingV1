@@ -1,10 +1,10 @@
-import QuestionView from "./base/question-view";
+import QuestionView from './base/question-view';
 import Carousel from '../controls/carousel.js';
 import CarouselItem from '../controls/carousel-item.js';
-import ErrorBlockManager from "../error/error-block-manager";
-import Utils from "../../utils";
-import KEYS from "../helpers/keyboard-keys";
-import $ from "jquery";
+import ErrorBlockManager from '../error/error-block-manager';
+import Utils from '../../utils';
+import KEYS from '../helpers/keyboard-keys';
+import $ from 'jquery';
 
 export default class CarouselMultiGridQuestionView extends QuestionView {
     /**
@@ -16,9 +16,11 @@ export default class CarouselMultiGridQuestionView extends QuestionView {
 
         this._answerErrorBlockManager = new ErrorBlockManager();
 
-        this._selectedAnswerCssClass = "cf-grid-answer__scale-item--selected";
+        this._selectedAnswerCssClass = 'cf-grid-answer__scale-item--selected';
 
-        this._carouselItems = this._question.innerQuestions.map(question => new CarouselItem(question.id, question.values.length > 0));
+        this._carouselItems = this._question.innerQuestions.map(
+            question => new CarouselItem(question.id, question.values.length > 0)
+        );
         this._carousel = new Carousel(this._container.find('.cf-carousel'), this._carouselItems);
         this._carousel.moveEvent.on(() => this._onCarouselMove());
         this._moveToFirstError = true;
@@ -62,7 +64,9 @@ export default class CarouselMultiGridQuestionView extends QuestionView {
     }
 
     _getOtherNodes(answerCode) {
-        return this._container.find(this._question.innerQuestions.map(question => `#${question.id}_${answerCode}_other`).join(','));
+        return this._container.find(
+            this._question.innerQuestions.map(question => `#${question.id}_${answerCode}_other`).join(',')
+        );
     }
 
     _getCarouselItem(questionId) {
@@ -70,22 +74,26 @@ export default class CarouselMultiGridQuestionView extends QuestionView {
     }
 
     _attachHandlersToDOM() {
-        this._question.innerQuestions.forEach((question) => {
-            question.answers.forEach((answer) => {
-                this._getAnswerNode(question.id, answer.code)
-                    .on('click', this._onAnswerNodeClick.bind(this, question, answer))
+        this._question.innerQuestions.forEach(question => {
+            question.answers.forEach(answer => {
+                this._getAnswerNode(question.id, answer.code).on(
+                    'click',
+                    this._onAnswerNodeClick.bind(this, question, answer)
+                );
             });
         });
 
-        this._question.answers.filter(answer => answer.isOther).forEach(answer => {
-            this._question.innerQuestions.forEach(question => {
-                this._getInnerQuestionAnswerOtherNode(question.id, answer.code)
-                    .on('click', e => e.stopPropagation())
-                    .on('input', event => {
-                        this._onQuestionAnswerOtherNodeValueChange(question, answer, event.target.value)
-                    });
+        this._question.answers
+            .filter(answer => answer.isOther)
+            .forEach(answer => {
+                this._question.innerQuestions.forEach(question => {
+                    this._getInnerQuestionAnswerOtherNode(question.id, answer.code)
+                        .on('click', e => e.stopPropagation())
+                        .on('input', event => {
+                            this._onQuestionAnswerOtherNodeValueChange(question, answer, event.target.value);
+                        });
+                });
             });
-        });
 
         if (!this._settings.disableKeyboardSupport) {
             this._container.on('keydown', this._onQuestionContainerKeyDown.bind(this));
@@ -98,17 +106,21 @@ export default class CarouselMultiGridQuestionView extends QuestionView {
                 });
             });
 
-            this._question.answers.filter(answer => answer.isOther).forEach(answer => {
-                this._question.innerQuestions.forEach(question => {
-                    this._getInnerQuestionAnswerOtherNode(question.id, answer.code)
-                        .on('keydown', this._onAnswerOtherNodeKeyDown.bind(this))
+            this._question.answers
+                .filter(answer => answer.isOther)
+                .forEach(answer => {
+                    this._question.innerQuestions.forEach(question => {
+                        this._getInnerQuestionAnswerOtherNode(question.id, answer.code).on(
+                            'keydown',
+                            this._onAnswerOtherNodeKeyDown.bind(this)
+                        );
+                    });
                 });
-            });
         }
     }
 
-    _updateQuestionAnswerNodes({questions = {}}) {
-        Object.entries(questions).forEach(([questionId, {values = []}]) => {
+    _updateQuestionAnswerNodes({ questions = {} }) {
+        Object.entries(questions).forEach(([questionId, { values = [] }]) => {
             if (values.length === 0) {
                 return;
             }
@@ -117,13 +129,13 @@ export default class CarouselMultiGridQuestionView extends QuestionView {
                 const isSelected = this._question.getInnerQuestion(questionId).values.includes(answerCode);
                 this._getAnswerNode(questionId, answerCode)
                     .toggleClass('cf-answer-button--selected', isSelected)
-                    .attr('aria-checked', () => isSelected ? 'true' : 'false');
+                    .attr('aria-checked', () => (isSelected ? 'true' : 'false'));
             });
         });
     }
 
-    _updateAnswerOtherNodes({questions = {}, otherValues = []}) {
-        Object.entries(questions).forEach(([questionId, {values = []}]) => {
+    _updateAnswerOtherNodes({ questions = {}, otherValues = [] }) {
+        Object.entries(questions).forEach(([questionId, { values = [] }]) => {
             if (values.length === 0) {
                 return;
             }
@@ -145,9 +157,13 @@ export default class CarouselMultiGridQuestionView extends QuestionView {
     _updateCarouselPaging() {
         this._question.innerQuestions.forEach(question => {
             const carouselItem = this._getCarouselItem(question.id);
-            const selectedAnswersWithOther = this._question.answers.filter(answer => answer.isOther && question.values.includes(answer.code));
+            const selectedAnswersWithOther = this._question.answers.filter(
+                answer => answer.isOther && question.values.includes(answer.code)
+            );
             if (selectedAnswersWithOther.length !== 0) {
-                carouselItem.isComplete = selectedAnswersWithOther.every(answer => this._question.otherValues[answer.code] !== undefined);
+                carouselItem.isComplete = selectedAnswersWithOther.every(
+                    answer => this._question.otherValues[answer.code] !== undefined
+                );
             } else {
                 carouselItem.isComplete = question.values.length !== 0;
             }
@@ -164,16 +180,12 @@ export default class CarouselMultiGridQuestionView extends QuestionView {
     _hideErrors() {
         super._hideErrors();
 
-        this._carouselItems.forEach(item => item.isError = false);
+        this._carouselItems.forEach(item => (item.isError = false));
         this._answerErrorBlockManager.removeAllErrors();
 
-        this._container.find('.cf-list')
-            .removeAttr("aria-invalid")
-            .removeAttr("aria-errormessage");
+        this._container.find('.cf-list').removeAttr('aria-invalid').removeAttr('aria-errormessage');
 
-        this._container.find('.cf-text-box')
-            .removeAttr('aria-errormessage')
-            .removeAttr('aria-invalid');
+        this._container.find('.cf-text-box').removeAttr('aria-errormessage').removeAttr('aria-invalid');
     }
 
     _showErrors(validationResult) {
@@ -237,16 +249,19 @@ export default class CarouselMultiGridQuestionView extends QuestionView {
     }
 
     _showInnerQuestionErrors(validationResult) {
-        validationResult.questionValidationResults.filter(result => !result.isValid).forEach(questionValidationResult => {
-            const target = this._getInnerQuestionTextNode(questionValidationResult.questionId);
-            const errorBlockId = this._getInnerQuestionErrorBlockId(questionValidationResult.questionId);
-            const errors = questionValidationResult.errors.map(error => error.message);
-            this._answerErrorBlockManager.showErrors(errorBlockId, target, errors);
+        validationResult.questionValidationResults
+            .filter(result => !result.isValid)
+            .forEach(questionValidationResult => {
+                const target = this._getInnerQuestionTextNode(questionValidationResult.questionId);
+                const errorBlockId = this._getInnerQuestionErrorBlockId(questionValidationResult.questionId);
+                const errors = questionValidationResult.errors.map(error => error.message);
+                this._answerErrorBlockManager.showErrors(errorBlockId, target, errors);
 
-            this._getInnerQuestionNode(questionValidationResult.questionId).find('.cf-list')
-                .attr("aria-invalid", "true")
-                .attr("aria-errormessage", errorBlockId);
-        });
+                this._getInnerQuestionNode(questionValidationResult.questionId)
+                    .find('.cf-list')
+                    .attr('aria-invalid', 'true')
+                    .attr('aria-errormessage', errorBlockId);
+            });
     }
 
     _showAnswerOtherError(validationResult) {
@@ -278,7 +293,7 @@ export default class CarouselMultiGridQuestionView extends QuestionView {
         }
     }
 
-    _onModelValueChange({changes}) {
+    _onModelValueChange({ changes }) {
         this._updateQuestionAnswerNodes(changes);
         this._updateAnswerOtherNodes(changes);
         this._updateCarouselPaging();
@@ -321,9 +336,11 @@ export default class CarouselMultiGridQuestionView extends QuestionView {
 
         const isLastQuestion = this._currentQuestionIndex === this._question.innerQuestions.length - 1;
         const isLastAnswer = this._currentAnswerIndex === this._question.answers.length - 1;
-        const answerNodeIsFocused = activeElement.classList.contains("cf-answer-button");
-        const otherNodeIsFocused = activeElement.classList.contains("cf-answer-button__other-input");
-        const lastAnswerIsSelected = this._question.getInnerQuestion(this._currentQuestion.id).values.includes(this._currentAnswer.code);
+        const answerNodeIsFocused = activeElement.classList.contains('cf-answer-button');
+        const otherNodeIsFocused = activeElement.classList.contains('cf-answer-button__other-input');
+        const lastAnswerIsSelected = this._question
+            .getInnerQuestion(this._currentQuestion.id)
+            .values.includes(this._currentAnswer.code);
 
         if (isLastQuestion || !isLastAnswer) {
             return;

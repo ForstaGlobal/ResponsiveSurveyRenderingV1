@@ -1,5 +1,5 @@
-import Utils from "../../../../utils";
-import Grid3DMobileInnerQuestionView from "./grid-3d-mobile-inner-question-view";
+import Utils from '../../../../utils';
+import Grid3DMobileInnerQuestionView from './grid-3d-mobile-inner-question-view';
 
 export default class Grid3DMobileInnerSingleQuestionView extends Grid3DMobileInnerQuestionView {
     constructor(parentQuestion, question, settings = null) {
@@ -21,8 +21,7 @@ export default class Grid3DMobileInnerSingleQuestionView extends Grid3DMobileInn
         });
     }
 
-
-    _onModelValueChange({changes}) {
+    _onModelValueChange({ changes }) {
         if (changes.value === undefined) {
             return;
         }
@@ -33,8 +32,6 @@ export default class Grid3DMobileInnerSingleQuestionView extends Grid3DMobileInn
 
         this._getAnswerNode(this._question.value).addClass(this._selectedAnswerCssClass);
     }
-
-
 
     _onAnswerNodeClick(answer) {
         this._question.setValue(answer.code);
@@ -49,7 +46,8 @@ export default class Grid3DMobileInnerSingleQuestionView extends Grid3DMobileInn
     }
 
     _onAnswerOtherNodeValueChange(answer, otherValue) {
-        if (!Utils.isEmpty(otherValue)) { // select answer
+        if (!Utils.isEmpty(otherValue)) {
+            // select answer
             this._question.setValue(answer.code);
         }
 

@@ -1,5 +1,5 @@
-import QuestionViewBase from "../../base/question-view-base";
-import $ from "jquery";
+import QuestionViewBase from '../../base/question-view-base';
+import $ from 'jquery';
 
 export default class Grid3DDesktopInnerQuestionView extends QuestionViewBase {
     constructor(parentQuestion, question, settings = null) {
@@ -11,7 +11,7 @@ export default class Grid3DDesktopInnerQuestionView extends QuestionViewBase {
     }
 
     _getAnswerErrorBlockId(answerCode) {
-        return `desktop_${this._question.id}_${answerCode}_error`
+        return `desktop_${this._question.id}_${answerCode}_error`;
     }
 
     _getAnswerNode(answerCode) {

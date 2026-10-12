@@ -31,10 +31,10 @@ export default class CodeCaptureQuestion extends Question {
     /**
      * @inheritDoc
      */
-    get formValues(){
+    get formValues() {
         const form = {};
 
-        if (!Utils.isEmpty(this.value)){
+        if (!Utils.isEmpty(this.value)) {
             form[this.id] = this.value;
         }
 
@@ -54,12 +54,7 @@ export default class CodeCaptureQuestion extends Question {
      * @param {string} answerValue - Answer value.
      */
     setValue(answerValue) {
-        this._setValueInternal(
-            'value',
-            () => this._setValue(answerValue),
-            this._diffPrimitives,
-        );
-
+        this._setValueInternal('value', () => this._setValue(answerValue), this._diffPrimitives);
     }
 
     _setValue(value) {
@@ -73,7 +68,7 @@ export default class CodeCaptureQuestion extends Question {
     }
 
     _validateRule(validationType) {
-        switch(validationType) {
+        switch (validationType) {
             case ValidationTypes.Required:
                 return this._validateRequired();
             case ValidationTypes.MaxLength:
@@ -81,13 +76,13 @@ export default class CodeCaptureQuestion extends Question {
         }
     }
 
-    _validateRequired(){
+    _validateRequired() {
         if (!this.required) {
             return new RuleValidationResult(true);
         }
 
         const isValid = !Utils.isEmpty(this.value);
 
-        return new RuleValidationResult(isValid)
+        return new RuleValidationResult(isValid);
     }
 }

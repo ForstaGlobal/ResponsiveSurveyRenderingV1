@@ -1,4 +1,4 @@
-import Grid3DDesktopInnerQuestionView from "./grid-3d-desktop-inner-question-view";
+import Grid3DDesktopInnerQuestionView from './grid-3d-desktop-inner-question-view';
 
 export default class Grid3DDesktopInnerSingleQuestionView extends Grid3DDesktopInnerQuestionView {
     constructor(parentQuestion, question, settings = null) {
@@ -18,7 +18,7 @@ export default class Grid3DDesktopInnerSingleQuestionView extends Grid3DDesktopI
         this._question.setValue(answer.code);
     }
 
-    _onModelValueChange({changes}) {
+    _onModelValueChange({ changes }) {
         if (changes.value === undefined) {
             return;
         }

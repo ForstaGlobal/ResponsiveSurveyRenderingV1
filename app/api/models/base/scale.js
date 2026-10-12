@@ -1,4 +1,4 @@
-import AnswerImagesSettings from "./answer-images-settings";
+import AnswerImagesSettings from './answer-images-settings';
 
 /**
  * @desc A class for Scale
@@ -41,7 +41,7 @@ export default class Scale {
      * @type {HeadGroup}
      * @readonly
      */
-    get group () {
+    get group() {
         return this._group;
     }
 
@@ -50,15 +50,14 @@ export default class Scale {
      * @type {AnswerImages}
      * @readonly
      */
-    get imagesSettings(){
+    get imagesSettings() {
         return this._imagesSettings;
     }
 
-    _parseModel(model)
-    {
+    _parseModel(model) {
         this._text = model.text;
         this._code = model.code;
-        if(model.imagesSettings){
+        if (model.imagesSettings) {
             this._imagesSettings = new AnswerImagesSettings(model.imagesSettings);
         }
     }

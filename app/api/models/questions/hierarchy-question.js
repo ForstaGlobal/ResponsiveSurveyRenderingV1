@@ -1,8 +1,8 @@
-import QuestionWithAnswers from "../base/question-with-answers";
+import QuestionWithAnswers from '../base/question-with-answers';
 import HierarchyNode from '../base/hierarchy-node';
-import Utils from "../../../utils";
-import RuleValidationResult from "../validation/rule-validation-result";
-import ValidationTypes from "../validation/validation-types";
+import Utils from '../../../utils';
+import RuleValidationResult from '../validation/rule-validation-result';
+import ValidationTypes from '../validation/validation-types';
 
 export default class HierarchyQuestion extends QuestionWithAnswers {
     /**
@@ -88,12 +88,12 @@ export default class HierarchyQuestion extends QuestionWithAnswers {
         let form = {};
 
         if (!this.currentHierarchyNode.isSelectable) {
-           return form;
+            return form;
         }
 
         let answer = this.getAnswer(this.value);
         if (answer) {
-            let {originalAnswerCode} = this._revealAnswerCode(this.value);
+            let { originalAnswerCode } = this._revealAnswerCode(this.value);
             form[this._id] = originalAnswerCode;
         }
 
@@ -115,7 +115,7 @@ export default class HierarchyQuestion extends QuestionWithAnswers {
      * @return {Answer}
      */
     getAnswer(code) {
-        if(Utils.isEmpty(code)) {
+        if (Utils.isEmpty(code)) {
             return null;
         }
         code = code.toString();
@@ -136,8 +136,7 @@ export default class HierarchyQuestion extends QuestionWithAnswers {
         const oldValue = this.value;
         const changed = this._setValue(value);
         if (changed) {
-            this._updateHierarchy()
-                .then(() => this._onChange({ value: this._diffPrimitives(oldValue, this.value) }));
+            this._updateHierarchy().then(() => this._onChange({ value: this._diffPrimitives(oldValue, this.value) }));
         }
     }
 
@@ -147,7 +146,7 @@ export default class HierarchyQuestion extends QuestionWithAnswers {
      *  @return {HierarchyNode}
      */
     getHierarchyNode(answerCode) {
-        if(Utils.isEmpty(answerCode)) {
+        if (Utils.isEmpty(answerCode)) {
             return null;
         }
         answerCode = answerCode.toString();
@@ -160,7 +159,7 @@ export default class HierarchyQuestion extends QuestionWithAnswers {
         return null;
     }
 
-    * _getNodeGenerator() {
+    *_getNodeGenerator() {
         const queue = [...this._hierarchy.children];
         let currentNode;
         while ((currentNode = queue.shift())) {
@@ -173,9 +172,9 @@ export default class HierarchyQuestion extends QuestionWithAnswers {
         let originalAnswerCode = null;
         let tableId = null;
 
-        if(extendedAnswerCode != null) {
-            originalAnswerCode = extendedAnswerCode.substring(0, extendedAnswerCode.lastIndexOf("_"));
-            tableId = extendedAnswerCode.substring(extendedAnswerCode.lastIndexOf("_") + 1, extendedAnswerCode.length);
+        if (extendedAnswerCode != null) {
+            originalAnswerCode = extendedAnswerCode.substring(0, extendedAnswerCode.lastIndexOf('_'));
+            tableId = extendedAnswerCode.substring(extendedAnswerCode.lastIndexOf('_') + 1, extendedAnswerCode.length);
         }
 
         return { originalAnswerCode, tableId };
@@ -209,8 +208,7 @@ export default class HierarchyQuestion extends QuestionWithAnswers {
     }
 
     _validateRequired() {
-        if (!this.required)
-            return new RuleValidationResult(true);
+        if (!this.required) return new RuleValidationResult(true);
 
         const isValid = !Utils.isEmpty(this.value);
         return new RuleValidationResult(isValid);
@@ -233,7 +231,7 @@ export default class HierarchyQuestion extends QuestionWithAnswers {
         const currentNode = this.currentHierarchyNode;
 
         // clean up old branches related to current selected node
-        if(currentNode.answer === null) {
+        if (currentNode.answer === null) {
             currentNode.children.length = 0;
         } else {
             currentNode.parent.children.forEach(childNode => {
@@ -242,17 +240,16 @@ export default class HierarchyQuestion extends QuestionWithAnswers {
         }
 
         // if no children don't need to request them.
-        if(!currentNode.hasChildren) {
+        if (!currentNode.hasChildren) {
             return;
         }
 
-        const rawChildNodes = await this._hierarchyService.getHierarchySubLevel(this._id, this._value)
-            .catch(error => {
-                // TODO: find a way to show global error banner or another way of handling
-                // eslint-disable-next-line no-console
-                console.error("Can't update hierarchy: " + error);
-            });
-        if(!rawChildNodes) {
+        const rawChildNodes = await this._hierarchyService.getHierarchySubLevel(this._id, this._value).catch(error => {
+            // TODO: find a way to show global error banner or another way of handling
+            // eslint-disable-next-line no-console
+            console.error("Can't update hierarchy: " + error);
+        });
+        if (!rawChildNodes) {
             return;
         }
 

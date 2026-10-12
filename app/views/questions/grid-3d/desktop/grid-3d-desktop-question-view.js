@@ -1,9 +1,9 @@
-import ViewFactory from "./grid-3d-desktop-inner-question-view-factory";
-import QuestionViewBase from "views/questions/base/question-view-base";
-import QuestionErrorBlock from "views/error/question-error-block";
-import $ from "jquery";
+import ViewFactory from './grid-3d-desktop-inner-question-view-factory';
+import QuestionViewBase from 'views/questions/base/question-view-base';
+import QuestionErrorBlock from 'views/error/question-error-block';
+import $ from 'jquery';
 import QuestionTypes from 'api/question-types.js';
-import ErrorBlockManager from "../../../error/error-block-manager";
+import ErrorBlockManager from '../../../error/error-block-manager';
 
 export default class Grid3DDesktopQuestionView extends QuestionViewBase {
     /**
@@ -44,20 +44,22 @@ export default class Grid3DDesktopQuestionView extends QuestionViewBase {
     _createInnerQuestions() {
         this._question.innerQuestions.forEach(innerQuestion => {
             const view = this._viewFactory.create(innerQuestion);
-            if(view !== undefined) {
+            if (view !== undefined) {
                 this._innerQuestionViews.push(view);
             }
         });
     }
 
     _attachHandlersToDOM() {
-        this._question.answers.filter(answer => answer.isOther).forEach(answer => {
-            if(answer.isOther) {
-                const otherInput = this._getAnswerOtherNode(answer.code);
-                otherInput.on('click', e => e.stopPropagation());
-                otherInput.on('input', e => this._onAnswerOtherNodeValueChange(answer, e.target.value));
-            }
-        });
+        this._question.answers
+            .filter(answer => answer.isOther)
+            .forEach(answer => {
+                if (answer.isOther) {
+                    const otherInput = this._getAnswerOtherNode(answer.code);
+                    otherInput.on('click', e => e.stopPropagation());
+                    otherInput.on('input', e => this._onAnswerOtherNodeValueChange(answer, e.target.value));
+                }
+            });
     }
 
     _setOtherNodeValue(answerCode, otherValue) {
@@ -69,8 +71,8 @@ export default class Grid3DDesktopQuestionView extends QuestionViewBase {
         }
     }
 
-    _onModelValueChange({changes}) {
-        if(changes.otherValues === undefined) {
+    _onModelValueChange({ changes }) {
+        if (changes.otherValues === undefined) {
             return;
         }
 
@@ -95,7 +97,7 @@ export default class Grid3DDesktopQuestionView extends QuestionViewBase {
 
         validationResult.answerValidationResults.forEach(answerValidationResult => {
             const answer = this._question.getAnswer(answerValidationResult.answerCode);
-            if(!answer.isOther) {
+            if (!answer.isOther) {
                 return;
             }
 
@@ -107,47 +109,53 @@ export default class Grid3DDesktopQuestionView extends QuestionViewBase {
     }
 
     _getInnerQuestionValidationMessage(questionId, type, messageType) {
-        return this._question.validationMessagesForInnerQuestions.find(x => x.questionId === questionId && x.validationType === type && x.messageType === messageType);
+        return this._question.validationMessagesForInnerQuestions.find(
+            x => x.questionId === questionId && x.validationType === type && x.messageType === messageType
+        );
     }
 
-    _getInnerQuestionErrors({questionId, errors}) {
+    _getInnerQuestionErrors({ questionId, errors }) {
         return errors.reduce((acc, error) => {
             const message = this._getInnerQuestionValidationMessage(questionId, error.type, 'General');
-            if (message !== undefined)
-                acc.push(message.text);
+            if (message !== undefined) acc.push(message.text);
             return acc;
         }, []);
     }
 
-    _getInnerQuestionAnswerErrors({questionId, answerValidationResults}) {
+    _getInnerQuestionAnswerErrors({ questionId, answerValidationResults }) {
         const innerQuestion = this._question.getInnerQuestion(questionId);
-        if (innerQuestion.type === QuestionTypes.Grid && innerQuestion.dropdown)
-            return [];
+        if (innerQuestion.type === QuestionTypes.Grid && innerQuestion.dropdown) return [];
 
         const flattened = answerValidationResults.reduce((acc, answerResult) => {
-          const items = answerResult.errors.map(error => ({type: error.type, code: answerResult.answerCode}));
-          return acc.concat(items);
+            const items = answerResult.errors.map(error => ({ type: error.type, code: answerResult.answerCode }));
+            return acc.concat(items);
         }, []);
 
         const groupedByType = flattened.reduce((acc, item) => {
-           let group = acc.find(x => x.type === item.type);
-           if (group === undefined) {
-               group = {type: item.type, codes: []};
-               acc.push(group);
-           }
-           group.codes.push(item.code);
-           return acc;
+            let group = acc.find(x => x.type === item.type);
+            if (group === undefined) {
+                group = { type: item.type, codes: [] };
+                acc.push(group);
+            }
+            group.codes.push(item.code);
+            return acc;
         }, []);
 
         return groupedByType.reduce((acc, error) => {
-            const messageType = error.codes.length === 1? 'Singular': 'Plural';
+            const messageType = error.codes.length === 1 ? 'Singular' : 'Plural';
             const message = this._getInnerQuestionValidationMessage(questionId, error.type, messageType);
             if (message !== undefined) {
-                const {text, answerSubstitution: {placeholder, conjunction, separator, quoteBegin, quoteEnd} } = message;
-                const answerTexts = error.codes.map(code => `${quoteBegin}${innerQuestion.getAnswer(code).text}${quoteEnd}`);
-                const replacement = error.codes.length === 1
-                    ? answerTexts[0]
-                    : `${answerTexts.slice(0, -1).join(separator)}${conjunction}${answerTexts.slice(-1).pop()}`;
+                const {
+                    text,
+                    answerSubstitution: { placeholder, conjunction, separator, quoteBegin, quoteEnd },
+                } = message;
+                const answerTexts = error.codes.map(
+                    code => `${quoteBegin}${innerQuestion.getAnswer(code).text}${quoteEnd}`
+                );
+                const replacement =
+                    error.codes.length === 1
+                        ? answerTexts[0]
+                        : `${answerTexts.slice(0, -1).join(separator)}${conjunction}${answerTexts.slice(-1).pop()}`;
                 acc.push(text.split(placeholder).join(replacement));
             }
             return acc;

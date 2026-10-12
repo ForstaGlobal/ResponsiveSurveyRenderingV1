@@ -1,6 +1,8 @@
 import QuestionView from './base/question-view.js';
 import Utils from 'utils.js';
 
+const invalidDate = 'invalid_date';
+
 export default class DateQuestionView extends QuestionView {
     constructor(question) {
         super(question);
@@ -12,6 +14,12 @@ export default class DateQuestionView extends QuestionView {
     _attachControlHandlers() {
         this._input.on('input', event => {
             this._question.setValue(event.target.value);
+        });
+
+        this._input.on('blur', () => {
+            if (this._input[0].validity.badInput) {
+                this._question.setValue(invalidDate);
+            }
         });
     }
 
@@ -27,11 +35,10 @@ export default class DateQuestionView extends QuestionView {
 
     _onModelValueChange() {
         // don't reset visual state of incomplete input type=date
-        if (Utils.isEmpty(this._input.val()) && Utils.isEmpty(this._question.value))
-            return;
+        if (Utils.isEmpty(this._input.val()) && Utils.isEmpty(this._question.value)) return;
 
         const value = this._question.value || '';
-        if (this._input.val() !== value) {
+        if (this._input.val() !== value && value !== invalidDate) {
             this._input.val(value);
         }
     }

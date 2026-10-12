@@ -7,7 +7,8 @@ export default class SearchableSingleQuestionView extends SearchableQuestionView
 
         this._selectedAnswerCssClass = 'cf-single-answer--selected';
 
-        this._storedOtherValues =  this._question.value !== null ? {[this._question.value]: this._question.otherValue} : {};
+        this._storedOtherValues =
+            this._question.value !== null ? { [this._question.value]: this._question.otherValue } : {};
     }
 
     _attachHandlersToDOM() {
@@ -45,20 +46,20 @@ export default class SearchableSingleQuestionView extends SearchableQuestionView
         this._question.setValue(null);
     }
 
-    _updateAnswerNodes({value}) {
+    _updateAnswerNodes({ value }) {
         if (value === undefined) {
             return;
         }
 
         this._question.answers.forEach(answer => {
-            this._getAnswerNode(answer.code).removeClass(this._selectedAnswerCssClass)
+            this._getAnswerNode(answer.code).removeClass(this._selectedAnswerCssClass);
         });
 
         if (this._question.value === null) {
             return;
         }
 
-        this._getAnswerNode(this._question.value).addClass(this._selectedAnswerCssClass)
+        this._getAnswerNode(this._question.value).addClass(this._selectedAnswerCssClass);
     }
 
     _updateAnswerOtherNodes(changes) {
@@ -69,7 +70,7 @@ export default class SearchableSingleQuestionView extends SearchableQuestionView
 
         this._question.otherAnswers.forEach(answer => {
             if (this._question.value !== answer.code) {
-                this._setOtherNodeValue(answer.code, null)
+                this._setOtherNodeValue(answer.code, null);
             }
         });
 
@@ -84,7 +85,7 @@ export default class SearchableSingleQuestionView extends SearchableQuestionView
 
     // eslint-disable-next-line no-unused-vars
     _updateStoredOtherValues(changes) {
-        if(!Utils.isEmpty(this._question.otherValue)) {
+        if (!Utils.isEmpty(this._question.otherValue)) {
             this._storedOtherValues[this._question.value] = this._question.otherValue;
         }
     }
@@ -122,11 +123,13 @@ export default class SearchableSingleQuestionView extends SearchableQuestionView
     }
 
     _onAnswerOtherNodeValueChange(answer, otherValue) {
-        if (!Utils.isEmpty(otherValue)) { // select answer
+        if (!Utils.isEmpty(otherValue)) {
+            // select answer
             this._question.setValue(answer.code);
         }
 
-        if (this._question.value === answer.code) { // update other value for currently selected answer
+        if (this._question.value === answer.code) {
+            // update other value for currently selected answer
             this._question.setOtherValue(otherValue);
         }
     }

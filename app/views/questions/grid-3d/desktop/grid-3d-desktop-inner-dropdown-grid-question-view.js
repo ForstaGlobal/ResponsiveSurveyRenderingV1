@@ -1,5 +1,5 @@
-import Grid3DDesktopInnerQuestionView from "./grid-3d-desktop-inner-question-view";
-import ErrorBlockManager from "../../../error/error-block-manager";
+import Grid3DDesktopInnerQuestionView from './grid-3d-desktop-inner-question-view';
+import ErrorBlockManager from '../../../error/error-block-manager';
 
 export default class Grid3DDesktopInnerDropdownGridQuestionView extends Grid3DDesktopInnerQuestionView {
     constructor(parentQuestion, question, settings = null) {
@@ -18,9 +18,8 @@ export default class Grid3DDesktopInnerDropdownGridQuestionView extends Grid3DDe
         });
     }
 
-    _updateAnswerNodes({values = []}){
-        if (values.length === 0)
-            return;
+    _updateAnswerNodes({ values = [] }) {
+        if (values.length === 0) return;
 
         values.forEach(answerCode => {
             const answerInput = this._getAnswerNode(answerCode);
@@ -42,7 +41,7 @@ export default class Grid3DDesktopInnerDropdownGridQuestionView extends Grid3DDe
         this._answerErrorBlockManager.removeAllErrors();
     }
 
-    _onModelValueChange({changes}) {
+    _onModelValueChange({ changes }) {
         this._updateAnswerNodes(changes);
     }
 

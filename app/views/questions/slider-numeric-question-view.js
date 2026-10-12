@@ -1,7 +1,7 @@
-import QuestionView from './base/question-view.js'
-import VerticalSlider from "../controls/slider/vertical-slider";
-import HorizontalRtlSlider from "../controls/slider/horizontal-rtl-slider";
-import HorizontalSlider from "../controls/slider/horizontal-slider";
+import QuestionView from './base/question-view.js';
+import VerticalSlider from '../controls/slider/vertical-slider';
+import HorizontalRtlSlider from '../controls/slider/horizontal-rtl-slider';
+import HorizontalSlider from '../controls/slider/horizontal-slider';
 import Utils from 'utils.js';
 
 export default class SliderNumericQuestionView extends QuestionView {
@@ -41,18 +41,32 @@ export default class SliderNumericQuestionView extends QuestionView {
         const sliderValues = this._sliderValues;
         const sliderValue = this._question.value;
         const readOnly = this._question.readOnly;
-        const sliderTextValueHandler = (sliderValue) => {
+        const sliderTextValueHandler = sliderValue => {
             return sliderValue === null ? this._settings.messages.noResponse : sliderValue;
         };
 
-        let slider = null;
-        if(this._question.sliderIsVertical) {
+        let slider;
+        if (this._question.sliderIsVertical) {
             slider = new VerticalSlider(sliderNode, sliderValues, sliderValue, sliderTextValueHandler, true, readOnly);
         } else {
-            if(this._question.isRtl) {
-                slider = new HorizontalRtlSlider(sliderNode, sliderValues, sliderValue, sliderTextValueHandler, true, readOnly);
+            if (this._question.isRtl) {
+                slider = new HorizontalRtlSlider(
+                    sliderNode,
+                    sliderValues,
+                    sliderValue,
+                    sliderTextValueHandler,
+                    true,
+                    readOnly
+                );
             } else {
-                slider = new HorizontalSlider(sliderNode, sliderValues, sliderValue, sliderTextValueHandler, true, readOnly);
+                slider = new HorizontalSlider(
+                    sliderNode,
+                    sliderValues,
+                    sliderValue,
+                    sliderTextValueHandler,
+                    true,
+                    readOnly
+                );
             }
         }
         return slider;
@@ -77,7 +91,7 @@ export default class SliderNumericQuestionView extends QuestionView {
             return;
         }
 
-        if(this._question.value === null) {
+        if (this._question.value === null) {
             this._input.val(null);
             this._slider.setValueSilently(null);
             return;
@@ -96,10 +110,10 @@ export default class SliderNumericQuestionView extends QuestionView {
         }
 
         if (this._slider.value !== questionValue) {
-            if(numericQuestionValue < this._question.numeric.min) {
+            if (numericQuestionValue < this._question.numeric.min) {
                 questionValue = getNormalizedValueFromNumber(this._question.numeric.min);
             }
-            if(numericQuestionValue > this._question.numeric.max) {
+            if (numericQuestionValue > this._question.numeric.max) {
                 questionValue = getNormalizedValueFromNumber(this._question.numeric.max);
             }
             this._slider.setValueSilently(questionValue);
@@ -108,7 +122,7 @@ export default class SliderNumericQuestionView extends QuestionView {
 
     _onQuestionInputNodeValueChange(event) {
         let value = event.target.value;
-        if(value === '' && !event.target.validity.valid) {
+        if (value === '' && !event.target.validity.valid) {
             value = this._nanCode;
         }
         this._question.setValue(value);

@@ -18,10 +18,12 @@ export default class ImageUploadQuestionView extends QuestionView {
 
         this._fileInputNode = this._getQuestionInputNode();
         this._fileInputNode.on('change', this._onFileInputChange.bind(this));
+        const ua = window.navigator.userAgent;
+        if (/Android.*Chrome/.test(ua)) this._fileInputNode.attr('accept', 'image/*, plain/text');
 
         this._answerNode = this._container.find('.cf-image-upload-answer');
-        this._previewNode =  this._answerNode.find('.cf-image-upload-answer__preview');
-        this._uploadButton =  this._answerNode.find('.cf-image-upload-answer__upload-button');
+        this._previewNode = this._answerNode.find('.cf-image-upload-answer__preview');
+        this._uploadButton = this._answerNode.find('.cf-image-upload-answer__upload-button');
         this._uploadButton.on('click', this._upload.bind(this));
     }
 
@@ -39,11 +41,10 @@ export default class ImageUploadQuestionView extends QuestionView {
         this._hideErrors();
     }
 
-    _resetControlStateAndShowError(error){
+    _resetControlStateAndShowError(error) {
         this._changeControlsState();
         this._showError(error);
     }
-
 
     _changeControlsState(modifier) {
         this._answerNode.removeClass('cf-image-upload-answer--uploaded');
@@ -62,7 +63,7 @@ export default class ImageUploadQuestionView extends QuestionView {
 
         const blob = await this._processImage(file, this._question.maxImageWidth, this._question.maxImageHeight);
 
-        if(this._progressControl.canceled === true){
+        if (this._progressControl.canceled === true) {
             this._changeControlsState();
             return;
         }
@@ -93,13 +94,13 @@ export default class ImageUploadQuestionView extends QuestionView {
     }
 
     _uploadImage(blob) {
-        if(blob === undefined){
+        if (blob === undefined) {
             return;
         }
 
         try {
             this._question.uploader.upload(blob);
-        } catch(error) {
+        } catch (error) {
             this._resetControlStateAndShowError(error.message);
         }
     }
@@ -129,10 +130,8 @@ export default class ImageUploadQuestionView extends QuestionView {
             return;
         }
 
-
         await this._showPreviewImage(this._question.value.imagePreviewUrl);
         this._changeControlsState('uploaded');
-
     }
 
     _onUploadProgressCancel() {
@@ -143,7 +142,7 @@ export default class ImageUploadQuestionView extends QuestionView {
         this._progressControl.progress(progressValue);
     }
 
-    _onUploadComplete({imageId, imagePreviewUrl}) {
+    _onUploadComplete({ imageId, imagePreviewUrl }) {
         this._progressControl.finish();
         this._question.setValue(imageId, imagePreviewUrl);
 
@@ -174,8 +173,6 @@ export default class ImageUploadQuestionView extends QuestionView {
     }
 }
 
-
-
 class ImageUploadProgress {
     constructor(container) {
         this._value = 0;
@@ -183,7 +180,7 @@ class ImageUploadProgress {
         this._cancelEvent = new Event('image-upload-progress:cancel');
         this._container = container;
         this._progressNode = container.find('.circular-progress__progress');
-        this._container.on('click',  this._onClick.bind(this));
+        this._container.on('click', this._onClick.bind(this));
         this._circumference = 2 * Math.PI * parseInt(this._progressNode.attr('r'));
 
         this._canceled = null;
@@ -193,7 +190,7 @@ class ImageUploadProgress {
         return this._cancelEvent;
     }
 
-    get canceled(){
+    get canceled() {
         return this._canceled;
     }
 
@@ -215,7 +212,7 @@ class ImageUploadProgress {
     }
 
     _calculateDashOffset() {
-        return Math.round(((this._circumference * (100 - this._value)) / 100));
+        return Math.round((this._circumference * (100 - this._value)) / 100);
     }
 
     _onClick() {

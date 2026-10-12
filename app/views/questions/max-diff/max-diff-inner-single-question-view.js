@@ -23,12 +23,11 @@ export default class MaxDiffInnerSingleQuestionView extends QuestionViewBase {
 
     _onAnswerNodeClick(answer) {
         // disallow selecting the same answer twice
-        if (this._parent.innerQuestions.find(x => x !== this && x.value === answer.code))
-            return;
+        if (this._parent.innerQuestions.find(x => x !== this && x.value === answer.code)) return;
         this._question.setValue(answer.code);
     }
 
-    _onModelValueChange({changes}) {
+    _onModelValueChange({ changes }) {
         if (changes.value === undefined) {
             return;
         }

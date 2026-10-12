@@ -1,8 +1,8 @@
-import QuestionWithAnswersView from 'views/questions/base/question-with-answers-view.js'
+import QuestionWithAnswersView from 'views/questions/base/question-with-answers-view.js';
 import HorizontalSlider from 'views/controls/slider/horizontal-slider.js';
 import HorizontalRtlSlider from 'views/controls/slider/horizontal-rtl-slider.js';
-import FloatingLabels from "../controls/floating-labels";
-import ValidationTypes from "../../api/models/validation/validation-types";
+import FloatingLabels from '../controls/floating-labels';
+import ValidationTypes from '../../api/models/validation/validation-types';
 
 export default class SliderGridQuestionView extends QuestionWithAnswersView {
     /**
@@ -19,8 +19,10 @@ export default class SliderGridQuestionView extends QuestionWithAnswersView {
 
     _init() {
         const sliderValues = this._question.scales.map(scale => scale.code);
-        const sliderTextValueHandler = (sliderValue) => {
-            return sliderValue === null ? this._settings.messages.noResponse : this._question.getScale(sliderValue).text;
+        const sliderTextValueHandler = sliderValue => {
+            return sliderValue === null
+                ? this._settings.messages.noResponse
+                : this._question.getScale(sliderValue).text;
         };
 
         this._question.answers.forEach(answer => {
@@ -58,9 +60,8 @@ export default class SliderGridQuestionView extends QuestionWithAnswersView {
         return new HorizontalSlider(sliderNode, sliderValues, sliderValue, textValueHandler, false, readOnly);
     }
 
-    _updateSliders({values = []}) {
-        if (values.length === 0)
-            return;
+    _updateSliders({ values = [] }) {
+        if (values.length === 0) return;
 
         values.forEach(answerCode => {
             this._sliders.get(answerCode).value = this._question.values[answerCode] || null;
@@ -68,7 +69,6 @@ export default class SliderGridQuestionView extends QuestionWithAnswersView {
     }
 
     _showAnswerError(validationResult) {
-
         const answer = this._question.getAnswer(validationResult.answerCode);
         const targetNode = answer.isOther
             ? this._getAnswerOtherNode(answer.code)
@@ -88,12 +88,10 @@ export default class SliderGridQuestionView extends QuestionWithAnswersView {
     _hideErrors() {
         super._hideErrors();
 
-        this._container.find('.cf-text-box')
-            .removeAttr('aria-errormessage')
-            .removeAttr('aria-invalid');
+        this._container.find('.cf-text-box').removeAttr('aria-errormessage').removeAttr('aria-invalid');
     }
 
-    _onModelValueChange({changes}) {
+    _onModelValueChange({ changes }) {
         this._updateSliders(changes);
         this._updateAnswerOtherNodes(changes);
     }

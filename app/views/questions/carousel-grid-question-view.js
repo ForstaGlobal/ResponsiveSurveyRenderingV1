@@ -1,10 +1,10 @@
 import QuestionWithAnswersView from './base/question-with-answers-view.js';
 import Utils from '../../utils.js';
 import questionHelper from 'views/helpers/question-helper.js';
-import Carousel from "../controls/carousel";
+import Carousel from '../controls/carousel';
 import CarouselItem from '../controls/carousel-item.js';
-import KEYS from "../helpers/keyboard-keys";
-import ValidationTypes from "../../api/models/validation/validation-types";
+import KEYS from '../helpers/keyboard-keys';
+import ValidationTypes from '../../api/models/validation/validation-types';
 
 export default class CarouselGridQuestionView extends QuestionWithAnswersView {
     /**
@@ -18,8 +18,13 @@ export default class CarouselGridQuestionView extends QuestionWithAnswersView {
         this._selectedScaleCssClass = 'cf-answer-button--selected';
         this._scaleGroupCssClass = 'cf-list';
 
-        this._carouselItems = this._question.answers.map(answer =>
-            new CarouselItem(this._getCarouselItemId(answer.code), !Utils.isEmpty(this._question.values[answer.code])));
+        this._carouselItems = this._question.answers.map(
+            answer =>
+                new CarouselItem(
+                    this._getCarouselItemId(answer.code),
+                    !Utils.isEmpty(this._question.values[answer.code])
+                )
+        );
         this._carousel = new Carousel(this._container.find('.cf-carousel'), this._carouselItems);
         this._carousel.moveEvent.on(() => this._onCarouselMove());
         this._moveToFirstError = true;
@@ -59,30 +64,32 @@ export default class CarouselGridQuestionView extends QuestionWithAnswersView {
             this._scales.forEach((scale, scaleIndex) => {
                 this._getScaleNode(answer.code, scale.code)
                     .click(() => this._onScaleNodeClick(answer, scale))
-                    .on('focus', this._onScaleNodeFocus.bind(this, answerIndex, scaleIndex))
+                    .on('focus', this._onScaleNodeFocus.bind(this, answerIndex, scaleIndex));
             });
 
             if (answer.isOther) {
                 this._getAnswerOtherNode(answer.code).on('input', event =>
-                    this._onAnswerOtherValueChanged(answer.code, event.target.value));
+                    this._onAnswerOtherValueChanged(answer.code, event.target.value)
+                );
             }
         });
 
         if (!this._settings.disableKeyboardSupport) {
             this._container.on('keydown', this._onQuestionContainerKeyDown.bind(this));
 
-            this.answers.forEach((answer) => {
-                this._getAnswerNode(answer.code).find(`.${this._scaleGroupCssClass}`)
+            this.answers.forEach(answer => {
+                this._getAnswerNode(answer.code)
+                    .find(`.${this._scaleGroupCssClass}`)
                     .on('keydown', this._onGroupNodeKeyDown.bind(this));
 
                 if (answer.isOther) {
                     this._getAnswerOtherNode(answer.code).on('keydown', event =>
-                        this._onAnswerOtherValueKeyDown(answer, event));
+                        this._onAnswerOtherValueKeyDown(answer, event)
+                    );
                 }
 
                 this._scales.forEach(scale => {
-                    this._getScaleNode(answer.code, scale.code)
-                        .on('keydown', this._onScaleNodeKeyDown.bind(this));
+                    this._getScaleNode(answer.code, scale.code).on('keydown', this._onScaleNodeKeyDown.bind(this));
                 });
             });
         }
@@ -91,8 +98,10 @@ export default class CarouselGridQuestionView extends QuestionWithAnswersView {
     _showErrors(validationResult) {
         // update carousel paging state
         if (validationResult.answerValidationResults.length > 0) {
-            const answersWithError = validationResult.answerValidationResults.map(result => this._getCarouselItemId(result.answerCode));
-            this._carouselItems.forEach(item => item.isError = answersWithError.includes(item.id));
+            const answersWithError = validationResult.answerValidationResults.map(result =>
+                this._getCarouselItemId(result.answerCode)
+            );
+            this._carouselItems.forEach(item => (item.isError = answersWithError.includes(item.id)));
         }
 
         // accessible flow
@@ -105,7 +114,9 @@ export default class CarouselGridQuestionView extends QuestionWithAnswersView {
         super._showErrors(validationResult);
 
         if (validationResult.answerValidationResults.length > 0) {
-            let currentPageValidationResult = validationResult.answerValidationResults.find(result => this._getCarouselItemId(result.answerCode) === this._carousel.currentItem.id);
+            let currentPageValidationResult = validationResult.answerValidationResults.find(
+                result => this._getCarouselItemId(result.answerCode) === this._carousel.currentItem.id
+            );
             if (!currentPageValidationResult && this._moveToFirstError) {
                 const index = this._carouselItems.findIndex(item => item.isError);
                 if (index !== -1) {
@@ -114,7 +125,9 @@ export default class CarouselGridQuestionView extends QuestionWithAnswersView {
             }
 
             if (currentPageValidationResult) {
-                const currentPageOtherError = currentPageValidationResult.errors.find(error => error.type === 'OtherRequired');
+                const currentPageOtherError = currentPageValidationResult.errors.find(
+                    error => error.type === 'OtherRequired'
+                );
                 if (currentPageOtherError) {
                     // have to wait transition end; don't want to subscribe on transitionend event.
                     setTimeout(() => this._getAnswerOtherNode(this._carousel.currentItem.id).focus(), 500);
@@ -132,7 +145,9 @@ export default class CarouselGridQuestionView extends QuestionWithAnswersView {
             return;
         }
 
-        const currentPageValidationResult = validationResult.answerValidationResults.find(result => this._getCarouselItemId(result.answerCode) === this._carousel.currentItem.id);
+        const currentPageValidationResult = validationResult.answerValidationResults.find(
+            result => this._getCarouselItemId(result.answerCode) === this._carousel.currentItem.id
+        );
         if (!currentPageValidationResult) {
             const index = this._carouselItems.findIndex(item => item.isError);
             if (index !== -1) {
@@ -162,26 +177,23 @@ export default class CarouselGridQuestionView extends QuestionWithAnswersView {
 
         const answerHasNotOnlyOtherErrors = validationResult.errors.length > otherErrors.length;
         if (answerHasNotOnlyOtherErrors) {
-            this._getAnswerNode(answer.code).find(`.${this._scaleGroupCssClass}`)
-                .attr("aria-invalid", "true")
-                .attr("aria-errormessage", errorBlockId);
+            this._getAnswerNode(answer.code)
+                .find(`.${this._scaleGroupCssClass}`)
+                .attr('aria-invalid', 'true')
+                .attr('aria-errormessage', errorBlockId);
         }
     }
 
     _hideErrors() {
         super._hideErrors();
-        this._carouselItems.forEach(item => item.isError = false);
+        this._carouselItems.forEach(item => (item.isError = false));
 
-        this._container.find(`.${this._scaleGroupCssClass}`)
-            .removeAttr("aria-invalid")
-            .removeAttr("aria-errormessage");
+        this._container.find(`.${this._scaleGroupCssClass}`).removeAttr('aria-invalid').removeAttr('aria-errormessage');
 
-        this._container.find('.cf-text-box')
-            .removeAttr('aria-errormessage')
-            .removeAttr('aria-invalid');
+        this._container.find('.cf-text-box').removeAttr('aria-errormessage').removeAttr('aria-invalid');
     }
 
-    _updateAnswerNodes({values = []}) {
+    _updateAnswerNodes({ values = [] }) {
         if (values.length === 0) {
             return;
         }
@@ -204,7 +216,9 @@ export default class CarouselGridQuestionView extends QuestionWithAnswersView {
         this._answers.forEach((answer, answerIndex) => {
             const carouselItem = this._carouselItems[answerIndex];
             if (answer.isOther) {
-                carouselItem.isComplete = this._question.values[answer.code] !== undefined && this._question.otherValues[answer.code] !== undefined;
+                carouselItem.isComplete =
+                    this._question.values[answer.code] !== undefined &&
+                    this._question.otherValues[answer.code] !== undefined;
             } else {
                 carouselItem.isComplete = this._question.values[answer.code] !== undefined;
             }
@@ -217,7 +231,9 @@ export default class CarouselGridQuestionView extends QuestionWithAnswersView {
         }
 
         const otherIsChanged = changes.otherValues !== undefined;
-        const answerCompleteStatusIsChangedToComplete = this._carousel.currentItem.isComplete === true && this._carousel.currentItem.isComplete !== currentItemIsCompleteBefore;
+        const answerCompleteStatusIsChangedToComplete =
+            this._carousel.currentItem.isComplete === true &&
+            this._carousel.currentItem.isComplete !== currentItemIsCompleteBefore;
         if (answerCompleteStatusIsChangedToComplete && !otherIsChanged) {
             this._carousel.moveNext();
         }
@@ -241,7 +257,7 @@ export default class CarouselGridQuestionView extends QuestionWithAnswersView {
             .attr('tabindex', '-1');
     }
 
-    _onModelValueChange({changes}) {
+    _onModelValueChange({ changes }) {
         this._updateAnswerNodes(changes);
         this._updateAnswerOtherNodes(changes);
 
@@ -283,7 +299,6 @@ export default class CarouselGridQuestionView extends QuestionWithAnswersView {
         const isLastAnswer = this._currentAnswerIndex === this._answers.length - 1;
         const nextButtonIsFocused = activeElement.classList.contains('cf-carousel__navigation-button--next');
         const scaleItemIsFocused = activeElement.classList.contains('cf-list__item');
-
 
         if (isLastAnswer && nextButtonIsFocused && this._currentAnswer.isOther) {
             event.preventDefault();

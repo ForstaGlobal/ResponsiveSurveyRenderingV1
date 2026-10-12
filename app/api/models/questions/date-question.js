@@ -1,4 +1,4 @@
-import Question from './../base/question.js'
+import Question from './../base/question.js';
 import ValidationTypes from '../validation/validation-types.js';
 import RuleValidationResult from '../validation/rule-validation-result.js';
 import Utils from 'utils.js';
@@ -42,7 +42,7 @@ export default class DateQuestion extends Question {
      * @type {string}
      * @readonly
      */
-    get minValue(){
+    get minValue() {
         return this._minValue;
     }
 
@@ -51,16 +51,16 @@ export default class DateQuestion extends Question {
      * @type {CultureInfo}
      * @readonly
      */
-    get culture(){
+    get culture() {
         return { ...this._culture };
     }
 
     /**
      * @inheritDoc
      */
-    get formValues(){
+    get formValues() {
         let form = {};
-        if(!Utils.isEmpty(this.value)){
+        if (!Utils.isEmpty(this.value)) {
             form[this.id] = this.value;
         }
 
@@ -73,16 +73,12 @@ export default class DateQuestion extends Question {
      * @example model.setValue('2017-12-31');
      */
     setValue(value) {
-        this._setValueInternal(
-            'value',
-            () => this._setValue(value),
-            this._diffPrimitives,
-        );
+        this._setValueInternal('value', () => this._setValue(value), this._diffPrimitives);
     }
 
     _setValue(value) {
         value = Utils.isEmpty(value) ? null : value.toString();
-        if(this._value === value) {
+        if (this._value === value) {
             return false;
         }
 
@@ -91,7 +87,7 @@ export default class DateQuestion extends Question {
     }
 
     _validateRule(validationType) {
-        switch(validationType) {
+        switch (validationType) {
             case ValidationTypes.Required:
                 return this._validateRequired();
             case ValidationTypes.Date:
@@ -99,12 +95,11 @@ export default class DateQuestion extends Question {
         }
     }
 
-    _validateRequired(){
-        if (!this.required)
-            return new RuleValidationResult(true);
+    _validateRequired() {
+        if (!this.required) return new RuleValidationResult(true);
 
         let isValid = !Utils.isEmpty(this.value);
-        return new RuleValidationResult(isValid)
+        return new RuleValidationResult(isValid);
     }
 
     _validateDate() {

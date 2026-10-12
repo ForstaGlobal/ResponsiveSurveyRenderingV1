@@ -1,0 +1,99 @@
+@use "../_mixins/grid-layout";
+@use "../variables";
+
+.cf-numeric-list-answer {
+  &__control {
+    display: flex;
+    flex-direction: row;
+  }
+
+  &__input-wrapper {
+    flex: 0 1 auto;
+    min-width: 1px;
+  }
+
+  &__input-prefix, &__input-suffix {
+    flex: 0 0 auto;
+    height: variables.$font-size + 4px;
+    line-height: variables.$font-size + 4px;
+  }
+
+  &__input-prefix {
+    text-align: right;
+    padding-right: 8px;
+  }
+
+  &__input-suffix {
+    text-align: left;
+    padding-left: 8px;
+  }
+
+  &__input {
+    -moz-appearance: textfield;
+    &::-webkit-outer-spin-button, &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+    }
+    &::-ms-clear{display: none;}
+  }
+}
+
+.cf-numeric-list-auto-sum {
+  width: 200px;
+  flex-direction: row;
+
+  &__label {
+    padding-right: 10px;
+    font-weight: bold;
+    color: variables.$control-active-color;
+  }
+
+  &__value {
+    text-align: right;
+    font-weight: bold;
+    color: variables.$control-active-color;
+    border: none;
+  }
+
+  .cf-grid-layout__row-control {
+    width: 200px;
+    flex-shrink: 1;
+  }
+}
+
+@media (min-width: variables.$desktop-layout-delimiter + 1) {
+  .cf-numeric-list-answer {
+    @include grid-layout.grid-layout-answer-content-indent(24px, 20px);
+  }
+  .cf-numeric-list-auto-sum {
+    width: auto;
+  }
+}
+.cf-numeric-list-answer--rtl {
+  .cf-numeric-list-answer {
+    &__input-prefix {
+      text-align: left;
+      padding-left: 8px;
+      padding-right: 0;
+    }
+
+    &__input-suffix {
+      text-align: right;
+      padding-left: 0;
+      padding-right: 8px;
+    }
+  }
+}
+
+.cf-numeric-list-auto-sum--rtl {
+  .cf-numeric-list-auto-sum__label {
+    padding-left: 10px;
+    padding-right: 0;
+
+  }
+  .cf-numeric-list-auto-sum__value {
+    text-align: left;
+  }
+}
+
+

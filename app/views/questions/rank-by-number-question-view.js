@@ -25,7 +25,9 @@ export default class RankByNumberQuestionView extends QuestionWithAnswersView {
 
     _showAnswerError(validationResult) {
         const answer = this._question.getAnswer(validationResult.answerCode);
-        const target = answer.isOther ? this._getAnswerOtherNode(answer.code) : this._getAnswerTextNode(validationResult.answerCode);
+        const target = answer.isOther
+            ? this._getAnswerOtherNode(answer.code)
+            : this._getAnswerTextNode(validationResult.answerCode);
         const errorBlockId = this._getAnswerErrorBlockId(validationResult.answerCode);
         const errors = validationResult.errors.map(error => error.message);
         this._answerErrorBlockManager.showErrors(errorBlockId, target, errors);
@@ -40,14 +42,14 @@ export default class RankByNumberQuestionView extends QuestionWithAnswersView {
 
     _hideErrors() {
         super._hideErrors();
-        this._question.answers.filter(answer => answer.isOther).forEach(answer => {
-            this._getAnswerOtherNode(answer.code)
-                .removeAttr('aria-errormessage')
-                .removeAttr('aria-invalid');
-        });
+        this._question.answers
+            .filter(answer => answer.isOther)
+            .forEach(answer => {
+                this._getAnswerOtherNode(answer.code).removeAttr('aria-errormessage').removeAttr('aria-invalid');
+            });
     }
 
-    _updateAnswerNodes({values = []}) {
+    _updateAnswerNodes({ values = [] }) {
         if (values.length === 0) {
             return;
         }
@@ -65,7 +67,7 @@ export default class RankByNumberQuestionView extends QuestionWithAnswersView {
         });
     }
 
-    _onModelValueChange({changes}) {
+    _onModelValueChange({ changes }) {
         this._updateAnswerNodes(changes);
         this._updateAnswerOtherNodes(changes);
     }

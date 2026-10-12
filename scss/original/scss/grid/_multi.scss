@@ -1,0 +1,116 @@
+@use "../_mixins/radio_checkbox";
+@use "../variables";
+
+@media (max-width: variables.$desktop-layout-delimiter) {
+  .cf-grid-answer--multi {
+
+    .cf-grid-answer__scale {
+      justify-content: space-between;
+
+      @include radio_checkbox.checkbox_list(variables.$control-size);
+
+      &-item {
+        &--exclusive {
+          @include radio_checkbox.radio(variables.$control-size);
+
+          &.cf-grid-answer__scale-item--selected {
+            @include radio_checkbox.radio(variables.$control-size, true);
+          }
+        }
+      }
+    }
+
+    .cf-grid-answer__other {
+      width: 15em;
+    }
+  }
+}
+
+@media (min-width: variables.$desktop-layout-delimiter + 1) {
+  .cf-grid-answer--multi {
+    .cf-grid-answer__scale-item {
+      @include radio_checkbox.checkbox(variables.$control-size);
+    }
+
+    .cf-grid-answer__scale-item--selected {
+      @include radio_checkbox.checkbox(variables.$control-size, true);
+    }
+
+    .cf-grid-answer__scale-item--exclusive {
+      @include radio_checkbox.radio(variables.$control-size);
+
+      &.cf-grid-answer__scale-item--selected {
+        @include radio_checkbox.radio(variables.$control-size, true);
+      }
+    }
+
+    //after scale-item and all its modifiers for overriding mixin styles
+    .cf-grid-answer__scale-item {
+      padding: 0 1em;
+      background-position: center;
+    }
+
+    .cf-grid-answer__other {
+      visibility: hidden;
+      width: 12em;
+    }
+
+    .cf-grid-answer__other--in-label {
+      visibility: visible;
+      max-width: none;
+      margin-top: 0;
+    }
+
+    .cf-grid-answer__scale-item .cf-error-block {
+      display: none;
+    }
+  }
+}
+
+
+.cf-grid-answer--rtl {
+  @media (max-width: variables.$desktop-layout-delimiter) {
+    &.cf-grid-answer--multi {
+      .cf-grid-answer__scale {
+        @include radio_checkbox.checkbox_list(variables.$control-size, true);
+
+        &-item {
+          &--exclusive {
+            @include radio_checkbox.radio(variables.$control-size, false, true);
+
+            &.cf-grid-answer__scale-item--selected {
+              @include radio_checkbox.radio(variables.$control-size, true, true);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @media (min-width: variables.$desktop-layout-delimiter + 1) {
+    &.cf-grid-answer--multi {
+      .cf-grid-answer__scale-item {
+        @include radio_checkbox.checkbox(variables.$control-size, false);
+      }
+
+      .cf-grid-answer__scale-item--selected {
+        @include radio_checkbox.checkbox(variables.$control-size, true);
+      }
+
+      .cf-grid-answer__scale-item--exclusive {
+        @include radio_checkbox.radio(variables.$control-size, false);
+
+        &.cf-grid-answer__scale-item--selected {
+          @include radio_checkbox.radio(variables.$control-size, true);
+        }
+      }
+
+      //after scale-item and all its modifiers for overriding mixin styles
+      .cf-grid-answer__scale-item {
+        padding: 0 1em;
+        background-position: center;
+      }
+    }
+  }
+}
+

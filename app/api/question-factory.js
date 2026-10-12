@@ -1,7 +1,7 @@
 import QuestionTypes from './question-types.js';
 import SingleQuestion from './models/questions/single-question.js';
-import MultiQuestion  from './models/questions/multi-question.js';
-import GridQuestion   from './models/questions/grid-question.js';
+import MultiQuestion from './models/questions/multi-question.js';
+import GridQuestion from './models/questions/grid-question.js';
 import OpenTextListQuestion from './models/questions/open-text-list-question.js';
 import OpenTextQuestion from './models/questions/open-text-question.js';
 import NumericQuestion from './models/questions/numeric-question.js';
@@ -16,18 +16,18 @@ import Grid3DQuestion from './models/questions/grid-3d-question.js';
 import GeolocationQuestion from './models/questions/geolocation-question.js';
 import DynamicQuestionPlaceholder from './models/questions/dynamic-question-placeholder.js';
 import ImageUploadQuestion from './models/questions/image-upload-question.js';
-import ImageUploader from "./image-uploader";
-import LoginPageQuestion from "./models/questions/login-page-question";
-import TelephoneQuestion from "./models/questions/telephone-question";
-import HierarchyQuestion from "./models/questions/hierarchy-question";
-import HierarchyService from "./hierarchy-service";
-import Question from "./models/base/question";
+import ImageUploader from './image-uploader';
+import LoginPageQuestion from './models/questions/login-page-question';
+import TelephoneQuestion from './models/questions/telephone-question';
+import HierarchyQuestion from './models/questions/hierarchy-question';
+import HierarchyService from './hierarchy-service';
+import Question from './models/base/question';
 import VideoUploadQuestion from './models/questions/video-upload-question';
 import AudioUploadQuestion from './models/questions/audio-upload-question';
 import CodeCaptureQuestion from './models/questions/code-capture-question';
-import SearchableSingleQuestion  from './models/questions/searchable-single-question.js';
-import SearchableMultiQuestion  from './models/questions/searchable-multi-question.js';
-import SearchableAnswerListService  from './searchable-answer-list-service.js';
+import SearchableSingleQuestion from './models/questions/searchable-single-question.js';
+import SearchableMultiQuestion from './models/questions/searchable-multi-question.js';
+import SearchableAnswerListService from './searchable-answer-list-service.js';
 
 export default class QuestionFactory {
     constructor(language, endpoints, isAccessible = true) {
@@ -39,7 +39,7 @@ export default class QuestionFactory {
     create(rawModel) {
         const model = this._create(rawModel);
 
-        if(this._isAccessible && model instanceof Question) {
+        if (this._isAccessible && model instanceof Question) {
             model.allowValidateOnChange = false;
         }
 
@@ -97,7 +97,10 @@ export default class QuestionFactory {
             case QuestionTypes.Telephone:
                 return new TelephoneQuestion(rawModel);
             case QuestionTypes.Hierarchy:
-                return new HierarchyQuestion(rawModel, new HierarchyService(this._endpoints.hierarchyApiEndpoint, this._language));
+                return new HierarchyQuestion(
+                    rawModel,
+                    new HierarchyService(this._endpoints.hierarchyApiEndpoint, this._language)
+                );
             case QuestionTypes.SearchableSingle:
                 return new SearchableSingleQuestion(rawModel, this._createSearchableAnswerListService());
             case QuestionTypes.SearchableMulti:

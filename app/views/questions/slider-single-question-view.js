@@ -1,7 +1,7 @@
-import QuestionWithAnswersView from './base/question-with-answers-view.js'
-import VerticalSlider from "../controls/slider/vertical-slider";
-import HorizontalRtlSlider from "../controls/slider/horizontal-rtl-slider";
-import HorizontalSlider from "../controls/slider/horizontal-slider";
+import QuestionWithAnswersView from './base/question-with-answers-view.js';
+import VerticalSlider from '../controls/slider/vertical-slider';
+import HorizontalRtlSlider from '../controls/slider/horizontal-rtl-slider';
+import HorizontalSlider from '../controls/slider/horizontal-slider';
 
 export default class SliderSingleQuestionView extends QuestionWithAnswersView {
     /**
@@ -26,16 +26,25 @@ export default class SliderSingleQuestionView extends QuestionWithAnswersView {
         const sliderValues = this._question.answers.map(answer => answer.code);
         const sliderValue = this._question.value;
         const readOnly = this._question.readOnly;
-        const sliderTextValueHandler = (sliderValue) => {
-            return sliderValue === null ? this._settings.messages.noResponse : this._question.getAnswer(sliderValue).text;
+        const sliderTextValueHandler = sliderValue => {
+            return sliderValue === null
+                ? this._settings.messages.noResponse
+                : this._question.getAnswer(sliderValue).text;
         };
 
-        if(this._question.sliderIsVertical) {
+        if (this._question.sliderIsVertical) {
             return new VerticalSlider(sliderNode, sliderValues, sliderValue, sliderTextValueHandler, false, readOnly);
         }
 
-        if(this._question.isRtl) {
-            return new HorizontalRtlSlider(sliderNode, sliderValues, sliderValue, sliderTextValueHandler, false, readOnly);
+        if (this._question.isRtl) {
+            return new HorizontalRtlSlider(
+                sliderNode,
+                sliderValues,
+                sliderValue,
+                sliderTextValueHandler,
+                false,
+                readOnly
+            );
         }
 
         return new HorizontalSlider(sliderNode, sliderValues, sliderValue, sliderTextValueHandler, false, readOnly);
@@ -48,7 +57,9 @@ export default class SliderSingleQuestionView extends QuestionWithAnswersView {
     _onSliderChange() {
         this._question.setValue(this._slider.value);
 
-        this._container.find('.cf-single-slider-question__label').removeClass('cf-single-slider-question__label--selected');
+        this._container
+            .find('.cf-single-slider-question__label')
+            .removeClass('cf-single-slider-question__label--selected');
         this._getAnswerTextNode(this._slider.value).addClass('cf-single-slider-question__label--selected');
     }
 }

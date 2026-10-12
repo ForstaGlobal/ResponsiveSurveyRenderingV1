@@ -1,4 +1,4 @@
-import AnswerImagesSettings from "./answer-images-settings";
+import AnswerImagesSettings from './answer-images-settings';
 /**
  * @desc A class for Answer
  */
@@ -57,7 +57,7 @@ export default class Answer {
      * @type {string}
      * @readonly
      */
-    get rightText(){
+    get rightText() {
         return this._rightText;
     }
 
@@ -84,7 +84,7 @@ export default class Answer {
      * @type {string}
      * @readonly
      */
-    get fieldName(){
+    get fieldName() {
         return this._fieldName;
     }
 
@@ -93,7 +93,7 @@ export default class Answer {
      * @type {string}
      * @readonly
      */
-    get otherFieldName(){
+    get otherFieldName() {
         return this._otherFieldName;
     }
 
@@ -102,7 +102,7 @@ export default class Answer {
      * @type {(HeadGroup)}
      * @readonly
      */
-    get group () {
+    get group() {
         return this._group;
     }
 
@@ -111,7 +111,7 @@ export default class Answer {
      * @type {AnswerImagesSettings}
      * @readonly
      */
-    get imagesSettings(){
+    get imagesSettings() {
         return this._imagesSettings;
     }
 
@@ -124,8 +124,7 @@ export default class Answer {
         return this._styleName;
     }
 
-    _parseModel(model)
-    {
+    _parseModel(model) {
         this._text = model.text;
         this._rightText = model.rightText;
         this._code = model.code;
@@ -134,12 +133,12 @@ export default class Answer {
         this._fieldName = model.fieldName;
         this._styleName = model.styleName;
 
-        if(model.other){
+        if (model.other) {
             this._isOther = true;
             this._otherFieldName = model.other.fieldName;
         }
 
-        if(model.imagesSettings){
+        if (model.imagesSettings) {
             this._imagesSettings = new AnswerImagesSettings(model.imagesSettings);
         }
     }

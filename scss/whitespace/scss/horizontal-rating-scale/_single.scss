@@ -1,0 +1,60 @@
+@use "../_mixins/radio_checkbox";
+@use "../_mixins/rating-grid";
+@use "../variables";
+
+.cf-hrs-single {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  &__scale-label-panel {
+    margin-bottom: 8px;
+    border-bottom: none;
+    justify-content:flex-start;
+  }
+
+  &__scale {
+    flex: 0 1 auto;
+    display: flex;
+    margin-bottom: 16px;
+
+    &-item {
+      @include rating-grid.scale_item();
+      & {
+        min-width: variables.$control-size;
+        min-height: variables.$control-size;
+      }
+    }
+  }
+
+  &__na {
+    max-width: 100%;
+    @include radio_checkbox.radio_list(variables.$control-size - 4px);
+
+    &-item {
+      margin-bottom: 8px;
+    }
+  }
+}
+
+@media (min-width: variables.$desktop-layout-delimiter + 1) {
+  .cf-hrs-single {
+    &__scale-item {
+      min-width: variables.$control-size + 8px;
+      min-height: variables.$control-size + 8px;
+    }
+  }
+}
+
+.cf-hrs-single--rtl {
+  .cf-hrs-single {
+    &__scale-item {
+      @include rating-grid.scale_item(true);
+    }
+
+    &__na {
+      @include radio_checkbox.radio_list(variables.$control-size - 4px, true);
+    }
+  }
+}
+

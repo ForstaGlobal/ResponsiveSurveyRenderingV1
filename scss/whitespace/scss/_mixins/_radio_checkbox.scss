@@ -1,0 +1,84 @@
+@use "../common/list-layout";
+@use "../functions";
+@use "../variables";
+
+//TODO: V2 should get rid of background-position and paddings for more flexible rtl css styles
+
+@mixin radio_bg($size, $selected: false) {
+  @if($selected) {
+    background-image: functions.svg-url('<svg width="24" height="24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" stroke="#{variables.$control-active-color}" stroke-width="2" fill="none"/><circle cx="12" cy="12" r="5" fill="#{variables.$control-active-color}" /></svg>');
+  } @else {
+    background-image: functions.svg-url('<svg width="24" height="24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" stroke="#{variables.$control-primary-color}" stroke-width="2" fill="none"/></svg>');
+    background-size: $size;
+    background-repeat: no-repeat;
+    background-position: left top;
+  }
+}
+
+@mixin checkbox_bg($size, $selected: false) {
+  @if($selected) {
+    background-image: functions.svg-url('<svg width="24" height="24" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="22" height="22" stroke="#{variables.$control-active-color}" stroke-width="2" fill="#{variables.$control-active-color}" rx="2" ry="2"/><path d="M 5,11 L 10,16 L 19,7" stroke="#{variables.$page-bg-color}" stroke-width="2" fill="none" /></svg>');
+  } @else {
+    background-image: functions.svg-url('<svg width="24" height="24" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="22" height="22" stroke="#{variables.$control-primary-color}" stroke-width="2"  rx="2" ry="2" fill="none" /></svg>');
+    background-size: $size;
+    background-repeat: no-repeat;
+    background-position: left top;
+  }
+}
+
+@mixin checkbox_radio_common($size, $rtl: false) {
+  padding-left: $size * 2 - 8px;
+  line-height: $size;
+  min-height: $size;
+  cursor: pointer;
+  @if($rtl){
+    padding-left: 0;
+    padding-right: $size * 2 - 8px;
+  }
+}
+
+@mixin radio($size, $selected: false, $rtl: false) {
+  @include radio_bg($size, $selected);
+  @if($selected == false) {
+    @include checkbox_radio_common($size, $rtl);
+  }
+
+  @if($rtl){
+    background-position: right top;
+  }
+}
+
+@mixin checkbox($size, $selected: false,  $rtl: false) {
+  @include checkbox_bg($size, $selected);
+  @if($selected == false) {
+    @include checkbox_radio_common($size, $rtl);
+  }
+
+  @if($rtl){
+    background-position: right top;
+  }
+}
+
+@mixin radio_list($size, $rtl: false) {
+  @include list-layout.list;
+
+  &-item {
+    @include radio($size, false, $rtl);
+
+    &--selected {
+      @include radio($size, true, $rtl);
+    }
+  }
+}
+
+@mixin checkbox_list($size, $rtl: false) {
+  @include list-layout.list;
+
+  &-item {
+    @include checkbox($size, false, $rtl);
+
+    &--selected {
+      @include checkbox($size, true, $rtl);
+    }
+  }
+}

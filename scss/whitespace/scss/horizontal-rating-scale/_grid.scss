@@ -1,0 +1,139 @@
+@use "../_mixins/grid-layout";
+@use "../_mixins/radio_checkbox";
+@use "../_mixins/rating-grid";
+@use "../variables";
+
+.cf-hrs-grid-answer {
+
+  &__control {
+    display: flex;
+  }
+
+  &__scale-container {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__scale {
+    display: flex;
+    flex: 0 0 auto;
+
+    &-item {
+      flex: 0 0 auto;
+      @include rating-grid.scale_item();
+    }
+  }
+}
+
+@media (max-width: variables.$desktop-layout-delimiter) {
+  .cf-hrs-grid-answer {
+    margin-bottom: 32px;
+
+    &__control {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    &__scale-container {
+      margin-bottom: 16px;
+    }
+
+    &__scale-label-panel {
+      display: none;
+      margin-bottom: 8px;
+    }
+
+    &__scale-item {
+      min-width: variables.$control-size;
+      min-height: variables.$control-size;
+      margin-right: 8px;
+    }
+
+    &__na {
+      @include radio_checkbox.radio_list(variables.$control-size - 4px);
+
+      &-item {
+        margin-bottom: 8px
+      }
+    }
+
+    &--first {
+      .cf-hrs-grid-answer__scale-label-panel {
+        display: flex;
+      }
+    }
+
+    &--fake-for-panel {
+      display: none;
+    }
+  }
+}
+
+@media (min-width: variables.$desktop-layout-delimiter + 1) {
+  .cf-hrs-grid-answer {
+    @include grid-layout.grid-layout-answer-content-indent(24px, 20px);
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    &__scale-label-panel {
+      display: none;
+    }
+
+    &__na {
+      margin-left: 24px;
+      @include rating-grid.na_scale();
+    }
+
+    &--fake-for-panel {
+      margin-bottom: 8px;
+
+      .cf-hrs-grid-answer__scale {
+        visibility: hidden;
+        height: 0;
+      }
+
+      .cf-hrs-grid-answer__scale-label-panel {
+        display: flex;
+      }
+
+      .cf-hrs-grid-answer__na {
+        visibility: hidden;
+        height: 0px;
+      }
+    }
+  }
+}
+
+.cf-hrs-grid-answer--rtl .cf-hrs-grid-answer__scale-item {
+  @include rating-grid.scale_item(true);
+}
+
+@media (max-width: variables.$desktop-layout-delimiter) {
+  .cf-hrs-grid-answer--rtl {
+    .cf-hrs-grid-answer {
+      &__scale-item {
+        margin-right: 0;
+        margin-left: 8px;
+      }
+
+      &__na {
+        @include radio_checkbox.radio_list(variables.$control-size - 4px, true);
+      }
+    }
+  }
+}
+
+@media (min-width: variables.$desktop-layout-delimiter + 1) {
+  .cf-hrs-grid-answer--rtl {
+    .cf-hrs-grid-answer__na {
+      margin-left: 0;
+      margin-right: 24px;
+      @include rating-grid.na_scale(true);
+    }
+  }
+}
+
+

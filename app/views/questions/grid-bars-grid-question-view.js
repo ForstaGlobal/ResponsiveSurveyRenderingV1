@@ -1,5 +1,5 @@
 import FloatingLabels from '../controls/floating-labels.js';
-import GridQuestionView from "./grid-question-view";
+import GridQuestionView from './grid-question-view';
 import $ from 'jquery';
 
 export default class GridBarsGridQuestionView extends GridQuestionView {
@@ -30,9 +30,8 @@ export default class GridBarsGridQuestionView extends GridQuestionView {
         new FloatingLabels(panel, lastItem, this._settings.mobileThreshold);
     }
 
-    _updateAnswerScaleNodes({values = []}) {
-        if (values.length === 0)
-            return;
+    _updateAnswerScaleNodes({ values = [] }) {
+        if (values.length === 0) return;
 
         values.forEach(answerCode => {
             this._scales.forEach(scale => {
@@ -42,8 +41,7 @@ export default class GridBarsGridQuestionView extends GridQuestionView {
 
             const scaleCode = this._question.values[answerCode];
             if (scaleCode === undefined) {
-                this._getScaleNode(answerCode, this._scales[0].code)
-                    .attr('tabindex', '0');
+                this._getScaleNode(answerCode, this._scales[0].code).attr('tabindex', '0');
             } else {
                 this._selectScaleNode(answerCode, scaleCode);
             }
@@ -54,16 +52,14 @@ export default class GridBarsGridQuestionView extends GridQuestionView {
         super._attachHandlersToDOM();
 
         const mouseOver = (answerCode, scaleCode) => {
-            if (this._question.values[answerCode])
-                return; // don't handle if already answered
+            if (this._question.values[answerCode]) return; // don't handle if already answered
 
             this._clearHoverItemStyles(answerCode);
             this._setHoverItemStyles(answerCode, scaleCode);
         };
 
-        const mouseOut = (answerCode) => {
-            if (this._question.values[answerCode])
-                return; // don't handle if already answered
+        const mouseOut = answerCode => {
+            if (this._question.values[answerCode]) return; // don't handle if already answered
 
             this._clearHoverItemStyles(answerCode);
         };
@@ -88,7 +84,12 @@ export default class GridBarsGridQuestionView extends GridQuestionView {
         if (itemInScale) {
             const scaleIndex = this._question.scaleItems.findIndex(item => item.code === scaleCode);
             if (scaleIndex !== -1) {
-                this._setBarItemStyles(answerCode, scaleIndex, this._selectedScaleCssClass, 'cf-gb-grid-answer__scale-text--selected');
+                this._setBarItemStyles(
+                    answerCode,
+                    scaleIndex,
+                    this._selectedScaleCssClass,
+                    'cf-gb-grid-answer__scale-text--selected'
+                );
             }
         }
     }
@@ -96,7 +97,12 @@ export default class GridBarsGridQuestionView extends GridQuestionView {
     _setHoverItemStyles(answerCode, scaleCode) {
         const scaleIndex = this._question.scaleItems.findIndex(item => item.code === scaleCode);
         if (scaleIndex !== -1) {
-            this._setBarItemStyles(answerCode, scaleIndex, 'cf-gb-grid-answer__scale-item--hover', 'cf-gb-grid-answer__scale-text--hover');
+            this._setBarItemStyles(
+                answerCode,
+                scaleIndex,
+                'cf-gb-grid-answer__scale-item--hover',
+                'cf-gb-grid-answer__scale-text--hover'
+            );
         }
         // do not handle for NA-items
     }
@@ -115,15 +121,16 @@ export default class GridBarsGridQuestionView extends GridQuestionView {
     _clearScaleItemStyles(answerCode) {
         const answerNode = this._getAnswerNode(answerCode);
 
-        answerNode.find('.cf-gb-grid-answer__scale-item')
+        answerNode
+            .find('.cf-gb-grid-answer__scale-item')
             .removeClass(this._selectedScaleCssClass)
             .removeClass('cf-gb-grid-answer__scale-item--hover')
             .css('opacity', '');
 
-        answerNode.find('.cf-gb-grid-answer__na-item')
-            .removeClass(this._selectedNonScoredItemClass);
+        answerNode.find('.cf-gb-grid-answer__na-item').removeClass(this._selectedNonScoredItemClass);
 
-        answerNode.find('.cf-gb-grid-answer__scale-text')
+        answerNode
+            .find('.cf-gb-grid-answer__scale-text')
             .removeClass('cf-gb-grid-answer__scale-text--selected')
             .removeClass('cf-gb-grid-answer__scale-text--hover');
     }
@@ -131,11 +138,11 @@ export default class GridBarsGridQuestionView extends GridQuestionView {
     _clearHoverItemStyles(answerCode) {
         const container = this._getAnswerNode(answerCode);
 
-        container.find('.cf-gb-grid-answer__scale-item')
+        container
+            .find('.cf-gb-grid-answer__scale-item')
             .removeClass('cf-gb-grid-answer__scale-item--hover')
             .css('opacity', '');
 
-        container.find('.cf-gb-grid-answer__scale-text')
-            .removeClass('cf-gb-grid-answer__scale-text--hover');
+        container.find('.cf-gb-grid-answer__scale-text').removeClass('cf-gb-grid-answer__scale-text--hover');
     }
 }

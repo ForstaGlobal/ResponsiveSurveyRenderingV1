@@ -1,0 +1,58 @@
+@use "../variables";
+
+.cf-answer-button {
+  min-height: 32px;
+  max-width: 100%;
+  padding: 8px 8px;
+  border: 1px solid variables.$control-primary-color;
+  border-radius: 2px;
+  color: variables.$control-active-color;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  cursor: pointer;
+
+  &__text {
+    flex: 0 1 auto;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  &__other-input {
+    width: 400px;
+    max-width: 80%;
+    text-overflow: ellipsis;
+    text-align: center;
+
+    cursor: pointer;
+  }
+
+  &__other-input:not(:hover):not(:focus) {
+    border-bottom: none;
+    padding-bottom: 5px;
+  }
+
+  & + .cf-error-block {
+    margin-top: -8px;
+  }
+}
+
+.cf-answer-button--selected {
+  border-color: variables.$control-active-color;
+  background-color: variables.$control-active-color;
+  color: variables.$page-bg-color;
+
+  .cf-answer-button__other-input {
+    color: variables.$question-bg-color;
+    border-bottom: 1px solid variables.$question-bg-color;
+
+    &--error{
+      border-bottom: 1px solid variables.$error-border-color;
+    }
+  }
+}
+
+.cf-answer-button-other {
+  margin-top: 4px;
+}

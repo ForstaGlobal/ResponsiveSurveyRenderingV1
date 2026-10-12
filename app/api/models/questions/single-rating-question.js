@@ -54,11 +54,7 @@ export default class SingleRatingQuestion extends QuestionWithAnswers {
      * @param {string} value - Answer code.
      */
     setValue(value) {
-        this._setValueInternal(
-            'value',
-            () => this._setValue(value),
-            this._diffPrimitives,
-        );
+        this._setValueInternal('value', () => this._setValue(value), this._diffPrimitives);
     }
 
     /**
@@ -93,7 +89,7 @@ export default class SingleRatingQuestion extends QuestionWithAnswers {
         return true;
     }
 
-    _loadScales({scaleItems = [], nonScaleItems = []}) {
+    _loadScales({ scaleItems = [], nonScaleItems = [] }) {
         this._scaleItems = this.getAnswers(scaleItems);
         this._nonScaleItems = this.getAnswers(nonScaleItems);
     }
@@ -106,8 +102,7 @@ export default class SingleRatingQuestion extends QuestionWithAnswers {
     }
 
     _validateRequired() {
-        if (!this.required)
-            return new RuleValidationResult(true);
+        if (!this.required) return new RuleValidationResult(true);
 
         let isValid = !Utils.isEmpty(this.value);
         return new RuleValidationResult(isValid);

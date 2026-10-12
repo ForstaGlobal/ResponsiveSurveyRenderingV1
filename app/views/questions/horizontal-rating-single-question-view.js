@@ -1,6 +1,6 @@
 import QuestionWithAnswersView from './base/question-with-answers-view.js';
 import KEYS from 'views/helpers/keyboard-keys.js';
-import Utils from "../../utils";
+import Utils from '../../utils';
 
 export default class HorizontalRatingSingleQuestionView extends QuestionWithAnswersView {
     /**
@@ -55,13 +55,14 @@ export default class HorizontalRatingSingleQuestionView extends QuestionWithAnsw
                 .attr('tabindex', '-1');
         });
 
-        if(this._question.value === null) {
-            this._getAnswerNode(this.answers[0].code)
-                .attr('tabindex', '0');
+        if (this._question.value === null) {
+            this._getAnswerNode(this.answers[0].code).attr('tabindex', '0');
             return;
         }
 
-        const itemNodeClass = this._isItemInScale(this._question.value) ? this._selectedScaleCssClass : this._selectedNonScoredItemCssClass;
+        const itemNodeClass = this._isItemInScale(this._question.value)
+            ? this._selectedScaleCssClass
+            : this._selectedNonScoredItemCssClass;
         this._getAnswerNode(this._question.value)
             .addClass(itemNodeClass)
             .attr('aria-checked', 'true')
@@ -74,12 +75,12 @@ export default class HorizontalRatingSingleQuestionView extends QuestionWithAnsw
      */
     _showErrors(validationResult) {
         super._showErrors(validationResult);
-        this._groupNode.attr("aria-invalid", "true");
+        this._groupNode.attr('aria-invalid', 'true');
     }
 
     _hideErrors() {
         super._hideErrors();
-        this._groupNode.attr("aria-invalid", "false");
+        this._groupNode.attr('aria-invalid', 'false');
     }
 
     _getPreviousAnswerIndex() {
@@ -88,7 +89,6 @@ export default class HorizontalRatingSingleQuestionView extends QuestionWithAnsw
         } else {
             return this.answers.length - 1;
         }
-
     }
 
     _getNextAnswerIndex() {
@@ -99,12 +99,12 @@ export default class HorizontalRatingSingleQuestionView extends QuestionWithAnsw
         }
     }
 
-    _onModelValueChange({changes}) {
+    _onModelValueChange({ changes }) {
         this._updateAnswerNodes(changes);
     }
 
     _onAnswerNodeClick(answer) {
-       this._selectAnswer(answer);
+        this._selectAnswer(answer);
     }
 
     _onKeyPress(event) {

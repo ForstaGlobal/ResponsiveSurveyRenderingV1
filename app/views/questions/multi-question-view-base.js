@@ -19,7 +19,7 @@ export default class MultiQuestionViewBase extends QuestionWithAnswersView {
         this._selectedAnswerCssClass = 'cf-multi-answer--selected';
         this._selectedImageAnswerCssClass = 'cf-answer-image--selected';
 
-        this._storedOtherValues = {...this._question.otherValues};
+        this._storedOtherValues = { ...this._question.otherValues };
 
         this._attachHandlersToDOM();
     }
@@ -61,7 +61,7 @@ export default class MultiQuestionViewBase extends QuestionWithAnswersView {
         const prepareCollapsibleGroupShortInfo = (question, group) => {
             return group.items
                 .filter(answer => this._getSelectedAnswerCodes().includes(answer.code))
-                .map(answer => answer.isOther ? question.otherValues[answer.code] : answer.text)
+                .map(answer => (answer.isOther ? question.otherValues[answer.code] : answer.text))
                 .filter(shortInfoText => !Utils.isEmpty(shortInfoText));
         };
 
@@ -93,9 +93,8 @@ export default class MultiQuestionViewBase extends QuestionWithAnswersView {
         return answer.imagesSettings !== null ? this._selectedImageAnswerCssClass : this._selectedAnswerCssClass;
     }
 
-    _updateAnswerNodes({values = []}) {
-        if (values.length === 0)
-            return;
+    _updateAnswerNodes({ values = [] }) {
+        if (values.length === 0) return;
 
         this._question.answers.forEach(answer => {
             this._getAnswerNode(answer.code)
@@ -110,20 +109,18 @@ export default class MultiQuestionViewBase extends QuestionWithAnswersView {
         });
     }
 
-    _updateAnswerOtherNodes({values = [], otherValues = []}) {
+    _updateAnswerOtherNodes({ values = [], otherValues = [] }) {
         if (values.length > 0) {
-            this._question.answers.filter(answer => answer.isOther).forEach(answer => {
-                this._getAnswerOtherNode(answer.code)
-                    .attr('tabindex', '-1')
-                    .attr('aria-hidden', 'true');
-            });
+            this._question.answers
+                .filter(answer => answer.isOther)
+                .forEach(answer => {
+                    this._getAnswerOtherNode(answer.code).attr('tabindex', '-1').attr('aria-hidden', 'true');
+                });
 
             this._getSelectedAnswerCodes()
                 .filter(answerCode => this._question.getAnswer(answerCode).isOther)
                 .forEach(answerCode => {
-                    this._getAnswerOtherNode(answerCode)
-                        .attr('tabindex', '0')
-                        .attr('aria-hidden', 'false');
+                    this._getAnswerOtherNode(answerCode).attr('tabindex', '0').attr('aria-hidden', 'false');
                 });
 
             values.forEach(answerCode => {
@@ -137,10 +134,10 @@ export default class MultiQuestionViewBase extends QuestionWithAnswersView {
             });
         }
 
-        super._updateAnswerOtherNodes({otherValues});
+        super._updateAnswerOtherNodes({ otherValues });
     }
 
-    _updateStoredOtherValues({values = []}) {
+    _updateStoredOtherValues({ values = [] }) {
         values.forEach(answerCode => {
             const checked = this._getSelectedAnswerCodes().includes(answerCode);
             if (!checked) {
@@ -208,9 +205,7 @@ export default class MultiQuestionViewBase extends QuestionWithAnswersView {
 
         const errorBlockId = this._getAnswerErrorBlockId(validationResult.answerCode);
         const otherNode = this._getAnswerOtherNode(validationResult.answerCode);
-        otherNode
-            .attr('aria-errormessage', errorBlockId)
-            .attr('aria-invalid', 'true');
+        otherNode.attr('aria-errormessage', errorBlockId).attr('aria-invalid', 'true');
     }
 
     _updateGroupAriaInvalidState(validationResult) {
@@ -218,8 +213,10 @@ export default class MultiQuestionViewBase extends QuestionWithAnswersView {
             return;
         }
 
-        const hasNotOnlyOtherErrors = validationResult.errors.length > 0
-            || validationResult.answerValidationResults.filter(result => result.isValid === false)
+        const hasNotOnlyOtherErrors =
+            validationResult.errors.length > 0 ||
+            validationResult.answerValidationResults
+                .filter(result => result.isValid === false)
                 .some(result => result.errors.some(error => error.type !== ValidationTypes.OtherRequired));
         if (hasNotOnlyOtherErrors === false) {
             return;
@@ -233,14 +230,14 @@ export default class MultiQuestionViewBase extends QuestionWithAnswersView {
 
         this._container.find('.cf-list').attr('aria-invalid', 'false');
 
-        this._question.answers.filter(answer => answer.isOther).forEach(answer => {
-            this._getAnswerOtherNode(answer.code)
-                .removeAttr('aria-errormessage')
-                .removeAttr('aria-invalid');
-        });
+        this._question.answers
+            .filter(answer => answer.isOther)
+            .forEach(answer => {
+                this._getAnswerOtherNode(answer.code).removeAttr('aria-errormessage').removeAttr('aria-invalid');
+            });
     }
 
-    _onModelValueChange({changes}) {
+    _onModelValueChange({ changes }) {
         this._updateAnswerNodes(changes);
         this._updateAnswerOtherNodes(changes);
         this._updateStoredOtherValues(changes);

@@ -1,4 +1,4 @@
-import QuestionView from './base/question-view.js'
+import QuestionView from './base/question-view.js';
 
 export default class OpenTextQuestionView extends QuestionView {
     constructor(question) {

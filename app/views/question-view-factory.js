@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import QuestionTypes from 'api/question-types.js'
+import QuestionTypes from 'api/question-types.js';
 import SingleQuestionView from './questions/single-question-view.js';
 import MultiQuestionView from './questions/multi-question-view.js';
 import GridQuestionView from './questions/grid-question-view.js';
@@ -42,12 +42,12 @@ import MaxDiffQuestionView from './questions/max-diff/max-diff-question-view.js'
 import SliderSingleQuestionView from './questions/slider-single-question-view.js';
 import SliderGridQuestionView from './questions/slider-grid-question-view.js';
 import SliderNumericQuestionView from './questions/slider-numeric-question-view.js';
-import SliderNumericListQuestionView from "./questions/slider-numeric-list-question-view";
+import SliderNumericListQuestionView from './questions/slider-numeric-list-question-view';
 import VideoUploadQuestionView from './questions/video-upload-question-view';
 import AudioUploadQuestionView from './questions/audio-upload-question-view';
-import CodeCaptureQuestionView from "./questions/code-capture-question-view";
-import SearchableMultiQuestionView from "./questions/searchable-multi-question-view";
-import SearchableSingleQuestionView from "./questions/searchable-single-question-view";
+import CodeCaptureQuestionView from './questions/code-capture-question-view';
+import SearchableMultiQuestionView from './questions/searchable-multi-question-view';
+import SearchableSingleQuestionView from './questions/searchable-single-question-view';
 
 /**
  * @desc Question view factory
@@ -130,7 +130,7 @@ export default class QuestionViewFactory {
                 return new LoginPageQuestionView(model);
             case QuestionTypes.Hierarchy:
                 return new DropdownHierarchyQuestionView(model, this._questionViewSettings);
-            case  QuestionTypes.SearchableMulti:
+            case QuestionTypes.SearchableMulti:
                 return new SearchableMultiQuestionView(model, this._questionViewSettings);
             case QuestionTypes.SearchableSingle:
                 return new SearchableSingleQuestionView(model, this._questionViewSettings);
@@ -200,7 +200,7 @@ export default class QuestionViewFactory {
                 return new CarouselMultiGridQuestionView(model, this._questionViewSettings);
             }
 
-            if(model.innerQuestions.some(question => question.answerButtons)){
+            if (model.innerQuestions.some(question => question.answerButtons)) {
                 return new AnswerButtonsMultiGridQuestionView(model, this._questionViewSettings);
             }
 
@@ -262,11 +262,11 @@ export default class QuestionViewFactory {
             return new CaptureOrderMultiQuestionView(model, this._questionViewSettings);
         }
 
-        if(model.rankByDrag) {
-            return new RankByDragQuestionView(model, this._questionViewSettings)
+        if (model.rankByDrag) {
+            return new RankByDragQuestionView(model, this._questionViewSettings);
         }
 
-        if(model.rankByNumber){
+        if (model.rankByNumber) {
             return new RankByNumberQuestionView(model, this._questionViewSettings);
         }
 

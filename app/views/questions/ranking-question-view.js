@@ -16,7 +16,7 @@ export default class RankingQuestionView extends QuestionWithAnswersView {
 
         this._rankingStatusNode = this._container.find('.cf-ranking-status');
 
-        this._storedOtherValues = {...this._question.otherValues};
+        this._storedOtherValues = { ...this._question.otherValues };
 
         this._attachHandlersToDOM();
     }
@@ -72,55 +72,46 @@ export default class RankingQuestionView extends QuestionWithAnswersView {
         if (otherErrors.length > 0) {
             const otherNode = this._getAnswerOtherNode(validationResult.answerCode);
             const otherErrorBlockId = this._getAnswerOtherErrorBlockId(validationResult.answerCode);
-            otherNode
-                .attr('aria-errormessage', otherErrorBlockId)
-                .attr('aria-invalid', 'true');
+            otherNode.attr('aria-errormessage', otherErrorBlockId).attr('aria-invalid', 'true');
             this._answerErrorBlockManager.showErrors(otherErrorBlockId, otherNode, otherErrors);
         }
     }
 
     _hideErrors() {
         super._hideErrors();
-        this._question.answers.filter(answer => answer.isOther).forEach(answer => {
-            this._getAnswerOtherNode(answer.code)
-                .removeAttr('aria-errormessage')
-                .removeAttr('aria-invalid');
-        });
+        this._question.answers
+            .filter(answer => answer.isOther)
+            .forEach(answer => {
+                this._getAnswerOtherNode(answer.code).removeAttr('aria-errormessage').removeAttr('aria-invalid');
+            });
     }
 
-    _updateAnswerNodes({values = []}) {
-        if (values.length === 0)
-            return;
+    _updateAnswerNodes({ values = [] }) {
+        if (values.length === 0) return;
 
         this._question.answers.forEach(answer => {
-            this._getAnswerNode(answer.code)
-                .removeClass(this._selectedAnswerClass)
-                .attr('aria-pressed', 'false');
+            this._getAnswerNode(answer.code).removeClass(this._selectedAnswerClass).attr('aria-pressed', 'false');
             this._getAnswerRankNode(answer.code).text('-');
         });
 
         Object.entries(this._question.values).forEach(([code, value]) => {
-            this._getAnswerNode(code)
-                .addClass(this._selectedAnswerClass)
-                .attr('aria-pressed', 'true');
+            this._getAnswerNode(code).addClass(this._selectedAnswerClass).attr('aria-pressed', 'true');
             this._getAnswerRankNode(code).text(value);
         });
     }
 
-    _updateAnswerOtherNodes({values = [], otherValues = []}) {
+    _updateAnswerOtherNodes({ values = [], otherValues = [] }) {
         if (values.length > 0) {
-            this._question.answers.filter(answer => answer.isOther).forEach(answer => {
-                this._getAnswerOtherNode(answer.code)
-                    .attr('tabindex', '-1')
-                    .attr('aria-hidden', 'true');
-            });
+            this._question.answers
+                .filter(answer => answer.isOther)
+                .forEach(answer => {
+                    this._getAnswerOtherNode(answer.code).attr('tabindex', '-1').attr('aria-hidden', 'true');
+                });
 
             Object.keys(this._question.values)
                 .filter(answerCode => this._question.getAnswer(answerCode).isOther)
                 .forEach(answerCode => {
-                    this._getAnswerOtherNode(answerCode)
-                        .attr('tabindex', '0')
-                        .attr('aria-hidden', 'false');
+                    this._getAnswerOtherNode(answerCode).attr('tabindex', '0').attr('aria-hidden', 'false');
                 });
 
             values.forEach(answerCode => {
@@ -134,10 +125,10 @@ export default class RankingQuestionView extends QuestionWithAnswersView {
             });
         }
 
-        super._updateAnswerOtherNodes({otherValues});
+        super._updateAnswerOtherNodes({ otherValues });
     }
 
-    _updateStoredOtherValues({values = []}) {
+    _updateStoredOtherValues({ values = [] }) {
         values.forEach(answerCode => {
             const checked = Object.keys(this._question.values).includes(answerCode);
             if (!checked) {
@@ -193,8 +184,7 @@ export default class RankingQuestionView extends QuestionWithAnswersView {
 
         this._question.setValue(answer.code, null);
         Object.entries(this._question.values).forEach(([code, value]) => {
-            if (value > oldValue)
-                this._question.setValue(code, value - 1);
+            if (value > oldValue) this._question.setValue(code, value - 1);
         });
     }
 
@@ -206,21 +196,23 @@ export default class RankingQuestionView extends QuestionWithAnswersView {
             3) if other input value is changed
          */
         const answersStatuses = [];
-        Object.entries(this._question.values).sort((a, b) => a[1] - b[1]).forEach(([answerCode, rank]) => {
-            const answer = this._question.getAnswer(answerCode);
-            let answerStatus = `${rank} ${answer.text}`;
-            if (answer.isOther && !Utils.isEmpty(this._question.otherValues[answerCode])) {
-                answerStatus += `(${this._question.otherValues[answerCode]})`;
-            }
+        Object.entries(this._question.values)
+            .sort((a, b) => a[1] - b[1])
+            .forEach(([answerCode, rank]) => {
+                const answer = this._question.getAnswer(answerCode);
+                let answerStatus = `${rank} ${answer.text}`;
+                if (answer.isOther && !Utils.isEmpty(this._question.otherValues[answerCode])) {
+                    answerStatus += `(${this._question.otherValues[answerCode]})`;
+                }
 
-            answersStatuses.push(answerStatus);
-        });
+                answersStatuses.push(answerStatus);
+            });
 
         const status = `${this._question.text}: ${answersStatuses.join(', ')}`;
         this._rankingStatusNode.html(status);
     }
 
-    _onModelValueChange({changes}) {
+    _onModelValueChange({ changes }) {
         this._updateAnswerNodes(changes);
         this._updateAnswerOtherNodes(changes);
         this._updateRankingStatus(changes);
@@ -268,5 +260,3 @@ export default class RankingQuestionView extends QuestionWithAnswersView {
         this._toggleAnswer(this._currentAnswer);
     }
 }
-
-

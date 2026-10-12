@@ -1,6 +1,6 @@
 import QuestionWithAnswerView from './base/question-with-answers-view.js';
-import KEYS from "../helpers/keyboard-keys";
-import ValidationTypes from "../../api/models/validation/validation-types";
+import KEYS from '../helpers/keyboard-keys';
+import ValidationTypes from '../../api/models/validation/validation-types';
 
 export default class GridQuestionView extends QuestionWithAnswerView {
     /**
@@ -35,7 +35,7 @@ export default class GridQuestionView extends QuestionWithAnswerView {
         return this._scales[this._currentScaleIndex] || null;
     }
 
-    _getSelectedScaleClass(scale){
+    _getSelectedScaleClass(scale) {
         return scale.imagesSettings !== null ? this._selectedImageScaleCssClass : this._selectedScaleCssClass;
     }
 
@@ -52,32 +52,31 @@ export default class GridQuestionView extends QuestionWithAnswerView {
             });
 
             if (answer.isOther) {
-                this._getAnswerOtherNode(answer.code)
-                    .on('input', event => this._onAnswerOtherValueChangedHandler(answer, event.target.value));
+                this._getAnswerOtherNode(answer.code).on('input', event =>
+                    this._onAnswerOtherValueChangedHandler(answer, event.target.value)
+                );
             }
         });
 
         if (!this._settings.disableKeyboardSupport) {
             this._answers.forEach(answer => {
-                this._getScaleGroupNode(answer.code)
-                    .on('keydown', this._onGroupNodeKeyDown.bind(this));
+                this._getScaleGroupNode(answer.code).on('keydown', this._onGroupNodeKeyDown.bind(this));
 
                 if (answer.isOther) {
                     this._getAnswerOtherNode(answer.code).on('keydown', event =>
-                        this._onAnswerOtherNodeKeyDown(event, answer));
+                        this._onAnswerOtherNodeKeyDown(event, answer)
+                    );
                 }
 
                 this._scales.forEach(scale => {
-                    this._getScaleNode(answer.code, scale.code)
-                        .on('keydown', this._onScaleNodeKeyDown.bind(this));
+                    this._getScaleNode(answer.code, scale.code).on('keydown', this._onScaleNodeKeyDown.bind(this));
                 });
             });
         }
     }
 
-    _updateAnswerScaleNodes({values = []}) {
-        if (values.length === 0)
-            return;
+    _updateAnswerScaleNodes({ values = [] }) {
+        if (values.length === 0) return;
 
         values.forEach(answerCode => {
             this._scales.forEach(scale => {
@@ -86,8 +85,7 @@ export default class GridQuestionView extends QuestionWithAnswerView {
 
             const scaleCode = this._question.values[answerCode];
             if (scaleCode === undefined) {
-                this._getScaleNode(answerCode, this._scales[0].code)
-                    .attr('tabindex', '0');
+                this._getScaleNode(answerCode, this._scales[0].code).attr('tabindex', '0');
             } else {
                 this._selectScaleNode(answerCode, scaleCode);
             }
@@ -132,9 +130,7 @@ export default class GridQuestionView extends QuestionWithAnswerView {
 
         const answerHasNotOnlyOtherErrors = validationResult.errors.length > otherErrors.length;
         if (answerHasNotOnlyOtherErrors) {
-            this._getScaleGroupNode(answer.code)
-                .attr("aria-invalid", "true")
-                .attr("aria-errormessage", errorBlockId);
+            this._getScaleGroupNode(answer.code).attr('aria-invalid', 'true').attr('aria-errormessage', errorBlockId);
         }
     }
 
@@ -142,18 +138,13 @@ export default class GridQuestionView extends QuestionWithAnswerView {
         super._hideErrors();
 
         this._answers.forEach(answer => {
-            this._getScaleGroupNode(answer.code)
-                .removeAttr("aria-invalid")
-                .removeAttr("aria-errormessage");
+            this._getScaleGroupNode(answer.code).removeAttr('aria-invalid').removeAttr('aria-errormessage');
         });
 
-
-        this._container.find('.cf-text-box')
-            .removeAttr('aria-errormessage')
-            .removeAttr('aria-invalid');
+        this._container.find('.cf-text-box').removeAttr('aria-errormessage').removeAttr('aria-invalid');
     }
 
-    _onModelValueChange({changes}) {
+    _onModelValueChange({ changes }) {
         this._updateAnswerScaleNodes(changes);
         this._updateAnswerOtherNodes(changes);
     }

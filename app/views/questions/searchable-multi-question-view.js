@@ -7,12 +7,13 @@ export default class SearchableMultiQuestionView extends SearchableQuestionViewB
 
         this._selectedAnswerCssClass = 'cf-multi-answer--selected';
 
-        this._storedOtherValues = {...this._question.otherValues};
+        this._storedOtherValues = { ...this._question.otherValues };
     }
 
     _getSelectedAnswerText(answer) {
         return answer.isOther && !Utils.isEmpty(this._question.otherValues[answer.code])
-            ? this._question.otherValues[answer.code] : answer.text;
+            ? this._question.otherValues[answer.code]
+            : answer.text;
     }
 
     _renderAnswer(answer) {
@@ -44,24 +45,22 @@ export default class SearchableMultiQuestionView extends SearchableQuestionViewB
         });
     }
 
-
-    _updateAnswerNodes({values = []}) {
-        if (values.length === 0)
-            return;
+    _updateAnswerNodes({ values = [] }) {
+        if (values.length === 0) return;
 
         this._question.answers.forEach(answer => {
-            this._getAnswerNode(answer.code).removeClass(this._selectedAnswerCssClass)
+            this._getAnswerNode(answer.code).removeClass(this._selectedAnswerCssClass);
         });
 
         this._question.values.forEach(answerCode => {
-            this._getAnswerNode(answerCode).addClass(this._selectedAnswerCssClass)
+            this._getAnswerNode(answerCode).addClass(this._selectedAnswerCssClass);
         });
     }
 
     _updateAnswerOtherNodes(changes) {
         super._updateAnswerOtherNodes(changes);
 
-        const {values = []} = changes;
+        const { values = [] } = changes;
 
         values.forEach(answerCode => {
             const checked = this._question.values.includes(answerCode);
@@ -74,7 +73,7 @@ export default class SearchableMultiQuestionView extends SearchableQuestionViewB
         });
     }
 
-    _updateStoredOtherValues({values = []}) {
+    _updateStoredOtherValues({ values = [] }) {
         values.forEach(answerCode => {
             const checked = this._question.values.includes(answerCode);
             if (!checked) {

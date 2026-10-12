@@ -1,0 +1,25 @@
+.cf-max-diff-answer {
+  &__header {
+    &--center {
+      text-align: center;
+    }
+  }
+
+  &__text, &__other-input {
+    text-align: inherit;
+  }
+}
+
+.cf-max-diff-answer--rtl {
+  .cf-max-diff-answer {
+    &__header {
+      &--center {
+        text-align: center;
+      }
+    }
+
+    &__text, &__other-input {
+      text-align: inherit;
+    }
+  }
+}

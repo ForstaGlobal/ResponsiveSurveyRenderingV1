@@ -1,4 +1,4 @@
-import Question from './../base/question.js'
+import Question from './../base/question.js';
 import ValidationTypes from '../validation/validation-types.js';
 import RuleValidationResult from '../validation/rule-validation-result.js';
 import Utils from 'utils.js';
@@ -40,9 +40,9 @@ export default class OpenTextQuestion extends Question {
     /**
      * @inheritDoc
      */
-    get formValues(){
+    get formValues() {
         let form = {};
-        if(!Utils.isEmpty(this.value)){
+        if (!Utils.isEmpty(this.value)) {
             form[this.id] = this.value;
         }
 
@@ -54,11 +54,7 @@ export default class OpenTextQuestion extends Question {
      * @param {string} value - Answer text value.
      */
     setValue(value) {
-        this._setValueInternal(
-            'value',
-            () => this._setValue(value),
-            this._diffPrimitives,
-        );
+        this._setValueInternal('value', () => this._setValue(value), this._diffPrimitives);
     }
 
     _setValue(value) {
@@ -72,7 +68,7 @@ export default class OpenTextQuestion extends Question {
     }
 
     _validateRule(validationType) {
-        switch(validationType) {
+        switch (validationType) {
             case ValidationTypes.Required:
                 return this._validateRequired();
             case ValidationTypes.MaxLength:
@@ -80,12 +76,11 @@ export default class OpenTextQuestion extends Question {
         }
     }
 
-    _validateRequired(){
-        if (!this.required)
-            return new RuleValidationResult(true);
+    _validateRequired() {
+        if (!this.required) return new RuleValidationResult(true);
 
         let isValid = !Utils.isEmpty(this.value);
-        return new RuleValidationResult(isValid)
+        return new RuleValidationResult(isValid);
     }
 
     _validateMaxLength() {
@@ -97,4 +92,3 @@ export default class OpenTextQuestion extends Question {
         return new RuleValidationResult(isValid);
     }
 }
-

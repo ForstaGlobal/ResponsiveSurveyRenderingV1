@@ -1,13 +1,14 @@
 import $ from 'jquery';
 import Cookies from 'js-cookie';
 import Draggable from 'views/helpers/draggable';
+import Utils from 'utils';
 
 export default class TestNavigatorView {
     constructor(testNavigator) {
         this._questions = testNavigator.questions;
         this._filteredQuestions = this._questions;
         this._currentQuestionId = testNavigator.currentQuestionId;
-        this._iconsSvgUrl = "/cf_clientutil/wix/images/question-type-icons.svg";
+        this._iconsSvgUrl = '/cf_clientutil/wix/images/question-type-icons.svg';
 
         this._container = null;
         this._title = null;
@@ -37,19 +38,22 @@ export default class TestNavigatorView {
     }
 
     initPolyfill() {
-        if (window.navigator.userAgent.match(/.*Trident\/[4-7].0/) === null &&  window.navigator.userAgent.match(/MSIE\s([0-9]+);/) === null) {
+        if (
+            window.navigator.userAgent.match(/.*Trident\/[4-7].0/) === null &&
+            window.navigator.userAgent.match(/MSIE\s([0-9]+);/) === null
+        ) {
             return;
         }
 
         const xhr = new XMLHttpRequest();
-        xhr.open("GET", this._iconsSvgUrl, true);
+        xhr.open('GET', this._iconsSvgUrl, true);
         xhr.onload = e => {
-            const data = (new DOMParser()).parseFromString(e.target.responseText, "text/xml");
+            const data = new DOMParser().parseFromString(e.target.responseText, 'text/xml');
             const rootNode = data.querySelector('svg');
 
             if (rootNode === null) {
                 // eslint-disable-next-line no-console
-                console.error('TestNavigator: couldn\'t parse response');
+                console.error("TestNavigator: couldn't parse response");
                 return;
             }
 
@@ -62,9 +66,9 @@ export default class TestNavigatorView {
 
                 if (sourceNode !== null) {
                     node.querySelector('use').setAttribute('href', '#' + svgId);
-                    let sourceViewBox = sourceNode.getAttribute("viewBox");
+                    let sourceViewBox = sourceNode.getAttribute('viewBox');
 
-                    if (node.getAttribute("viewBox") == null && sourceViewBox) {
+                    if (node.getAttribute('viewBox') == null && sourceViewBox) {
                         node.setAttribute('viewBox', sourceViewBox);
                     }
 
@@ -75,7 +79,9 @@ export default class TestNavigatorView {
 
         xhr.onerror = e => {
             // eslint-disable-next-line no-console
-            console.error('TestNavigator: couldn\'t load icons SVG (' + e.target.status + ': ' + e.target.statusText + ')');
+            console.error(
+                "TestNavigator: couldn't load icons SVG (" + e.target.status + ': ' + e.target.statusText + ')'
+            );
         };
 
         xhr.send();
@@ -84,13 +90,15 @@ export default class TestNavigatorView {
     _render() {
         $('body').append(
             '<div class="cf-test-navigator" style="visibility: hidden">' +
-            '<div class="cf-test-navigator__collapse-button"></div>' +
-            '   <div class="cf-test-navigator__title">Test Navigator</div>' +
-            '   <div class="cf-test-navigator__search">' +
-            '       <input type="text" placeholder="Search">' +
-            '   </div>' +
-            '   <div class="cf-test-navigator__list">' + this._renderRows() + '</div>' +
-            '</div>'
+                '<div class="cf-test-navigator__collapse-button"></div>' +
+                '   <div class="cf-test-navigator__title">Test Navigator</div>' +
+                '   <div class="cf-test-navigator__search">' +
+                '       <input type="text" placeholder="Search">' +
+                '   </div>' +
+                '   <div class="cf-test-navigator__list">' +
+                this._renderRows() +
+                '</div>' +
+                '</div>'
         );
     }
 
@@ -99,9 +107,17 @@ export default class TestNavigatorView {
     }
 
     _renderRow(question) {
-        const activeClass = this._currentQuestionId !== null && this._currentQuestionId === question.id ? ' cf-test-navigator__list-item--active' : '';
+        const activeClass =
+            this._currentQuestionId !== null && this._currentQuestionId === question.id
+                ? ' cf-test-navigator__list-item--active'
+                : '';
         const hint = `${question.id} ${question.title}`;
-        const icon = '<svg class="cf-test-navigator__list-item-icon"><use xlink:href="' + this._iconsSvgUrl + '#icon-' + question.type + '" /></svg>';
+        const icon =
+            '<svg class="cf-test-navigator__list-item-icon"><use xlink:href="' +
+            this._iconsSvgUrl +
+            '#icon-' +
+            question.type +
+            '" /></svg>';
         const content = `${icon}<span>${question.id}</span> ${question.title}`;
         return `<a href="${question.link || ''}" class="cf-test-navigator__list-item ${activeClass}" title="${hint}">${content}</a>`;
     }
@@ -110,7 +126,7 @@ export default class TestNavigatorView {
         this._collapseButtonNode.on('click', this._onCollapseButtonClickHandler.bind(this));
         this._searchInputNode.on('input', this.onInputChangeHandler.bind(this));
         this._listNode.on('scroll', this._onListNodeScrollHandler.bind(this));
-        this._draggable = new Draggable(this._container, {handle: this._container.find('.cf-test-navigator__title')});
+        this._draggable = new Draggable(this._container, { handle: this._container.find('.cf-test-navigator__title') });
         this._draggable.dragEndEvent.on(coordinates => {
             Object.keys(coordinates).forEach(key => this._setCookieProperty(key, coordinates[key]));
         });
@@ -133,9 +149,9 @@ export default class TestNavigatorView {
         const y = parseInt(this._getCookieProperty('y')) || 40;
 
         this._container.css({
-            'position': 'fixed',
-            'left': x.toString() + 'px',
-            'top': y.toString() + 'px'
+            position: 'fixed',
+            left: x.toString() + 'px',
+            top: y.toString() + 'px',
         });
     }
 
@@ -187,20 +203,25 @@ export default class TestNavigatorView {
     }
 
     _getCookieProperty(property) {
-        const cookie = Cookies.getJSON('cf-test-navigator-responsive') || {};
-        return cookie[property];
+        const cookie = Cookies.get('cf-test-navigator-responsive');
+        const state = Utils.isEmpty(cookie) ? {} : JSON.parse(cookie);
+        return state[property];
     }
 
     _setCookieProperty(property, value) {
-        const cookie = Cookies.getJSON('cf-test-navigator-responsive') || {};
-        Cookies.set('cf-test-navigator-responsive', {...cookie, [property]: value});
+        const cookie = Cookies.get('cf-test-navigator-responsive');
+        const state = Utils.isEmpty(cookie) ? {} : JSON.parse(cookie);
+        Cookies.set('cf-test-navigator-responsive', JSON.stringify({ ...state, [property]: value }));
     }
 
     _filterQuestionList(searchValue) {
         this._delayedSearchHandler = null;
         if (searchValue.length !== 0) {
             this._filteredQuestions = this._questions.filter(item => {
-                if (item.id.toLowerCase().indexOf(searchValue) > -1 || item.title.toLowerCase().indexOf(searchValue) > -1) {
+                if (
+                    item.id.toLowerCase().indexOf(searchValue) > -1 ||
+                    item.title.toLowerCase().indexOf(searchValue) > -1
+                ) {
                     return true;
                 }
                 return false;
@@ -239,4 +260,3 @@ export default class TestNavigatorView {
         }, 500);
     }
 }
-

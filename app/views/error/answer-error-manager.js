@@ -5,7 +5,6 @@ import AnswerErrorBlock from './answer-error-block';
  * @Deprecated
  */
 export default class AnswerErrorManager {
-
     constructor(questionId) {
         this._questionId = questionId;
         this._answerErrorBlocks = [];
@@ -15,15 +14,23 @@ export default class AnswerErrorManager {
         const answerErrors = [];
         const otherAnswerErrors = [];
         answerValidationResult.errors.forEach(error => {
-            if(error.type === ValidationTypes.OtherRequired) {
+            if (error.type === ValidationTypes.OtherRequired) {
                 otherAnswerErrors.push(error.message);
             } else {
                 answerErrors.push(error.message);
             }
         });
 
-        this._showErrorBlock(this._getAnswerErrorBlockId(answerValidationResult.answerCode), answerTarget, answerErrors);
-        this._showErrorBlock(this._getAnswerOtherErrorBlockId(answerValidationResult.answerCode), otherAnswerTarget, otherAnswerErrors);
+        this._showErrorBlock(
+            this._getAnswerErrorBlockId(answerValidationResult.answerCode),
+            answerTarget,
+            answerErrors
+        );
+        this._showErrorBlock(
+            this._getAnswerOtherErrorBlockId(answerValidationResult.answerCode),
+            otherAnswerTarget,
+            otherAnswerErrors
+        );
     }
 
     removeAllErrors() {
@@ -39,8 +46,8 @@ export default class AnswerErrorManager {
         return `${this._questionId}_${answerCode}_other_error`;
     }
 
-    _showErrorBlock(id, target, errors)  {
-        if(errors.length === 0) {
+    _showErrorBlock(id, target, errors) {
+        if (errors.length === 0) {
             return;
         }
 

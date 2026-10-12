@@ -67,7 +67,7 @@ export default class RankingQuestion extends QuestionWithAnswers {
      * @type {object}
      * @readonly
      */
-    get multiCount(){
+    get multiCount() {
         return { ...this._multiCount };
     }
 
@@ -110,14 +110,14 @@ export default class RankingQuestion extends QuestionWithAnswers {
     /**
      * @inheritDoc
      */
-    get formValues(){
+    get formValues() {
         let form = {};
 
         Object.entries(this.values).forEach(([answerCode, answerValue]) => {
             let answer = this.getAnswer(answerCode);
-            if(answer){
+            if (answer) {
                 form[answer.fieldName] = answerValue;
-                if(answer.isOther){
+                if (answer.isOther) {
                     form[answer.otherFieldName] = this.otherValues[answerCode];
                 }
             }
@@ -132,10 +132,7 @@ export default class RankingQuestion extends QuestionWithAnswers {
      * @param {string} answerValue - Answer value.
      */
     setValue(answerCode, answerValue) {
-        this._setValueInternal(
-            'values',
-            () => this._setValue(answerCode, answerValue)
-        );
+        this._setValueInternal('values', () => this._setValue(answerCode, answerValue));
     }
 
     /**
@@ -144,10 +141,7 @@ export default class RankingQuestion extends QuestionWithAnswers {
      * @param {string} otherValue - Other value.
      */
     setOtherValue(answerCode, otherValue) {
-        this._setValueInternal(
-            'otherValues',
-            () => this._setOtherValue(answerCode, otherValue)
-        );
+        this._setValueInternal('otherValues', () => this._setOtherValue(answerCode, otherValue));
     }
 
     _setValue(answerCode, answerValue) {
@@ -168,8 +162,7 @@ export default class RankingQuestion extends QuestionWithAnswers {
                 return false;
             }
             delete this._values[answerCode];
-        }
-        else {
+        } else {
             const valueToSet = Number(answerValue);
             if (this._values[answerCode] === valueToSet) {
                 return false;
@@ -190,7 +183,7 @@ export default class RankingQuestion extends QuestionWithAnswers {
     }
 
     _validateRule(validationType) {
-        switch(validationType) {
+        switch (validationType) {
             case ValidationTypes.Required:
                 return this._validateRequired();
             case ValidationTypes.OtherRequired:
@@ -205,14 +198,12 @@ export default class RankingQuestion extends QuestionWithAnswers {
     }
 
     _validateRequired() {
-        if (!this.required)
-            return new RuleValidationResult(true);
+        if (!this.required) return new RuleValidationResult(true);
 
         // for list-type questions 'required' means 'all required',
         // so if there is multi count we should bypass and let multi count validation make a decision
-        let {equal, min, max} = this.multiCount;
-        if (!Utils.isEmpty(equal) || !Utils.isEmpty(min) || !Utils.isEmpty(max))
-            return new RuleValidationResult(true);
+        let { equal, min, max } = this.multiCount;
+        if (!Utils.isEmpty(equal) || !Utils.isEmpty(min) || !Utils.isEmpty(max)) return new RuleValidationResult(true);
 
         if (this._captureOrder) {
             const isValid = Object.keys(this.values).length > 0;
@@ -225,8 +216,7 @@ export default class RankingQuestion extends QuestionWithAnswers {
             let isNormalAnswer = !answer.isOther;
             let isEmpty = Utils.isEmpty(this.values[answer.code]);
 
-            if (isNormalAnswer && isEmpty)
-                invalidAnswers.push(answer.code);
+            if (isNormalAnswer && isEmpty) invalidAnswers.push(answer.code);
         });
 
         let isValid = invalidAnswers.length === 0;
@@ -241,8 +231,7 @@ export default class RankingQuestion extends QuestionWithAnswers {
             let isNotEmpty = !Utils.isEmpty(this.values[answer.code]);
             let otherIsEmpty = Utils.isEmpty(this.otherValues[answer.code]);
 
-            if (isOtherAnswer && isNotEmpty && otherIsEmpty)
-                invalidAnswers.push(answer.code);
+            if (isOtherAnswer && isNotEmpty && otherIsEmpty) invalidAnswers.push(answer.code);
         });
 
         let isValid = invalidAnswers.length === 0;
@@ -253,20 +242,19 @@ export default class RankingQuestion extends QuestionWithAnswers {
         let { equal, min, max } = this.multiCount;
         let count = Object.values(this.values).length;
 
-        if (!this.required && count === 0) // bypass if not required and not answered
+        if (!this.required && count === 0)
+            // bypass if not required and not answered
             return new RuleValidationResult(true);
 
-        if (this._captureOrder && this._isCurrentValueExclusive()) // bypass if exclusive answers is supported and selected answer is exclusive
+        if (this._captureOrder && this._isCurrentValueExclusive())
+            // bypass if exclusive answers is supported and selected answer is exclusive
             return new RuleValidationResult(true);
 
-        if(!Utils.isEmpty(equal) && count !== equal)
-            return new RuleValidationResult(false);
+        if (!Utils.isEmpty(equal) && count !== equal) return new RuleValidationResult(false);
 
-        if (!Utils.isEmpty(min) && count < min)
-            return new RuleValidationResult(false);
+        if (!Utils.isEmpty(min) && count < min) return new RuleValidationResult(false);
 
-        if (!Utils.isEmpty(max) && count > max)
-            return new RuleValidationResult(false);
+        if (!Utils.isEmpty(max) && count > max) return new RuleValidationResult(false);
 
         return new RuleValidationResult(true);
     }
@@ -274,12 +262,9 @@ export default class RankingQuestion extends QuestionWithAnswers {
     _validateRanking() {
         const values = Object.values(this.values);
 
-        if (values.length === 0)
-            return new RuleValidationResult(true);
+        if (values.length === 0) return new RuleValidationResult(true);
 
-        const isValid = values
-            .sort((a, b) => a - b)
-            .every((current, index) => current - 1 === index);
+        const isValid = values.sort((a, b) => a - b).every((current, index) => current - 1 === index);
 
         return new RuleValidationResult(isValid);
     }

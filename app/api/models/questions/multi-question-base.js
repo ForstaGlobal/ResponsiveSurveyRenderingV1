@@ -16,7 +16,7 @@ export default class MultiQuestionBase extends QuestionWithAnswers {
 
         this._multiCount = { ...model.multiCount };
 
-        this._values = model.values ? [ ...model.values ] : [];
+        this._values = model.values ? [...model.values] : [];
         this._otherValues = { ...model.otherValues };
     }
 
@@ -26,7 +26,7 @@ export default class MultiQuestionBase extends QuestionWithAnswers {
      * @readonly
      */
     get values() {
-        return [ ...this._values ];
+        return [...this._values];
     }
 
     /**
@@ -43,21 +43,21 @@ export default class MultiQuestionBase extends QuestionWithAnswers {
      * @type {object}
      * @readonly
      */
-    get multiCount(){
+    get multiCount() {
         return { ...this._multiCount };
     }
 
     /**
      * @inheritDoc
      */
-    get formValues(){
+    get formValues() {
         let form = {};
 
         this.values.forEach(answerCode => {
             let answer = this.getAnswer(answerCode);
-            if(answer){
-                form[answer.fieldName] = "1";
-                if(answer.isOther){
+            if (answer) {
+                form[answer.fieldName] = '1';
+                if (answer.isOther) {
                     form[answer.otherFieldName] = this.otherValues[answerCode];
                 }
             }
@@ -72,13 +72,8 @@ export default class MultiQuestionBase extends QuestionWithAnswers {
      * @param {bool} selected - if true the answer will be selected, else unselected.
      */
     setValue(answerCode, selected) {
-        this._setValueInternal(
-            'values',
-            () => this._setValue(answerCode, selected),
-            this._diffArrays,
-        );
+        this._setValueInternal('values', () => this._setValue(answerCode, selected), this._diffArrays);
     }
-
 
     /**
      * Clear question.
@@ -86,8 +81,11 @@ export default class MultiQuestionBase extends QuestionWithAnswers {
     clearValues() {
         this._setValueInternal(
             'values',
-            () => { this._clearValues(); return true; },
-            this._diffArrays,
+            () => {
+                this._clearValues();
+                return true;
+            },
+            this._diffArrays
         );
     }
 
@@ -97,32 +95,27 @@ export default class MultiQuestionBase extends QuestionWithAnswers {
      * @param {string} otherValue -Other value.
      */
     setOtherValue(answerCode, otherValue) {
-        this._setValueInternal(
-            'otherValues',
-            () => this._setOtherValue(answerCode, otherValue)
-        );
+        this._setValueInternal('otherValues', () => this._setOtherValue(answerCode, otherValue));
     }
 
     _setValue(answerCode, selected) {
-        const changed = selected
-            ? this._addValue(answerCode)
-            : this._removeValue(answerCode);
+        const changed = selected ? this._addValue(answerCode) : this._removeValue(answerCode);
         return changed;
     }
 
     _addValue(answerCode) {
         answerCode = answerCode.toString();
-        if(!answerCode || this._values.includes(answerCode)) {
+        if (!answerCode || this._values.includes(answerCode)) {
             return false;
         }
 
         const answer = this.getAnswer(answerCode);
-        if(!answer) {
+        if (!answer) {
             return false;
         }
 
         // there is no generic message for exclusivity validation, so we handle it here
-        if(answer.isExclusive || this._isCurrentValueExclusive()) {
+        if (answer.isExclusive || this._isCurrentValueExclusive()) {
             this._clearValues();
         }
 
@@ -133,7 +126,7 @@ export default class MultiQuestionBase extends QuestionWithAnswers {
 
     _removeValue(answerCode) {
         answerCode = answerCode.toString();
-        if(!answerCode || !this._values.includes(answerCode)) {
+        if (!answerCode || !this._values.includes(answerCode)) {
             return false;
         }
 
@@ -147,11 +140,11 @@ export default class MultiQuestionBase extends QuestionWithAnswers {
     }
 
     _isCurrentValueExclusive() {
-        return  this._values.length === 1 && this.getAnswer(this._values[0]).isExclusive;
+        return this._values.length === 1 && this.getAnswer(this._values[0]).isExclusive;
     }
 
     _validateRule(validationType) {
-        switch(validationType) {
+        switch (validationType) {
             case ValidationTypes.Required:
                 return this._validateRequired();
             case ValidationTypes.OtherRequired:
@@ -164,17 +157,16 @@ export default class MultiQuestionBase extends QuestionWithAnswers {
     }
 
     _validateRequired() {
-        if (!this.required)
-            return new RuleValidationResult(true);
+        if (!this.required) return new RuleValidationResult(true);
 
-        const {min, equal} = this.multiCount;
-        if (!Utils.isEmpty(min) || !Utils.isEmpty(equal)) // bypass if required and has multi count low boundary constraints (to be handled by multi count validation)
+        const { min, equal } = this.multiCount;
+        if (!Utils.isEmpty(min) || !Utils.isEmpty(equal))
+            // bypass if required and has multi count low boundary constraints (to be handled by multi count validation)
             return new RuleValidationResult(true);
 
         let isValid = this.values.length > 0;
         return new RuleValidationResult(isValid);
     }
-
 
     // TODO: move to base class
     _validateOther() {
@@ -184,7 +176,7 @@ export default class MultiQuestionBase extends QuestionWithAnswers {
             let isOther = answer.isOther;
             let isNotEmpty = this.values.includes(answer.code);
             let otherIsEmpty = Utils.isEmpty(this.otherValues[answer.code]);
-            if (isOther && isNotEmpty && otherIsEmpty){
+            if (isOther && isNotEmpty && otherIsEmpty) {
                 invalidAnswers.push(answer.code);
             }
         });
@@ -197,32 +189,30 @@ export default class MultiQuestionBase extends QuestionWithAnswers {
         let { equal, min, max } = this.multiCount;
         let count = this.values.length;
 
-        if (!this.required && count === 0) // bypass if not required and not answered (to be handled by required validation)
+        if (!this.required && count === 0)
+            // bypass if not required and not answered (to be handled by required validation)
             return new RuleValidationResult(true);
 
-        if (this._isCurrentValueExclusive()) // bypass is selected answer is exclusive
+        if (this._isCurrentValueExclusive())
+            // bypass is selected answer is exclusive
             return new RuleValidationResult(true);
 
-        if(!Utils.isEmpty(equal) && count !== equal)
-            return new RuleValidationResult(false);
+        if (!Utils.isEmpty(equal) && count !== equal) return new RuleValidationResult(false);
 
-        if (!Utils.isEmpty(min) && count < min)
-            return new RuleValidationResult(false);
+        if (!Utils.isEmpty(min) && count < min) return new RuleValidationResult(false);
 
-        if (!Utils.isEmpty(max) && count > max)
-            return new RuleValidationResult(false);
+        if (!Utils.isEmpty(max) && count > max) return new RuleValidationResult(false);
 
         return new RuleValidationResult(true);
     }
 
     _validateRequiredIfOtherSpecified() {
         let invalidAnswers = [];
-        
+
         Object.keys(this.otherValues).forEach(otherAnswerCode => {
-            if(!this.values.includes(otherAnswerCode))
-                invalidAnswers.push(otherAnswerCode);
+            if (!this.values.includes(otherAnswerCode)) invalidAnswers.push(otherAnswerCode);
         });
-        
+
         let isValid = invalidAnswers.length === 0;
         return new RuleValidationResult(isValid, invalidAnswers);
     }

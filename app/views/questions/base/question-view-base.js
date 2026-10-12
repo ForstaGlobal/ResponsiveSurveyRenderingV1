@@ -1,4 +1,4 @@
-import Event from "../../../event";
+import Event from '../../../event';
 
 export default class QuestionViewBase {
     /**
@@ -32,7 +32,7 @@ export default class QuestionViewBase {
 
     set pending(value) {
         this._pending = value;
-        this._pendingChangeEvent.trigger({id: this._question.id, pending: this._pending});
+        this._pendingChangeEvent.trigger({ id: this._question.id, pending: this._pending });
     }
 
     detachModelHandlers() {
@@ -45,9 +45,7 @@ export default class QuestionViewBase {
         this._question.validationCompleteEvent.on(this._boundOnValidationComplete);
     }
 
-    _onValidationComplete() {
-    }
+    _onValidationComplete() {}
 
-    _onModelValueChange() {
-    }
+    _onModelValueChange() {}
 }

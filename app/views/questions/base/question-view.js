@@ -1,5 +1,5 @@
 import QuestionErrorBlock from '../../error/question-error-block.js';
-import QuestionViewBase from "./question-view-base";
+import QuestionViewBase from './question-view-base';
 import $ from 'jquery';
 
 export default class QuestionView extends QuestionViewBase {

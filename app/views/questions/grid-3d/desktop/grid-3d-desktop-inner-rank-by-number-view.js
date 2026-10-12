@@ -19,9 +19,8 @@ export default class Grid3DDesktopInnerRankByNumberQuestionView extends Grid3DDe
         });
     }
 
-    _updateAnswerNodes({values = []}) {
-        if(values.length === 0)
-            return;
+    _updateAnswerNodes({ values = [] }) {
+        if (values.length === 0) return;
 
         this._question.answers.forEach(answer => {
             const answerInput = this._getAnswerNode(answer.code);
@@ -51,7 +50,7 @@ export default class Grid3DDesktopInnerRankByNumberQuestionView extends Grid3DDe
         this._answerErrorBlockManager.removeAllErrors();
     }
 
-    _onModelValueChange({changes}) {
+    _onModelValueChange({ changes }) {
         this._updateAnswerNodes(changes);
     }
 

@@ -1,8 +1,8 @@
-import QuestionViewBase from "../../base/question-view-base";
-import QuestionErrorBlock from "../../../error/question-error-block";
+import QuestionViewBase from '../../base/question-view-base';
+import QuestionErrorBlock from '../../../error/question-error-block';
 import QuestionTypes from 'api/question-types.js';
-import ErrorBlockManager from "../../../error/error-block-manager";
-import $ from "jquery";
+import ErrorBlockManager from '../../../error/error-block-manager';
+import $ from 'jquery';
 
 export default class Grid3DMobileInnerQuestionView extends QuestionViewBase {
     constructor(parentQuestion, question, settings = null) {
@@ -20,15 +20,14 @@ export default class Grid3DMobileInnerQuestionView extends QuestionViewBase {
         this._boundOnParentModelValidationComplete = this._onParentModelValidationComplete.bind(this);
 
         this._attachParentModelHandlers();
-
     }
 
     _getAnswerErrorBlockId(answerCode) {
-        return `mobile_${this._question.id}_${answerCode}_error`
+        return `mobile_${this._question.id}_${answerCode}_error`;
     }
 
     _getAnswerOtherErrorBlockId(answerCode) {
-        return `mobile_${this._question.id}_${answerCode}_other_error`
+        return `mobile_${this._question.id}_${answerCode}_other_error`;
     }
 
     _getAnswerNode(answerCode) {
@@ -51,7 +50,7 @@ export default class Grid3DMobileInnerQuestionView extends QuestionViewBase {
         return $(`#mobile_${this._question.id}_${answerCode}_${scaleCode}`);
     }
 
-    _getTargetNodeForAnswerError(answerCode){
+    _getTargetNodeForAnswerError(answerCode) {
         return this._getAnswerOtherNode(answerCode);
     }
 
@@ -89,7 +88,9 @@ export default class Grid3DMobileInnerQuestionView extends QuestionViewBase {
     }
 
     _showAnswerErrors(validationResult) {
-        validationResult.answerValidationResults.filter(result => !result.isValid).forEach(result => this._showAnswerError(result));
+        validationResult.answerValidationResults
+            .filter(result => !result.isValid)
+            .forEach(result => this._showAnswerError(result));
     }
 
     _showAnswerError(validationResult) {
@@ -129,7 +130,7 @@ export default class Grid3DMobileInnerQuestionView extends QuestionViewBase {
         }
     }
 
-    _onParentModelValueChange({changes}) {
+    _onParentModelValueChange({ changes }) {
         if (changes.otherValues === undefined) {
             return;
         }
@@ -146,7 +147,7 @@ export default class Grid3DMobileInnerQuestionView extends QuestionViewBase {
             if (!answer.isOther) {
                 return;
             }
-            if(!this._isAnswerInQuestionValue(answer.code)) {
+            if (!this._isAnswerInQuestionValue(answer.code)) {
                 return;
             }
 

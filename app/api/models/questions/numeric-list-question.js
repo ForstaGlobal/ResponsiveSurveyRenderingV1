@@ -88,8 +88,10 @@ export default class NumericListQuestion extends QuestionWithAnswers {
      * @type {string}
      * @readonly
      */
-    get totalSum(){
-        return Object.values(this._values).reduce((prev, current) => prev + Utils.toNumber(current), 0).toFixed(this._numeric.scale);
+    get totalSum() {
+        return Object.values(this._values)
+            .reduce((prev, current) => prev + Utils.toNumber(current), 0)
+            .toFixed(this._numeric.scale);
     }
 
     /**
@@ -131,14 +133,14 @@ export default class NumericListQuestion extends QuestionWithAnswers {
     /**
      * @inheritDoc
      */
-    get formValues(){
+    get formValues() {
         let form = {};
 
         Object.entries(this.values).forEach(([answerCode, answerValue]) => {
             let answer = this.getAnswer(answerCode);
-            if(answer){
+            if (answer) {
                 form[answer.fieldName] = answerValue;
-                if(answer.isOther){
+                if (answer.isOther) {
                     form[answer.otherFieldName] = this.otherValues[answerCode];
                 }
             }
@@ -171,10 +173,7 @@ export default class NumericListQuestion extends QuestionWithAnswers {
      * @param {numeric|string} answerValue - Answer value.
      */
     setValue(answerCode, answerValue) {
-        this._setValueInternal(
-            'values',
-            () => this._setValue(answerCode, answerValue)
-        );
+        this._setValueInternal('values', () => this._setValue(answerCode, answerValue));
     }
 
     /**
@@ -183,10 +182,7 @@ export default class NumericListQuestion extends QuestionWithAnswers {
      * @param {string} otherValue -Other value.
      */
     setOtherValue(answerCode, otherValue) {
-        this._setValueInternal(
-            'otherValues',
-            () => this._setOtherValue(answerCode, otherValue),
-        );
+        this._setValueInternal('otherValues', () => this._setOtherValue(answerCode, otherValue));
     }
 
     _setValue(answerCode, answerValue) {
@@ -198,11 +194,11 @@ export default class NumericListQuestion extends QuestionWithAnswers {
             return false;
         }
 
-        if(this._values[answerCode] === answerValue) {
+        if (this._values[answerCode] === answerValue) {
             return false;
         }
 
-        if(answerValue === null) {
+        if (answerValue === null) {
             delete this._values[answerCode];
         } else {
             this._values[answerCode] = answerValue;
@@ -212,7 +208,7 @@ export default class NumericListQuestion extends QuestionWithAnswers {
     }
 
     _validateRule(validationType) {
-        switch(validationType) {
+        switch (validationType) {
             case ValidationTypes.Required:
                 return this._validateRequired();
             case ValidationTypes.OtherRequired:
@@ -235,14 +231,12 @@ export default class NumericListQuestion extends QuestionWithAnswers {
     }
 
     _validateRequired() {
-        if (!this.required)
-            return new RuleValidationResult(true);
+        if (!this.required) return new RuleValidationResult(true);
 
         // for list-type questions 'required' means 'all required',
         // so if there is multi count we should bypass and let multi count validation make a decision
-        let {equal, min, max} = this.multiCount;
-        if (!Utils.isEmpty(equal) || !Utils.isEmpty(min) || !Utils.isEmpty(max))
-            return new RuleValidationResult(true);
+        let { equal, min, max } = this.multiCount;
+        if (!Utils.isEmpty(equal) || !Utils.isEmpty(min) || !Utils.isEmpty(max)) return new RuleValidationResult(true);
 
         let invalidAnswers = [];
 
@@ -250,8 +244,7 @@ export default class NumericListQuestion extends QuestionWithAnswers {
             let isNormalAnswer = !answer.isOther;
             let isEmpty = Utils.isEmpty(this.values[answer.code]);
 
-            if (isNormalAnswer && isEmpty)
-                invalidAnswers.push(answer.code);
+            if (isNormalAnswer && isEmpty) invalidAnswers.push(answer.code);
         });
 
         let isValid = invalidAnswers.length === 0;
@@ -266,22 +259,19 @@ export default class NumericListQuestion extends QuestionWithAnswers {
             let isNotEmpty = !Utils.isEmpty(this.values[answer.code]);
             let otherIsEmpty = Utils.isEmpty(this.otherValues[answer.code]);
 
-            if (isOtherAnswer && isNotEmpty && otherIsEmpty)
-                invalidAnswers.push(answer.code);
+            if (isOtherAnswer && isNotEmpty && otherIsEmpty) invalidAnswers.push(answer.code);
         });
 
         let isValid = invalidAnswers.length === 0;
         return new RuleValidationResult(isValid, invalidAnswers);
     }
 
-    _validateNumeric(){
+    _validateNumeric() {
         let invalidAnswers = [];
-        for(let[code, value] of Object.entries(this.values)) {
-            if(Utils.isEmpty(value))
-                continue;
+        for (let [code, value] of Object.entries(this.values)) {
+            if (Utils.isEmpty(value)) continue;
 
-            if (Utils.isNotANumber(value))
-                invalidAnswers.push(code);
+            if (Utils.isNotANumber(value)) invalidAnswers.push(code);
         }
 
         let isValid = invalidAnswers.length === 0;
@@ -290,19 +280,15 @@ export default class NumericListQuestion extends QuestionWithAnswers {
 
     _validatePrecision() {
         let { precision } = this.numeric;
-        if (Utils.isEmpty(precision))
-            return new RuleValidationResult(true);
+        if (Utils.isEmpty(precision)) return new RuleValidationResult(true);
 
         let invalidAnswers = [];
-        for(let[code, value] of Object.entries(this.values)) {
-            if(Utils.isEmpty(value))
-                continue;
-            if(Utils.isNotANumber(value))
-                continue;
+        for (let [code, value] of Object.entries(this.values)) {
+            if (Utils.isEmpty(value)) continue;
+            if (Utils.isNotANumber(value)) continue;
 
-            let {totalDigits} = Utils.measureNumber(value);
-            if(totalDigits > precision)
-                invalidAnswers.push(code);
+            let { totalDigits } = Utils.measureNumber(value);
+            if (totalDigits > precision) invalidAnswers.push(code);
         }
 
         let isValid = invalidAnswers.length === 0;
@@ -311,19 +297,15 @@ export default class NumericListQuestion extends QuestionWithAnswers {
 
     _validateScale() {
         let { scale } = this.numeric;
-        if (Utils.isEmpty(scale))
-            return new RuleValidationResult(true);
+        if (Utils.isEmpty(scale)) return new RuleValidationResult(true);
 
         let invalidAnswers = [];
-        for(let[code, value] of Object.entries(this.values)) {
-            if(Utils.isEmpty(value))
-                continue;
-            if(Utils.isNotANumber(value))
-                continue;
+        for (let [code, value] of Object.entries(this.values)) {
+            if (Utils.isEmpty(value)) continue;
+            if (Utils.isNotANumber(value)) continue;
 
-            let {decimalDigits} = Utils.measureNumber(value);
-            if(decimalDigits > scale)
-                invalidAnswers.push(code)
+            let { decimalDigits } = Utils.measureNumber(value);
+            if (decimalDigits > scale) invalidAnswers.push(code);
         }
 
         let isValid = invalidAnswers.length === 0;
@@ -332,21 +314,17 @@ export default class NumericListQuestion extends QuestionWithAnswers {
 
     _validateRange() {
         let { min, max } = this.numeric;
-        if (Utils.isEmpty(min) && Utils.isEmpty(max))
-            return new RuleValidationResult(true);
+        if (Utils.isEmpty(min) && Utils.isEmpty(max)) return new RuleValidationResult(true);
 
         let invalidAnswers = [];
-        for(let[code, value] of Object.entries(this.values)) {
-            if(Utils.isEmpty(value))
-                continue;
-            if(Utils.isNotANumber(value))
-                continue;
+        for (let [code, value] of Object.entries(this.values)) {
+            if (Utils.isEmpty(value)) continue;
+            if (Utils.isNotANumber(value)) continue;
 
             let tooSmall = !Utils.isEmpty(min) && value < min;
             let tooLarge = !Utils.isEmpty(max) && value > max;
 
-            if(tooSmall || tooLarge)
-                invalidAnswers.push(code)
+            if (tooSmall || tooLarge) invalidAnswers.push(code);
         }
 
         let isValid = invalidAnswers.length === 0;
@@ -357,17 +335,15 @@ export default class NumericListQuestion extends QuestionWithAnswers {
         const { equal, min, max } = this.multiCount;
         const count = Object.keys(this.values).length;
 
-        if (!this.required && count === 0) // bypass if not required and not answered
+        if (!this.required && count === 0)
+            // bypass if not required and not answered
             return new RuleValidationResult(true);
 
-        if(!Utils.isEmpty(equal) && count !== equal)
-            return new RuleValidationResult(false);
+        if (!Utils.isEmpty(equal) && count !== equal) return new RuleValidationResult(false);
 
-        if (!Utils.isEmpty(min) && count < min)
-            return new RuleValidationResult(false);
+        if (!Utils.isEmpty(min) && count < min) return new RuleValidationResult(false);
 
-        if (!Utils.isEmpty(max) && count > max)
-            return new RuleValidationResult(false);
+        if (!Utils.isEmpty(max) && count > max) return new RuleValidationResult(false);
 
         return new RuleValidationResult(true);
     }
@@ -376,23 +352,22 @@ export default class NumericListQuestion extends QuestionWithAnswers {
         const { equal, min, max } = this.multiSum;
         const values = Object.values(this.values);
 
-        if(!this.required && values.length === 0) // bypass if not required and not answered
+        if (!this.required && values.length === 0)
+            // bypass if not required and not answered
             return new RuleValidationResult(true);
 
         const hasNotANumberValue = values.find(value => Utils.isNotANumber(value));
-        if (hasNotANumberValue) // bypass if invalid type in values
+        if (hasNotANumberValue)
+            // bypass if invalid type in values
             return new RuleValidationResult(true);
 
         let sum = values.reduce((sum, current) => sum + Utils.toNumber(current), 0);
 
-        if(!Utils.isEmpty(equal) && sum !== equal)
-            return new RuleValidationResult(false);
+        if (!Utils.isEmpty(equal) && sum !== equal) return new RuleValidationResult(false);
 
-        if (!Utils.isEmpty(min) && sum < min)
-            return new RuleValidationResult(false);
+        if (!Utils.isEmpty(min) && sum < min) return new RuleValidationResult(false);
 
-        if (!Utils.isEmpty(max) && sum > max)
-            return new RuleValidationResult(false);
+        if (!Utils.isEmpty(max) && sum > max) return new RuleValidationResult(false);
 
         return new RuleValidationResult(true);
     }

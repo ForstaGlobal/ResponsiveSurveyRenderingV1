@@ -1,5 +1,5 @@
-import Grid3DDesktopInnerQuestionView from "./grid-3d-desktop-inner-question-view";
-import ErrorBlockManager from "../../../error/error-block-manager";
+import Grid3DDesktopInnerQuestionView from './grid-3d-desktop-inner-question-view';
+import ErrorBlockManager from '../../../error/error-block-manager';
 
 export default class Grid3DDesktopInnerNumericListQuestionView extends Grid3DDesktopInnerQuestionView {
     constructor(parentQuestion, question, settings = null) {
@@ -31,9 +31,8 @@ export default class Grid3DDesktopInnerNumericListQuestionView extends Grid3DDes
         this._answerErrorBlockManager.removeAllErrors();
     }
 
-    _updateAnswerNodes({values = []}) {
-        if(values.length === 0)
-            return;
+    _updateAnswerNodes({ values = [] }) {
+        if (values.length === 0) return;
 
         this._question.answers.forEach(answer => {
             const answerInput = this._getAnswerNode(answer.code);
@@ -48,10 +47,10 @@ export default class Grid3DDesktopInnerNumericListQuestionView extends Grid3DDes
         this._question.setValue(answerCode, answerValue);
     }
 
-    _onModelValueChange({changes}) {
+    _onModelValueChange({ changes }) {
         this._updateAnswerNodes(changes);
 
-        if(this._question.autoSum){
+        if (this._question.autoSum) {
             this._container.find(`#desktop_${this._question.id}_autosum`).text(this._question.totalSum);
         }
     }

@@ -14,24 +14,22 @@ export default class AutoNextNavigator {
     }
 
     _initAutoNextByInterval() {
-        if(Utils.isEmpty(this._page.surveyInfo.autoNextInterval)) {
+        if (Utils.isEmpty(this._page.surveyInfo.autoNextInterval)) {
             return;
         }
 
-        setTimeout(() => this._page.next(), this._page.surveyInfo.autoNextInterval * 1000)
+        setTimeout(() => this._page.next(), this._page.surveyInfo.autoNextInterval * 1000);
     }
 
     _initAutoNextByComplete() {
-        const {surveyInfo, questions} = this._page;
+        const { surveyInfo, questions } = this._page;
         if (!surveyInfo.autoNext) {
             return;
         }
 
-        if (!questions.every(x => this._supportsAutoNext(x)))
-            return;
+        if (!questions.every(x => this._supportsAutoNext(x))) return;
 
-        if (questions.every(x => this._isInfo(x)))
-            return;
+        if (questions.every(x => this._isInfo(x))) return;
 
         questions.forEach(question => {
             if (question instanceof Question) {
@@ -41,11 +39,9 @@ export default class AutoNextNavigator {
     }
 
     _supportsAutoNext(question) {
-        if (this._isInfo(question))
-            return true;
+        if (this._isInfo(question)) return true;
 
-        if (!question.answers || !question.answers.every(x => !x.isOther))
-            return false;
+        if (!question.answers || !question.answers.every(x => !x.isOther)) return false;
 
         return this._isSingle(question) || this._isGrid(question) || this._isGrid3D(question);
     }
@@ -59,7 +55,7 @@ export default class AutoNextNavigator {
             QuestionTypes.Single,
             QuestionTypes.HorizontalRatingScaleSingle,
             QuestionTypes.GridBarsSingle,
-            QuestionTypes.StarRatingSingle
+            QuestionTypes.StarRatingSingle,
         ];
         return singleTypes.includes(question.type);
     }
@@ -69,7 +65,7 @@ export default class AutoNextNavigator {
             QuestionTypes.Grid,
             QuestionTypes.HorizontalRatingScale,
             QuestionTypes.GridBars,
-            QuestionTypes.StarRating
+            QuestionTypes.StarRating,
         ];
         return gridTypes.includes(question.type);
     }
@@ -80,23 +76,18 @@ export default class AutoNextNavigator {
     }
 
     _onQuestionChange() {
-        const {questions} = this._page;
-        if (questions.every(x => this._isAnswered(x)))
-            this._page.next();
+        const { questions } = this._page;
+        if (questions.every(x => this._isAnswered(x))) this._page.next();
     }
 
     _isAnswered(question) {
-        if (this._isInfo(question))
-            return true;
+        if (this._isInfo(question)) return true;
 
-        if (this._isSingle(question))
-            return !Utils.isEmpty(question.value);
+        if (this._isSingle(question)) return !Utils.isEmpty(question.value);
 
-        if (this._isGrid(question))
-            return question.answers.every(x => !Utils.isEmpty(question.values[x.code]));
+        if (this._isGrid(question)) return question.answers.every(x => !Utils.isEmpty(question.values[x.code]));
 
-        if (this._isGrid3D(question))
-            return question.innerQuestions.every(x => this._isAnswered(x));
+        if (this._isGrid3D(question)) return question.innerQuestions.every(x => this._isAnswered(x));
 
         return false;
     }

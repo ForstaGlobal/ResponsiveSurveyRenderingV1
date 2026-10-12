@@ -16,7 +16,8 @@ export default class DynamicQuestionsManager {
             this._pageView.getFormAction(),
             this._pageView.getFormMethod(),
             this._pageView.getHiddenInputs().concat(this._page.formValues),
-            this._processResponse.bind(this));
+            this._processResponse.bind(this)
+        );
     }
 
     _processResponse(result) {

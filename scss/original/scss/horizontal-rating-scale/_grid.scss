@@ -1,0 +1,145 @@
+@use "../_mixins/grid-layout";
+@use "../_mixins/radio_checkbox";
+@use "../_mixins/rating-grid";
+@use "../variables";
+@use "single";
+
+$hrs-item-indent: 4px;
+
+.cf-hrs-grid-answer {
+
+  &__control {
+    display: flex;
+  }
+
+  &__scale-container {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__scale {
+    display: flex;
+    flex: 1 0 auto;
+
+    &-item {
+      flex: 1 0 0px;
+      @include rating-grid.scale_item();
+    }
+  }
+
+  &__scale-label-panel {
+    overflow: auto;
+  }
+}
+
+@media (max-width: variables.$desktop-layout-delimiter) {
+  .cf-hrs-grid-answer {
+    margin-bottom: 2em;
+
+    &__control {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    &__scale-container {
+      margin-bottom: 1em;
+    }
+
+    &__scale-label-panel {
+      display: none;
+      margin-bottom: $hrs-item-indent*0.5;
+    }
+
+    &__scale-item {
+      margin-right: $hrs-item-indent*0.5;
+    }
+
+    &__na {
+      @include radio_checkbox.radio_list();
+
+      &-item {
+        margin-bottom: 0.5em;
+      }
+    }
+
+    &--first {
+      .cf-hrs-grid-answer__scale-label-panel {
+        display: block;
+      }
+    }
+
+    &--fake-for-panel {
+      display: none;
+    }
+  }
+}
+
+@media (min-width: variables.$desktop-layout-delimiter + 1) {
+  .cf-hrs-grid-answer {
+    margin-bottom: $hrs-item-indent;
+    @include grid-layout.grid-layout-answer-content-indent(2.4em, 1.2em);
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    &__text {
+      line-height: 1.2em;
+    }
+
+    &__scale-label-panel {
+      display: none;
+    }
+
+    &__na {
+      margin-left: 16px;
+
+      @include rating-grid.na_scale();
+    }
+
+    &--fake-for-panel {
+      .cf-hrs-grid-answer__scale {
+        display: none;
+      }
+
+      .cf-hrs-grid-answer__scale-label-panel {
+        display: block;
+      }
+
+      .cf-hrs-grid-answer__na {
+        visibility: hidden;
+        height: 1px;
+      }
+    }
+  }
+}
+
+.cf-hrs-grid--rtl .cf-hrs-grid-answer__scale-item {
+  @include rating-grid.scale_item(true);
+}
+
+@media (max-width: variables.$desktop-layout-delimiter) {
+  .cf-hrs-grid--rtl {
+    .cf-hrs-grid-answer {
+      &__na {
+        @include radio_checkbox.radio_list(1.4em, true);
+      }
+      &__scale-item {
+        margin-right: 0;
+        margin-left: $hrs-item-indent*0.5;
+      }
+    }
+  }
+}
+
+@media (min-width: variables.$desktop-layout-delimiter + 1) {
+  .cf-hrs-grid--rtl {
+    .cf-hrs-grid-answer__na {
+      margin-left: 0;
+      margin-right: 16px;
+      @include rating-grid.na_scale(true);
+    }
+  }
+}
+

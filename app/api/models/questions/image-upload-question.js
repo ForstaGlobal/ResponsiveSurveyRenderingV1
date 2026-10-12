@@ -1,4 +1,4 @@
-import Question from "../base/question";
+import Question from '../base/question';
 import Utils from 'utils.js';
 
 /**
@@ -35,10 +35,10 @@ export default class ImageUploadQuestion extends Question {
     /**
      * @inheritDoc
      */
-    get formValues(){
+    get formValues() {
         const form = {};
 
-        if(!Utils.isEmpty(this._imageId)){
+        if (!Utils.isEmpty(this._imageId)) {
             form[this.id] = this._imageId;
         }
 
@@ -86,11 +86,7 @@ export default class ImageUploadQuestion extends Question {
      * @param {string} imagePreviewUrl - Image preview URL.
      */
     setValue(imageId, imagePreviewUrl) {
-        this._setValueInternal(
-            'value',
-            () => this._setValue(imageId, imagePreviewUrl),
-            this._diffPrimitives,
-        );
+        this._setValueInternal('value', () => this._setValue(imageId, imagePreviewUrl), this._diffPrimitives);
     }
 
     _setValue(imageId, imagePreviewUrl) {

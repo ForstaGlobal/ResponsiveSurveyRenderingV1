@@ -1,0 +1,30 @@
+@use "_style_bundle_variables.scss";
+@forward "_style_bundle_variables.scss";
+
+/* Color palette */
+$primary-shade-0: rgba(style_bundle_variables.$primary-color,0.9);
+$primary-shade-1: rgba(style_bundle_variables.$primary-color,0.8);
+$primary-shade-2: rgba(style_bundle_variables.$primary-color,0.54);
+$primary-shade-3: rgba(style_bundle_variables.$primary-color,0.4);
+$primary-shade-4: rgba(style_bundle_variables.$primary-color,0.2);
+$primary-shade-5: rgba(style_bundle_variables.$primary-color,0.05);
+
+/* Layout */
+$min-width: 320px;
+$max-width: 1280px;
+
+$font-size: 16px;
+$control-size: 24px;
+
+$question-text-font-color: style_bundle_variables.$primary-color;
+$question-instruction-font-color: $primary-shade-2;
+
+$control-primary-color: $primary-shade-2;
+
+$progress-color: $primary-shade-4;
+$progress-indicator-color: style_bundle_variables.$control-active-color;
+
+$error-text-color: style_bundle_variables.$error-color;
+$error-border-color: style_bundle_variables.$error-color;
+$error-toast-bg-color: style_bundle_variables.$error-color;
+$error-toast-font-color: style_bundle_variables.$question-bg-color;

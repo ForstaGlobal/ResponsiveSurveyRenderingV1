@@ -33,7 +33,7 @@ export default class GridRatingQuestion extends GridQuestionBase {
      * @readonly
      */
     get scaleItems() {
-        return [ ...this._scaleItems ];
+        return [...this._scaleItems];
     }
 
     /**
@@ -42,7 +42,7 @@ export default class GridRatingQuestion extends GridQuestionBase {
      * @readonly
      */
     get nonScaleItems() {
-        return [ ...this._nonScaleItems ];
+        return [...this._nonScaleItems];
     }
 
     _loadScales({ scaleItems = [], nonScaleItems = [] }) {

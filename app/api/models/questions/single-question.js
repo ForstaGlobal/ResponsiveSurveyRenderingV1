@@ -96,8 +96,7 @@ export default class SingleQuestion extends QuestionWithAnswers {
      * @readonly
      */
     get otherValue() {
-        if (Utils.isEmpty(this._value))
-            return null;
+        if (Utils.isEmpty(this._value)) return null;
 
         return this._otherValues[this._value] || null;
     }
@@ -125,13 +124,13 @@ export default class SingleQuestion extends QuestionWithAnswers {
     /**
      * @inheritDoc
      */
-    get formValues(){
+    get formValues() {
         let form = {};
 
         let answer = this.getAnswer(this.value);
-        if(answer){
+        if (answer) {
             form[answer.fieldName] = this.value;
-            if(answer.isOther){
+            if (answer.isOther) {
                 form[answer.otherFieldName] = this.otherValue;
             }
         }
@@ -144,11 +143,7 @@ export default class SingleQuestion extends QuestionWithAnswers {
      * @param {string} value - Answer code.
      */
     setValue(value) {
-        this._setValueInternal(
-            'value',
-            () => this._setValue(value),
-            this._diffPrimitives,
-        );
+        this._setValueInternal('value', () => this._setValue(value), this._diffPrimitives);
     }
 
     /**
@@ -156,11 +151,7 @@ export default class SingleQuestion extends QuestionWithAnswers {
      * @param {string} otherValue - other value.
      */
     setOtherValue(otherValue) {
-        this._setValueInternal(
-            'otherValue',
-            () => this._setOtherValue(this._value, otherValue),
-            this._diffPrimitives,
-        );
+        this._setValueInternal('otherValue', () => this._setOtherValue(this._value, otherValue), this._diffPrimitives);
     }
 
     _setValue(value) {
@@ -184,7 +175,7 @@ export default class SingleQuestion extends QuestionWithAnswers {
     }
 
     _validateRule(validationType) {
-        switch(validationType) {
+        switch (validationType) {
             case ValidationTypes.Required:
                 return this._validateRequired();
             case ValidationTypes.OtherRequired:
@@ -195,25 +186,22 @@ export default class SingleQuestion extends QuestionWithAnswers {
     }
 
     _validateRequired() {
-        if (!this.required)
-            return new RuleValidationResult(true);
+        if (!this.required) return new RuleValidationResult(true);
 
         let isValid = !Utils.isEmpty(this.value);
         return new RuleValidationResult(isValid);
     }
 
-    _validateOther(){
-        if (Utils.isEmpty(this.value))
-            return new RuleValidationResult(true);
+    _validateOther() {
+        if (Utils.isEmpty(this.value)) return new RuleValidationResult(true);
 
         let answer = this.getAnswer(this.value);
         let isValid = !answer.isOther || !Utils.isEmpty(this.otherValue);
         return new RuleValidationResult(isValid, [this.value]);
     }
 
-    _validateRequiredIfOtherSpecified(){
-        if(!Utils.isEmpty(this.value))
-            return new RuleValidationResult(true);
+    _validateRequiredIfOtherSpecified() {
+        if (!Utils.isEmpty(this.value)) return new RuleValidationResult(true);
 
         let invalidAnswers = Object.keys(this._otherValues);
 

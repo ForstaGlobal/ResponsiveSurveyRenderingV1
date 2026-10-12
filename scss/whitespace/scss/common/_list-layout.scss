@@ -1,0 +1,100 @@
+@use "../variables";
+
+@mixin list() {
+  display: flex;
+  flex-direction: column;
+
+  &-item,
+  &__item {
+    margin-bottom: 16px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.cf-list {
+  @include list();
+}
+
+.cf-list--compact {
+  max-width: 400px;
+}
+
+.cf-list--inline-two-columns {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 0 -8px -8px 0;
+
+  .cf-list__item {
+    margin-right: 8px;
+    margin-bottom: 8px;
+  }
+
+  @media (max-width: variables.$desktop-layout-delimiter) {
+    justify-content: space-between;
+
+    .cf-list__item {
+      flex: 1 1 40%;
+      text-align: center;
+    }
+
+    &::after {
+      content: '';
+      flex: 1 1 40%;
+      margin-right: 8px;
+    }
+  }
+
+  @media (min-width: variables.$desktop-layout-delimiter + 1) {
+    justify-content: center;
+
+    .cf-list__item {
+      flex: 0 0 auto;
+    }
+  }
+}
+
+.cf-list--rtl {
+  .cf-list--inline-two-columns {
+    margin: -8 -8px 0 0;
+
+    .cf-list__item {
+      margin-right: 0;
+      margin-left: 8px;
+    }
+
+    @media (max-width: variables.$desktop-layout-delimiter) {
+      &::after {
+        margin-right: 0;
+        margin-left: 8px;
+      }
+    }
+  }
+}
+
+@media (min-width: variables.$desktop-layout-delimiter + 1) {
+  .cf-list--multi-columns {
+    display: -ms-grid;
+    display: grid;
+
+    grid-auto-flow: column;
+    grid-column-gap: 5%;
+
+    .cf-list__item:last-child {
+      margin-bottom: 16px;
+    }
+  }
+
+  // Ugly workaround for unsupported grid-gap property in IE/EDGE
+  _:-ms-lang(x), .cf-list--multi-columns .cf-list__item {
+    margin-right: 10%;
+  }
+}
+
+
+
+
+

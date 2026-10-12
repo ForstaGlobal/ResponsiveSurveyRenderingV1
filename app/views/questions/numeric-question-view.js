@@ -1,4 +1,4 @@
-import QuestionView from './base/question-view.js'
+import QuestionView from './base/question-view.js';
 
 export default class NumericQuestionView extends QuestionView {
     constructor(question) {
@@ -38,7 +38,7 @@ export default class NumericQuestionView extends QuestionView {
 
     _onQuestionInputNodeValueChange(event) {
         let value = event.target.value;
-        if(value === '' && !event.target.validity.valid) {
+        if (value === '' && !event.target.validity.valid) {
             value = this._nanCode;
         }
         this._question.setValue(value);

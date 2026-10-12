@@ -10,7 +10,7 @@ export default class HiddenQuestionView {
         return this._question.id;
     }
 
-    render(){
+    render() {
         this._container.find('.confirmit-hidden-input').remove();
         const formValues = Object.entries(this._question.formValues);
         const inputs = formValues.map(([name, value]) => {
@@ -18,7 +18,7 @@ export default class HiddenQuestionView {
                 type: 'hidden',
                 class: 'confirmit-hidden-input',
                 name: name,
-                value: value
+                value: value,
             });
         });
         this._container.prepend(inputs);

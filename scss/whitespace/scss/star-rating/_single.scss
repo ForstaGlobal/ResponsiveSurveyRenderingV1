@@ -1,0 +1,90 @@
+@use "../_mixins/radio_checkbox";
+@use "../functions";
+@use "../variables";
+
+.cf-sr-single {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 1px;
+  &__scale-container{
+    max-width: 100%;
+  }
+  &__scale {
+    flex: 0 1 auto;
+    min-width: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 16px;
+
+    &-item {
+      flex: 0 1 auto;
+      background-image: functions.svg-url('<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22"><polygon fill="none" stroke="#{variables.$control-primary-color}" stroke-width="1" points="11,2 13.5,8.5 20,9 15,13 17,19.5 11,15.5 5,19.5 7,13 2,9 8.5,8.5" /></svg>');
+      background-repeat: no-repeat;
+      background-position: left center;
+
+      cursor: pointer;
+
+      &--selected {
+        transition: background 0.2s linear;
+        background-image: functions.svg-url('<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22"><polygon fill="#{variables.$control-active-color}" stroke="#{variables.$control-active-color}" stroke-width="2" points="11,2 13.5,8.5 20,9 15,13 17,19.5 11,15.5 5,19.5 7,13 2,9 8.5,8.5" /></svg>')
+      }
+    }
+  }
+
+  &__na {
+    max-width: 100%;
+
+    @include radio_checkbox.radio_list(variables.$control-size - 4px);
+
+    &-item {
+      margin-bottom: 8px;
+    }
+  }
+
+  &__scale-label-panel {
+    margin-bottom: 8px;
+  }
+}
+
+@media (max-width: variables.$desktop-layout-delimiter) {
+  .cf-sr-single {
+
+    &__scale-item {
+      width: variables.$control-size + 16px;
+      min-width: variables.$control-size;
+      height: variables.$control-size;
+      background-size: variables.$control-size;
+
+      &:last-child {
+        width: variables.$control-size;
+      }
+    }
+  }
+}
+
+@media (min-width: variables.$desktop-layout-delimiter + 1) {
+  .cf-sr-single {
+    &__scale-item {
+      width: variables.$control-size + 16px;
+      min-width: variables.$control-size + 8px;
+      height: variables.$control-size + 8px;
+      background-size: variables.$control-size + 8px;
+
+      &:last-child {
+        width: variables.$control-size + 8px;
+      }
+    }
+  }
+}
+
+.cf-sr-single--rtl {
+  .cf-sr-single__scale-item{
+    background-position: right center;
+  }
+  .cf-sr-single__na {
+    @include radio_checkbox.radio_list(variables.$control-size - 4px, true);
+  }
+}

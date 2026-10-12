@@ -1,0 +1,182 @@
+@use "../_mixins/grid-layout";
+@use "../_mixins/radio_checkbox";
+@use "../_mixins/rating-grid";
+@use "../functions";
+@use "../variables";
+
+.cf-sr-grid-answer {
+  &__control {
+    display: flex;
+  }
+
+  &__scale-container {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  &__scale {
+    flex: 0 1 auto;
+    min-width: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+
+    &-item {
+      flex: 0 1 auto;
+      background-image: functions.svg-url('<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22"><polygon fill="none" stroke="#{variables.$control-primary-color}" stroke-width="1" points="11,2 13.5,8.5 20,9 15,13 17,19.5 11,15.5 5,19.5 7,13 2,9 8.5,8.5" /></svg>');
+      background-repeat: no-repeat;
+      background-position: left center;
+
+      cursor: pointer;
+
+      &--selected {
+        transition: background 0.2s linear;
+        background-image: functions.svg-url('<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22"><polygon fill="#{variables.$control-active-color}" stroke="#{variables.$control-active-color}" stroke-width="2" points="11,2 13.5,8.5 20,9 15,13 17,19.5 11,15.5 5,19.5 7,13 2,9 8.5,8.5" /></svg>')
+      }
+    }
+  }
+}
+
+@media (max-width: variables.$desktop-layout-delimiter) {
+  .cf-sr-grid-answer {
+    margin-bottom: 32px;
+
+    &__control {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    &__scale-container {
+      margin-bottom: 16px;
+      max-width: 100%;
+    }
+
+    &__scale-item {
+      width: variables.$control-size + 16px;
+      min-width: variables.$control-size;
+      height: variables.$control-size;
+      background-size: variables.$control-size;
+
+      &:last-child {
+        width: variables.$control-size;
+      }
+    }
+
+    &__scale-label-panel {
+      display: none;
+    }
+
+    &__na {
+      @include radio_checkbox.radio_list(variables.$control-size - 4px);
+
+      &-item {
+        margin-bottom: 8px;
+      }
+    }
+
+    &--fake-for-panel {
+      margin-bottom: 0;
+
+      .cf-sr-grid-answer__scale-label-panel {
+        display: flex;
+      }
+
+      .cf-sr-grid-answer__scale {
+        visibility: hidden;
+        height: 0;
+      }
+
+      .cf-sr-grid-answer__text,
+      .cf-sr-grid-answer__na {
+        display: none;
+      }
+    }
+  }
+}
+
+@media (min-width: variables.$desktop-layout-delimiter + 1) {
+  .cf-sr-grid-answer {
+    @include grid-layout.grid-layout-answer-content-indent(24px, 20px);
+
+    &__control {
+      align-items: center;
+    }
+
+    &__scale-container {
+      flex: 0 1 auto;
+      min-width: 1px; // 1px instead of 0px due to fix ie11 bug
+    }
+
+    &__scale-label-panel {
+      display: none;
+    }
+
+    &__scale-item {
+      width: variables.$control-size + 16px;
+      min-width: variables.$control-size + 8px;
+      height: variables.$control-size + 8px;
+      background-size: variables.$control-size + 8px;
+
+      &:last-child {
+        width: variables.$control-size + 8px;
+      }
+    }
+
+    &__na {
+      flex: 0 0 auto;
+      margin-left: 24px;
+      @include rating-grid.na_scale();
+    }
+
+    &--fake-for-panel {
+      margin-bottom: 8px;
+
+      .cf-sr-grid-answer__scale-label-panel {
+        display: flex;
+        margin-bottom: 8px;
+      }
+      .cf-sr-grid-answer__scale,
+      .cf-sr-grid-answer__na {
+        visibility: hidden;
+        height: 0;
+      }
+    }
+  }
+}
+
+@media (min-width: variables.$desktop-layout-delimiter + 1) {
+  .cf-sr-grid-answer--rtl {
+    .cf-sr-grid-answer__scale-item {
+      &:last-child {
+        width: variables.$control-size+16px;
+      }
+      &:first-child {
+        width: variables.$control-size;
+      }
+    }
+
+    .cf-sr-grid-answer__na {
+      margin-left: 0;
+      margin-right: 24px;
+      @include rating-grid.na_scale(true);
+    }
+  }
+}
+
+@media (max-width: variables.$desktop-layout-delimiter) {
+  .cf-sr-grid-answer--rtl {
+    .cf-sr-grid-answer__scale-item {
+      &:last-child {
+        width: variables.$control-size+16px;
+      }
+      &:first-child {
+        width: variables.$control-size + 8;
+      }
+    }
+    .cf-sr-grid-answer__na {
+      @include radio_checkbox.radio_list(variables.$control-size - 4px, true);
+    }
+  }
+}

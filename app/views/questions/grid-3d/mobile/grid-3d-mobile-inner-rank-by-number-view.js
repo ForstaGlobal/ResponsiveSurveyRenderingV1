@@ -1,7 +1,7 @@
 import Grid3DMobileInnerQuestionView from './grid-3d-mobile-inner-question-view';
 import ValidationTypes from '../../../../api/models/validation/validation-types';
 
-export default class Grid3DMobileInnerRankByNumberQuestionView  extends Grid3DMobileInnerQuestionView {
+export default class Grid3DMobileInnerRankByNumberQuestionView extends Grid3DMobileInnerQuestionView {
     constructor(parentQuestion, question, settings = null) {
         super(parentQuestion, question, settings);
 
@@ -38,9 +38,8 @@ export default class Grid3DMobileInnerRankByNumberQuestionView  extends Grid3DMo
         }
     }
 
-    _updateAnswerNodes({values = []}) {
-        if (values.length === 0)
-            return;
+    _updateAnswerNodes({ values = [] }) {
+        if (values.length === 0) return;
 
         this._question.answers.forEach(answer => {
             const answerInput = this._getAnswerInputNode(answer.code);
@@ -56,7 +55,7 @@ export default class Grid3DMobileInnerRankByNumberQuestionView  extends Grid3DMo
         });
     }
 
-    _onModelValueChange({changes}) {
+    _onModelValueChange({ changes }) {
         this._updateAnswerNodes(changes);
     }
 

@@ -31,7 +31,7 @@ export default class EmailQuestion extends Question {
     get formValues() {
         const form = {};
 
-        if (!Utils.isEmpty(this.value)){
+        if (!Utils.isEmpty(this.value)) {
             form[this.id] = this.value;
         }
 
@@ -43,11 +43,7 @@ export default class EmailQuestion extends Question {
      * @param {string} answerValue - Answer value.
      */
     setValue(answerValue) {
-        this._setValueInternal(
-            'value',
-            () => this._setValue(answerValue),
-            this._diffPrimitives,
-        );
+        this._setValueInternal('value', () => this._setValue(answerValue), this._diffPrimitives);
     }
 
     _setValue(value) {

@@ -24,10 +24,10 @@ export default class VideoUploadQuestion extends Question {
     /**
      * @inheritDoc
      */
-    get formValues(){
+    get formValues() {
         const form = {};
 
-        if(!Utils.isEmpty(this._videoId)){
+        if (!Utils.isEmpty(this._videoId)) {
             form[this.id] = this._videoId;
         }
 
@@ -68,11 +68,7 @@ export default class VideoUploadQuestion extends Question {
      * @param {number} duration - Video file duration in seconds.
      */
     setValue(videoId, previewUrl, duration) {
-        this._setValueInternal(
-            'value',
-            () => this._setValue(videoId, previewUrl, duration),
-            this._diffPrimitives,
-        );
+        this._setValueInternal('value', () => this._setValue(videoId, previewUrl, duration), this._diffPrimitives);
     }
 
     _setValue(videoId, previewUrl, duration) {

@@ -25,6 +25,10 @@ export default class CaptureOrderMultiQuestionView extends MultiQuestionViewBase
      * @override
      */
     _selectAnswer(answer) {
+        if (this._isSelected(answer)) {
+            return;
+        }
+
         const maxValue = this._getSelectedAnswerCodes().length;
         this._question.setValue(answer.code, maxValue + 1);
 

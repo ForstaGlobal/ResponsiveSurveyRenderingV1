@@ -20,7 +20,8 @@ export default class SingleQuestionView extends QuestionWithAnswersView {
         this._selectedAnswerCssClass = 'cf-single-answer--selected';
         this._selectedImageAnswerCssClass = 'cf-answer-image--selected';
 
-        this._storedOtherValues = this._question.value !== null ? {[this._question.value]: this._question.otherValue} : {};
+        this._storedOtherValues =
+            this._question.value !== null ? { [this._question.value]: this._question.otherValue } : {};
 
         this._attachHandlersToDOM();
     }
@@ -71,7 +72,7 @@ export default class SingleQuestionView extends QuestionWithAnswersView {
         }
     }
 
-    _updateAnswerNodes({value}) {
+    _updateAnswerNodes({ value }) {
         if (value === undefined) {
             return;
         }
@@ -84,8 +85,7 @@ export default class SingleQuestionView extends QuestionWithAnswersView {
         });
 
         if (this._question.value === null) {
-            this._getAnswerNode(this._question.answers[0].code)
-                .attr('tabindex', '0');
+            this._getAnswerNode(this._question.answers[0].code).attr('tabindex', '0');
             return;
         }
 
@@ -97,7 +97,7 @@ export default class SingleQuestionView extends QuestionWithAnswersView {
 
     // eslint-disable-next-line no-unused-vars
     _updateStoredOtherValues(changes) {
-        if(!Utils.isEmpty(this._question.otherValue)) {
+        if (!Utils.isEmpty(this._question.otherValue)) {
             this._storedOtherValues[this._question.value] = this._question.otherValue;
         }
     }
@@ -107,24 +107,22 @@ export default class SingleQuestionView extends QuestionWithAnswersView {
     }
 
     _updateAnswerOtherNodes(changes) {
-        this._question.answers.filter(answer => answer.isOther).forEach(answer => {
-            if (this._question.value !== answer.code) {
-                this._setOtherNodeValue(answer.code, null);
-            }
+        this._question.answers
+            .filter(answer => answer.isOther)
+            .forEach(answer => {
+                if (this._question.value !== answer.code) {
+                    this._setOtherNodeValue(answer.code, null);
+                }
 
-            this._getAnswerOtherNode(answer.code)
-                .attr('tabindex', '-1')
-                .attr('aria-hidden', 'true');
-        });
+                this._getAnswerOtherNode(answer.code).attr('tabindex', '-1').attr('aria-hidden', 'true');
+            });
 
         if (this._question.value === null) {
             return;
         }
 
         if (this._question.getAnswer(this._question.value).isOther) {
-            this._getAnswerOtherNode(this._question.value)
-                .attr('tabindex', '0')
-                .attr('aria-hidden', 'false');
+            this._getAnswerOtherNode(this._question.value).attr('tabindex', '0').attr('aria-hidden', 'false');
         }
 
         if (changes.otherValue) {
@@ -171,14 +169,14 @@ export default class SingleQuestionView extends QuestionWithAnswersView {
 
         const errorBlockId = this._getAnswerErrorBlockId(validationResult.answerCode);
         const otherNode = this._getAnswerOtherNode(validationResult.answerCode);
-        otherNode
-            .attr('aria-errormessage', errorBlockId)
-            .attr('aria-invalid', 'true');
+        otherNode.attr('aria-errormessage', errorBlockId).attr('aria-invalid', 'true');
     }
 
     _updateRadioGroupAriaInvalidState(validationResult) {
-        const hasNotOnlyOtherErrors = validationResult.errors.length > 0
-            || validationResult.answerValidationResults.filter(result => result.isValid === false)
+        const hasNotOnlyOtherErrors =
+            validationResult.errors.length > 0 ||
+            validationResult.answerValidationResults
+                .filter(result => result.isValid === false)
                 .some(result => result.errors.some(error => error.type !== ValidationTypes.OtherRequired));
         if (hasNotOnlyOtherErrors === false) {
             return;
@@ -192,14 +190,14 @@ export default class SingleQuestionView extends QuestionWithAnswersView {
 
         this._groupNode.attr('aria-invalid', 'false');
 
-        this._question.answers.filter(answer => answer.isOther).forEach(answer => {
-            this._getAnswerOtherNode(answer.code)
-                .removeAttr('aria-errormessage')
-                .removeAttr('aria-invalid');
-        });
+        this._question.answers
+            .filter(answer => answer.isOther)
+            .forEach(answer => {
+                this._getAnswerOtherNode(answer.code).removeAttr('aria-errormessage').removeAttr('aria-invalid');
+            });
     }
 
-    _onModelValueChange({changes}) {
+    _onModelValueChange({ changes }) {
         this._updateAnswerNodes(changes);
         this._updateAnswerOtherNodes(changes);
         this._updateStoredOtherValues(changes);
@@ -274,13 +272,14 @@ export default class SingleQuestionView extends QuestionWithAnswersView {
     }
 
     _onAnswerOtherNodeValueChange(answer, otherValue) {
-        if (!Utils.isEmpty(otherValue)) { // select answer
+        if (!Utils.isEmpty(otherValue)) {
+            // select answer
             this._question.setValue(answer.code);
         }
 
-        if (this._question.value === answer.code) { // update other value for currently selected answer
+        if (this._question.value === answer.code) {
+            // update other value for currently selected answer
             this._question.setOtherValue(otherValue);
         }
     }
 }
-

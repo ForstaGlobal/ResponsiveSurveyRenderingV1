@@ -1,4 +1,4 @@
-import HorizontalRatingSingleQuestionView from "./horizontal-rating-single-question-view";
+import HorizontalRatingSingleQuestionView from './horizontal-rating-single-question-view';
 
 export default class StarRatingSingleQuestionView extends HorizontalRatingSingleQuestionView {
     constructor(question, settings) {

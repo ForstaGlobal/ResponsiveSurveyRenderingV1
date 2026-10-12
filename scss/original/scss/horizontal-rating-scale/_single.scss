@@ -1,0 +1,69 @@
+@use "../_mixins/radio_checkbox";
+@use "../_mixins/rating-grid";
+@use "../variables";
+
+$hrs-item-indent: 4px;
+
+.cf-hrs-single {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+
+  &__scale-label-panel {
+    overflow: auto;
+  }
+
+  &__scale {
+    flex: 1 1 auto;
+    display: flex;
+    margin-top: $hrs-item-indent;
+    margin-bottom: 1em;
+
+    &-item {
+      flex: 1 0 0px;
+      @include rating-grid.scale_item();
+    }
+  }
+
+  &__na {
+    @include radio_checkbox.radio_list();
+
+    &-item {
+      margin-bottom: 0.5em;
+    }
+  }
+}
+
+@media (max-width: variables.$desktop-layout-delimiter) {
+  .cf-hrs-single {
+    &__scale {
+      margin-top: $hrs-item-indent*0.5;
+
+      &-item {
+        margin-right: $hrs-item-indent*0.5;
+      }
+    }
+  }
+}
+
+.cf-hrs-single--rtl {
+  .cf-hrs-single {
+    &__scale-item {
+      flex: 1 0 0px;
+      @include rating-grid.scale_item(true);
+    }
+
+    &__na {
+      @include radio_checkbox.radio_list(1.4em, true);
+    }
+  }
+}
+
+@media (max-width: variables.$desktop-layout-delimiter) {
+  .cf-hrs-single--rtl .cf-hrs-single__scale-item {
+    margin-right: 0;
+    margin-left: $hrs-item-indent*0.5;
+  }
+}
+
+

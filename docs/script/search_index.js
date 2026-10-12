@@ -336,18 +336,6 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
-    "app/api/hierarchy-service.js",
-    "file/app/api/hierarchy-service.js.html",
-    "app/api/hierarchy-service.js",
-    "file"
-  ],
-  [
-    "app/api/image-uploader.js",
-    "file/app/api/image-uploader.js.html",
-    "app/api/image-uploader.js",
-    "file"
-  ],
-  [
     "app/api/models/base/answer-images-settings.js",
     "file/app/api/models/base/answer-images-settings.js.html",
     "app/api/models/base/answer-images-settings.js",
@@ -2214,12 +2202,6 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
-    "app/api/models/test-navigator.js~testnavigator#extquicktestcommentsenabled",
-    "class/app/api/models/test-navigator.js~TestNavigator.html#instance-get-extQuicktestCommentsEnabled",
-    "app/api/models/test-navigator.js~TestNavigator#extQuicktestCommentsEnabled",
-    "member"
-  ],
-  [
     "app/api/models/test-navigator.js~testnavigator#questions",
     "class/app/api/models/test-navigator.js~TestNavigator.html#instance-get-questions",
     "app/api/models/test-navigator.js~TestNavigator#questions",
@@ -2391,12 +2373,6 @@ window.esdocSearchIndex = [
     "app/api/question-types.js",
     "file/app/api/question-types.js.html",
     "app/api/question-types.js",
-    "file"
-  ],
-  [
-    "app/api/searchable-answer-list-service.js",
-    "file/app/api/searchable-answer-list-service.js.html",
-    "app/api/searchable-answer-list-service.js",
     "file"
   ],
   [

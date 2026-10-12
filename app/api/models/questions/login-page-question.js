@@ -1,5 +1,7 @@
-import Question from "../base/question";
-import Utils from "../../../utils";
+import Question from '../base/question';
+import ValidationTypes from '../validation/validation-types';
+import RuleValidationResult from '../validation/rule-validation-result';
+import Utils from '../../../utils';
 
 export default class LoginPageQuestion extends Question {
     /**
@@ -21,7 +23,7 @@ export default class LoginPageQuestion extends Question {
      * @readonly
      */
     get value() {
-        return {userName: this._userName, password: this._password};
+        return { userName: this._userName, password: this._password };
     }
 
     /**
@@ -30,7 +32,7 @@ export default class LoginPageQuestion extends Question {
     get formValues() {
         const form = {
             [this._loginFieldName]: this._userName,
-            [this._passwordFieldName]: this._password
+            [this._passwordFieldName]: this._password,
         };
 
         return form;
@@ -42,16 +44,20 @@ export default class LoginPageQuestion extends Question {
      * @param {string} password - password.
      */
     setValue(userName, password) {
-        this._setValueInternal(
-            'value',
-            () => this._setValue(userName, password),
-            this._diffPrimitives,
-        );
+        this._setValueInternal('value', () => this._setValue(userName, password), this._diffPrimitives);
     }
 
     _setValue(userName, password) {
         this._userName = Utils.isEmpty(userName) ? null : userName.toString();
         this._password = Utils.isEmpty(password) ? null : password.toString();
         return true;
+    }
+
+    _validateRule(validationType) {
+        switch (validationType) {
+            // Do nothing, pass client side validation for v1.
+            case ValidationTypes.Login:
+                return new RuleValidationResult(true);
+        }
     }
 }

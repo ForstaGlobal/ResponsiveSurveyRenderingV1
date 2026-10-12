@@ -1,0 +1,61 @@
+@use "../variables";
+
+.cf-question {
+  padding: 24px 16px 32px;
+  background-color: variables.$question-bg-color;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  &__title,
+  &__text,
+  &__instruction,
+  &__error,
+  &__content {
+    margin-bottom: 16px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &__text {
+    font-weight: bold;
+    color: variables.$question-text-font-color;
+  }
+
+  &__instruction {
+    color: variables.$question-instruction-font-color;
+  }
+
+  &__error {
+    margin-top: -8px;
+  }
+
+  &__content {
+    margin-top: 32px;
+    padding-left: 8px;
+    padding-right: 8px;
+
+    &.cf-question__content--no-padding {
+      padding: 0;
+    }
+  }
+
+  &--error {
+    border-color: variables.$error-border-color;
+  }
+}
+
+@media (max-width: variables.$max-width) {
+  .cf-question {
+    margin-bottom: 4px;
+  }
+}
+
+@media (min-width: variables.$max-width + 1) {
+  .cf-question {
+    margin-bottom: 8px;
+  }
+}

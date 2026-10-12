@@ -1,0 +1,57 @@
+@use "../_mixins/radio_checkbox";
+@use "../variables";
+
+.cf-accordion-grid-answer {
+  width: 100%;
+  margin-bottom: 18px;
+
+  &__title{
+    min-width: 0px;
+  }
+
+  &__selected-list {
+    font-size: 12px;
+    color: variables.$control-active-color;
+    font-weight: bold;
+    padding: 0 32px;
+    &--hidden {
+      display: none;
+    }
+  }
+
+  &__scales {
+    margin-top: 16px;
+    padding: 0 32px;
+  }
+
+  &__scale-item {
+    @include radio_checkbox.radio(variables.$control-size);
+
+    &--selected {
+      @include radio_checkbox.radio(variables.$control-size, true);
+    }
+  }
+
+  &__right-text {
+    margin-top: 16px;
+    margin-left: 32px;
+  }
+}
+
+.cf-accordion-grid-answer--rtl {
+  .cf-accordion-grid-answer__scales {
+    padding: 0 32px;
+  }
+  .cf-accordion-grid-answer__scale-item {
+    @include radio_checkbox.radio(variables.$control-size, false, true);
+
+    &--selected {
+      @include radio_checkbox.radio(variables.$control-size, true, true);
+    }
+  }
+
+  .cf-accordion-grid-answer__right-text {
+    margin-left: 0;
+    margin-right: 32px;
+  }
+}

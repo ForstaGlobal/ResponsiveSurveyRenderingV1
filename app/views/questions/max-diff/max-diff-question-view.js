@@ -1,6 +1,6 @@
 import MaxDiffInnerSingleQuestionView from './max-diff-inner-single-question-view';
-import QuestionView from "../base/question-view";
-import ErrorBlockManager from "../../error/error-block-manager";
+import QuestionView from '../base/question-view';
+import ErrorBlockManager from '../../error/error-block-manager';
 
 export default class MaxDiffQuestionView extends QuestionView {
     /**
@@ -35,17 +35,21 @@ export default class MaxDiffQuestionView extends QuestionView {
     }
 
     _createInnerQuestionViews() {
-        this._innerQuestionViews = this._question.innerQuestions.map(innerQuestion => new MaxDiffInnerSingleQuestionView(this._question, innerQuestion, this._settings));
+        this._innerQuestionViews = this._question.innerQuestions.map(
+            innerQuestion => new MaxDiffInnerSingleQuestionView(this._question, innerQuestion, this._settings)
+        );
     }
 
     _attachHandlersToDOM() {
-        this._question.answers.filter(answer => answer.isOther).forEach(answer => {
-            if(answer.isOther) {
-                const otherInput = this._getAnswerOtherNode(answer.code);
-                otherInput.on('click', e => e.stopPropagation());
-                otherInput.on('input', e => this._onAnswerOtherNodeValueChange(answer, e.target.value));
-            }
-        });
+        this._question.answers
+            .filter(answer => answer.isOther)
+            .forEach(answer => {
+                if (answer.isOther) {
+                    const otherInput = this._getAnswerOtherNode(answer.code);
+                    otherInput.on('click', e => e.stopPropagation());
+                    otherInput.on('input', e => this._onAnswerOtherNodeValueChange(answer, e.target.value));
+                }
+            });
     }
 
     _setOtherNodeValue(answerCode, otherValue) {
@@ -57,8 +61,8 @@ export default class MaxDiffQuestionView extends QuestionView {
         }
     }
 
-    _onModelValueChange({changes}) {
-        if(changes.otherValues === undefined) {
+    _onModelValueChange({ changes }) {
+        if (changes.otherValues === undefined) {
             return;
         }
 
@@ -76,10 +80,9 @@ export default class MaxDiffQuestionView extends QuestionView {
         }, []);
         this._questionErrorBlock.showErrors(errors.concat(innerQuestionErrors));
 
-
         validationResult.answerValidationResults.forEach(answerValidationResult => {
             const answer = this._question.getAnswer(answerValidationResult.answerCode);
-            if(!answer.isOther) {
+            if (!answer.isOther) {
                 return;
             }
 
@@ -90,20 +93,21 @@ export default class MaxDiffQuestionView extends QuestionView {
         });
     }
 
-    _hideErrors(){
+    _hideErrors() {
         super._hideErrors();
         this._answerErrorBlockManager.removeAllErrors();
     }
 
     _getInnerQuestionValidationMessage(questionId, type, messageType) {
-        return this._question.validationMessagesForInnerQuestions.find(x => x.questionId === questionId && x.validationType === type && x.messageType === messageType);
+        return this._question.validationMessagesForInnerQuestions.find(
+            x => x.questionId === questionId && x.validationType === type && x.messageType === messageType
+        );
     }
 
-    _getInnerQuestionErrors({questionId, errors}) {
+    _getInnerQuestionErrors({ questionId, errors }) {
         return errors.reduce((acc, error) => {
             const message = this._getInnerQuestionValidationMessage(questionId, error.type, 'General');
-            if (message !== undefined)
-                acc.push(message.text);
+            if (message !== undefined) acc.push(message.text);
             return acc;
         }, []);
     }

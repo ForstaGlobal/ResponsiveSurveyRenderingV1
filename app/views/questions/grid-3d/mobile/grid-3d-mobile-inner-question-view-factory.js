@@ -13,7 +13,6 @@ import QuestionTypes from 'api/question-types.js';
  * @desc Question view factory
  */
 export default class Grid3DMobileInnerQuestionViewFactory {
-
     constructor(question, settings) {
         this._question = question;
         this._settings = settings;
@@ -28,12 +27,20 @@ export default class Grid3DMobileInnerQuestionViewFactory {
         switch (innerQuestion.type) {
             case QuestionTypes.Single:
                 if (innerQuestion.answerButtons) {
-                    return new Grid3DMobileInnerSingleAnswerButtonsQuestionView(this._question, innerQuestion, this._settings);
+                    return new Grid3DMobileInnerSingleAnswerButtonsQuestionView(
+                        this._question,
+                        innerQuestion,
+                        this._settings
+                    );
                 }
                 return new Grid3DMobileInnerSingleQuestionView(this._question, innerQuestion, this._settings);
             case QuestionTypes.Multi:
                 if (innerQuestion.answerButtons) {
-                    return new Grid3DMobileInnerMultiAnswerButtonsQuestionView(this._question, innerQuestion, this._settings);
+                    return new Grid3DMobileInnerMultiAnswerButtonsQuestionView(
+                        this._question,
+                        innerQuestion,
+                        this._settings
+                    );
                 }
                 return new Grid3DMobileInnerMultiQuestionView(this._question, innerQuestion, this._settings);
             case QuestionTypes.OpenTextList:
